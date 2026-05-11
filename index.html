@@ -1,624 +1,110 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Healthy Record">
-<title>Healthy Record</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --bg: #1a1a1e; --bg2: #2c2c30; --bg3: #3a3a3e; --card: #232326;
-  --border: rgba(255,255,255,0.08); --accent: #4fd1c5; --accent2: #f687b3;
-  --text1: #f0f0f0; --text2: #a0a0a8; --text3: #606068;
-  --danger: #fc8181; --success: #68d391; --warn: #f6ad55;
-  --radius: 14px; --radius-sm: 9px;
-}
-html, body { height: 100%; }
-body {
-  background: var(--bg); color: var(--text1);
-  font-family: -apple-system, 'PingFang TC', sans-serif;
-  min-height: 100vh; padding-bottom: 90px;
-  padding-top: env(safe-area-inset-top);
-}
-.phone-wrap { max-width: 430px; margin: 0 auto; }
+const SHEET_NAME = 'Records';
 
-/* TOP BAR */
-.top-bar { background: var(--bg); padding: 14px 16px 8px; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border); }
-.top-bar h1 { font-size: 20px; font-weight: 700; color: var(--text1); }
-.top-bar .sub { font-size: 12px; color: var(--text2); margin-top: 2px; display:flex; align-items:center; gap:5px; }
-.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); flex-shrink:0; }
-.sync-dot.ok { background: var(--success); }
-.sync-dot.err { background: var(--danger); }
-.sync-dot.loading { background: var(--warn); animation: pulse 1s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-/* TABS */
-.tab-bar { display: flex; gap: 4px; background: var(--bg2); border-radius: var(--radius-sm); padding: 4px; margin: 10px 16px; }
-.tab { flex: 1; text-align: center; padding: 7px 4px; border-radius: 7px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.2s; font-weight: 500; }
-.tab.active { background: var(--card); color: var(--accent); }
-
-/* SECTIONS */
-.section { padding: 0 16px; margin-bottom: 14px; }
-.section-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-.card { background: var(--card); border-radius: var(--radius); border: 0.5px solid var(--border); overflow: hidden; }
-
-/* PERSON ROWS */
-.person-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background 0.15s; }
-.person-row:last-child { border-bottom: none; }
-.person-row.selected { background: rgba(79,209,197,0.08); }
-.avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
-.person-name { font-size: 15px; font-weight: 600; color: var(--text1); flex: 1; }
-.person-check { color: var(--accent); font-size: 16px; font-weight: 700; }
-.del-btn { background: rgba(252,129,129,0.15); border: none; color: var(--danger); font-size: 12px; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-weight: 600; }
-
-/* ADD PERSON */
-.add-person-row { display: flex; gap: 8px; margin-top: 8px; }
-.add-person-row input { flex: 1; background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text1); font-size: 14px; outline: none; }
-.add-person-row input::placeholder { color: var(--text3); }
-.btn-add { background: var(--accent); color: #0d2b29; border: none; border-radius: var(--radius-sm); padding: 10px 16px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-
-/* VITALS */
-.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.metric-card { background: var(--card); border-radius: var(--radius-sm); border: 0.5px solid var(--border); padding: 10px; }
-.metric-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
-.metric-input { width: 100%; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 6px; padding: 6px 8px; color: var(--text1); font-size: 15px; font-weight: 600; text-align: center; outline: none; }
-.metric-unit { font-size: 10px; color: var(--text3); text-align: center; margin-top: 3px; }
-
-/* MEALS */
-.meal-card { background: var(--card); border-radius: var(--radius); border: 0.5px solid var(--border); }
-.meal-row { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 0.5px solid var(--border); }
-.meal-row:last-child { border-bottom: none; }
-.meal-name { font-size: 14px; color: var(--text2); width: 36px; font-weight: 500; }
-.meal-input { flex: 1; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 7px; padding: 7px 10px; color: var(--text1); font-size: 13px; outline: none; }
-
-/* TOGGLES */
-.toggle-group { display: flex; gap: 6px; }
-.toggle-btn { flex: 1; padding: 8px; border-radius: 7px; border: 0.5px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s; }
-.toggle-btn.on { background: rgba(104,211,145,0.18); color: var(--success); border-color: rgba(104,211,145,0.4); }
-.toggle-btn.off-sel { background: rgba(252,129,129,0.14); color: var(--danger); border-color: rgba(252,129,129,0.3); }
-.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 0.5px solid var(--border); }
-.toggle-row:last-child { border-bottom: none; }
-.toggle-label { font-size: 14px; color: var(--text1); font-weight: 500; }
-
-/* STATUS TAGS */
-.tag-grid { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 14px; }
-.tag { padding: 6px 11px; border-radius: 20px; border: 0.5px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-.tag.selected { background: rgba(246,173,85,0.18); color: var(--warn); border-color: rgba(246,173,85,0.4); }
-.other-input-wrap { width: 100%; padding: 0 14px 12px; display: none; }
-.other-input-wrap.show { display: block; }
-.other-input-wrap input { width: 100%; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 7px; padding: 8px 12px; color: var(--text1); font-size: 13px; outline: none; }
-
-/* iOS SWITCH */
-.ios-switch { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
-.ios-switch input { opacity: 0; width: 0; height: 0; }
-.ios-switch .slider { position: absolute; inset: 0; background: var(--bg3); border-radius: 14px; transition: 0.2s; cursor: pointer; }
-.ios-switch input:checked + .slider { background: var(--accent2); }
-.ios-switch .slider::after { content: ''; position: absolute; width: 22px; height: 22px; border-radius: 50%; background: white; left: 3px; top: 3px; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-.ios-switch input:checked + .slider::after { transform: translateX(20px); }
-
-/* MENSTRUAL */
-.menstrual-toggle { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 0.5px solid var(--border); }
-.menstrual-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; }
-.menstrual-label { font-size: 14px; color: var(--text1); font-weight: 500; flex: 1; }
-.menstrual-ctrl { display: flex; align-items: center; gap: 8px; }
-.day-btn { width: 32px; height: 32px; border-radius: 50%; border: 0.5px solid var(--border); background: var(--bg2); color: var(--text1); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-.day-val { font-size: 18px; font-weight: 700; color: var(--accent2); min-width: 24px; text-align: center; }
-.day-unit { font-size: 12px; color: var(--text2); }
-
-/* SAVE BAR */
-.save-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  padding: 12px 16px;
-  padding-bottom: calc(12px + env(safe-area-inset-bottom));
-  background: rgba(26,26,30,0.97);
-  backdrop-filter: blur(12px);
-  border-top: 0.5px solid var(--border); z-index: 200;
-}
-.save-btn { width: 100%; padding: 14px; background: var(--accent); color: #ffffff; border: none; border-radius: var(--radius); font-size: 16px; font-weight: 700; cursor: pointer; }
-.save-btn:active { opacity: 0.85; }
-.save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* TOAST */
-.toast { position: fixed; top: 72px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(79,209,197,0.15); border: 0.5px solid rgba(79,209,197,0.4); color: var(--accent); padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 300; pointer-events: none; white-space: nowrap; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { background: rgba(252,129,129,0.15); border-color: rgba(252,129,129,0.4); color: var(--danger); }
-
-/* PAGES */
-.page { display: none; }
-.page.active { display: block; }
-
-/* HISTORY */
-.hist-person-tabs { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 16px; margin-bottom: 12px; }
-.hist-ptab { padding: 6px 14px; border-radius: 20px; border: 0.5px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.hist-ptab.active { background: rgba(79,209,197,0.15); color: var(--accent); border-color: rgba(79,209,197,0.4); }
-.chart-card { background: var(--card); border-radius: var(--radius); border: 0.5px solid var(--border); padding: 14px; margin: 0 16px 12px; }
-.chart-title { font-size: 13px; font-weight: 700; color: var(--text1); margin-bottom: 12px; }
-canvas { display: block; }
-.no-data { text-align: center; padding: 16px 0 4px; color: var(--text3); font-size: 12px; }
-.loading-state { text-align: center; padding: 40px 16px; color: var(--text2); font-size: 14px; }
-</style>
-</head>
-<body>
-<div class="phone-wrap">
-  <div class="top-bar">
-    <h1>Healthy Record</h1>
-    <div class="sub">
-      <span class="sync-dot loading" id="sync-dot"></span>
-      <span id="sync-status">連線中…</span>
-    </div>
-  </div>
-
-  <div class="tab-bar">
-    <div class="tab active" onclick="switchTab('record')">Record</div>
-    <div class="tab" onclick="switchTab('persons')">People</div>
-    <div class="tab" onclick="switchTab('history')">History</div>
-  </div>
-
-  <!-- RECORD PAGE -->
-  <div id="page-record" class="page active">
-    <div class="section">
-      <div class="section-title">Select Person</div>
-      <div class="card" id="person-selector"><div class="loading-state">載入中…</div></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Vitals</div>
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-label">身高</div>
-          <input class="metric-input" type="number" id="height" placeholder="—" inputmode="decimal">
-          <div class="metric-unit">cm</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">體重</div>
-          <input class="metric-input" type="number" id="weight" placeholder="—" inputmode="decimal" step="0.1">
-          <div class="metric-unit">kg</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">體溫</div>
-          <input class="metric-input" type="number" id="temp" placeholder="—" inputmode="decimal" step="0.1">
-          <div class="metric-unit">°C</div>
-        </div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Meals</div>
-      <div class="meal-card">
-        <div class="meal-row"><div class="meal-name">早餐</div><input class="meal-input" type="text" id="meal-breakfast" placeholder="Breakfast…"></div>
-        <div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="meal-lunch" placeholder="Lunch…"></div>
-        <div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="meal-dinner" placeholder="Dinner…"></div>
-        <div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="meal-snack" placeholder="Snack…"></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Diet Flags</div>
-      <div class="card">
-        <div class="toggle-row">
-          <div class="toggle-label">加工食品</div>
-          <div class="toggle-group" style="width:130px">
-            <div class="toggle-btn" id="proc-y" onclick="setToggle('proc','y')">有</div>
-            <div class="toggle-btn" id="proc-n" onclick="setToggle('proc','n')">沒有</div>
-          </div>
-        </div>
-        <div class="toggle-row">
-          <div class="toggle-label">炸物</div>
-          <div class="toggle-group" style="width:130px">
-            <div class="toggle-btn" id="fried-y" onclick="setToggle('fried','y')">有</div>
-            <div class="toggle-btn" id="fried-n" onclick="setToggle('fried','n')">沒有</div>
-          </div>
-        </div>
-        <div class="toggle-row">
-          <div class="toggle-label">藥物</div>
-          <div class="toggle-group" style="width:130px">
-            <div class="toggle-btn" id="med-y" onclick="setToggle('med','y')">有</div>
-            <div class="toggle-btn" id="med-n" onclick="setToggle('med','n')">沒有</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Status</div>
-      <div class="card">
-        <div class="tag-grid" id="status-tags"></div>
-        <div class="other-input-wrap" id="other-wrap">
-          <input type="text" id="other-text" placeholder="Describe other condition…">
-        </div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Menstrual</div>
-      <div class="card">
-        <div class="menstrual-toggle">
-          <div class="toggle-label" style="flex:1">月經今日</div>
-          <label class="ios-switch">
-            <input type="checkbox" id="mens-on" onchange="toggleMens()">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div id="mens-detail" style="display:none">
-          <div class="menstrual-row">
-            <div class="menstrual-label">第幾天</div>
-            <div class="menstrual-ctrl">
-              <div class="day-btn" onclick="changeDay(-1)">−</div>
-              <div class="day-val" id="mens-day">1</div>
-              <div class="day-unit">天</div>
-              <div class="day-btn" onclick="changeDay(1)">＋</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PEOPLE PAGE -->
-  <div id="page-persons" class="page">
-    <div class="section">
-      <div class="section-title">Add Person</div>
-      <div class="add-person-row">
-        <input type="text" id="new-person-name" placeholder="Name…" maxlength="20">
-        <button class="btn-add" onclick="addPerson()">+ Add</button>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">People</div>
-      <div class="card" id="persons-list"></div>
-    </div>
-  </div>
-
-  <!-- HISTORY PAGE -->
-  <div id="page-history" class="page">
-    <div class="hist-person-tabs" id="hist-tabs"></div>
-    <div id="hist-charts"></div>
-  </div>
-
-  <div class="save-bar" id="save-bar">
-    <button class="save-btn" id="save-btn" onclick="saveRecord()">Save Today's Record</button>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-const API = 'https://script.google.com/macros/s/AKfycbzjI4DGZ4tRUPFLHgDqIQDSOJRVBjFsQXMsRkK3EyHoQI3kHLwzEXhvrW4ZmFYCBrwkfA/exec';
-const COLORS = ['#4fd1c5','#f687b3','#68d391','#f6ad55','#fc8181','#a78bfa','#60a5fa'];
-const STATUSES = [
-  {id:'h3',label:'頭痛_重'},{id:'h2',label:'頭痛_中'},{id:'h1',label:'頭痛_輕微'},
-  {id:'cp',label:'心痛'},{id:'ar',label:'心律不整'},{id:'ti',label:'疲累'},
-  {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},{id:'ot',label:'其他'},
-];
-
-let persons = [];
-let selectedPerson = null;
-let toggles = {proc:null, fried:null, med:null};
-let selectedStatuses = new Set();
-let mensDay = 1;
-let histPerson = null;
-let chartInstances = [];
-
-/* ── API ── */
-function setSyncStatus(state, msg) {
-  document.getElementById('sync-dot').className = 'sync-dot ' + state;
-  document.getElementById('sync-status').textContent = msg;
+function doGet(e) {
+  const action = e.parameter.action;
+  if (action === 'getPersons') return jsonResponse(getPersons());
+  if (action === 'getRecords') return jsonResponse(getRecords(e.parameter.personId));
+  return jsonResponse({error: 'unknown action'});
 }
 
-async function api(method, params) {
-  if (method === 'GET') {
-    const res = await fetch(API + '?' + new URLSearchParams(params).toString());
-    return res.json();
-  }
-  const res = await fetch(API, {method:'POST', body:JSON.stringify(params)});
-  return res.json();
-}
-
-async function init() {
-  setSyncStatus('loading','連線中…');
-  try {
-    persons = await api('GET', {action:'getPersons'});
-    if (!Array.isArray(persons)) persons = [];
-    if (!persons.length) {
-      const first = {id:'p'+Date.now(), name:'Luke', color:COLORS[0]};
-      await api('POST', {action:'savePerson', person:first});
-      persons = [first];
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  const action = data.action;
+  if (action === 'saveRecord') return jsonResponse(saveRecord(data.record));
+  if (action === 'savePerson') return jsonResponse(savePerson(data.person));
+  if (action === 'deletePerson') return jsonResponse(deletePerson(data.personId));
+  if (action === 'updateRecord') return jsonResponse(updateRecord(data.record));
+  function updateRecord(rec) {
+  const sheet = getSheet(SHEET_NAME);
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === rec.id) {
+      sheet.getRange(i+1,1,1,17).setValues([[
+        rec.id, rec.personId, rec.personName, rec.date,
+        rec.height, rec.weight, rec.temp,
+        rec.meals?.breakfast||'', rec.meals?.lunch||'',
+        rec.meals?.dinner||'', rec.meals?.snack||'',
+        rec.proc||'', rec.fried||'', rec.med||'',
+        (rec.statuses||[]).join(','), rec.otherText||'', rec.mens||''
+      ]]);
+      return {ok: true};
     }
-    selectedPerson = persons[0].id;
-    histPerson = persons[0].id;
-    renderPersonSelector();
-    renderPersonsList();
-    setSyncStatus('ok','已連線 Google Sheets');
-  } catch(e) {
-    setSyncStatus('err','連線失敗，請檢查網路');
-    showToast('無法連線 Google Sheets', true);
   }
+  return {error: 'not found'};
+}
+  return jsonResponse({error: 'unknown action'});
 }
 
-/* ── UTILS ── */
-function fmtDate(d) {
-  const o = new Date(d);
-  return o.getFullYear()+'/'+(o.getMonth()+1).toString().padStart(2,'0')+'/'+o.getDate().toString().padStart(2,'0');
-}
-function monthKey(d) {
-  const o = new Date(d);
-  return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0');
-}
-function monthLabel(k) {
-  const [y,m] = k.split('-');
-  return y+'/'+(+m).toString().padStart(2,'0');
-}
-function showToast(msg, isErr) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast show' + (isErr?' error':'');
-  setTimeout(() => el.className = 'toast', 2400);
+function getSheet(name) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  return ss.getSheetByName(name) || ss.insertSheet(name);
 }
 
-/* ── NAVIGATION ── */
-function switchTab(t) {
-  document.querySelectorAll('.tab').forEach((el,i) =>
-    el.classList.toggle('active', ['record','persons','history'][i]===t));
-  ['record','persons','history'].forEach(p =>
-    document.getElementById('page-'+p).classList.toggle('active', p===t));
-  document.getElementById('save-bar').style.display = t==='record' ? 'block' : 'none';
-  if (t==='history') renderHistory();
+function getPersons() {
+  const sheet = getSheet('Persons');
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+  return data.slice(1).map(r => ({id:r[0], name:r[1], color:r[2]}));
 }
 
-/* ── PERSONS ── */
-function renderPersonSelector() {
-  document.getElementById('person-selector').innerHTML = persons.map(p => `
-    <div class="person-row ${p.id===selectedPerson?'selected':''}" onclick="selectPerson('${p.id}')">
-      <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
-      <div class="person-name">${p.name}</div>
-      ${p.id===selectedPerson ? '<span class="person-check">✓</span>' : ''}
-    </div>`).join('');
+function savePerson(person) {
+  const sheet = getSheet('Persons');
+  if (sheet.getLastRow() === 0) sheet.appendRow(['id','name','color']);
+  sheet.appendRow([person.id, person.name, person.color]);
+  return {ok: true};
 }
 
-function renderPersonsList() {
-  document.getElementById('persons-list').innerHTML = persons.length
-    ? persons.map(p => `
-        <div class="person-row">
-          <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
-          <div class="person-name">${p.name}</div>
-          ${persons.length>1 ? `<button class="del-btn" onclick="deletePerson('${p.id}')">Delete</button>` : ''}
-        </div>`).join('')
-    : '<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No people yet</div>';
-}
-
-function selectPerson(id) { selectedPerson = id; renderPersonSelector(); }
-
-async function addPerson() {
-  const inp = document.getElementById('new-person-name');
-  const name = inp.value.trim(); if (!name) return;
-  const p = {id:'p'+Date.now(), name, color:COLORS[persons.length % COLORS.length]};
-  setSyncStatus('loading','儲存中…');
-  try {
-    await api('POST', {action:'savePerson', person:p});
-    persons.push(p); inp.value = '';
-    renderPersonsList(); renderPersonSelector();
-    setSyncStatus('ok','已連線 Google Sheets');
-    showToast('Added ' + name);
-  } catch(e) { setSyncStatus('err','儲存失敗'); showToast('儲存失敗', true); }
-}
-
-async function deletePerson(id) {
-  if (persons.length <= 1) { showToast('Need at least one person', true); return; }
-  const p = persons.find(x => x.id===id);
-  setSyncStatus('loading','刪除中…');
-  try {
-    await api('POST', {action:'deletePerson', personId:id});
-    persons = persons.filter(x => x.id!==id);
-    if (selectedPerson===id) selectedPerson = persons[0].id;
-    renderPersonsList(); renderPersonSelector();
-    setSyncStatus('ok','已連線 Google Sheets');
-    showToast('Deleted ' + p.name);
-  } catch(e) { setSyncStatus('err','刪除失敗'); showToast('刪除失敗', true); }
-}
-
-/* ── FORM CONTROLS ── */
-function setToggle(type, val) {
-  toggles[type] = toggles[type]===val ? null : val;
-  ['y','n'].forEach(v => {
-    const el = document.getElementById(type+'-'+v);
-    el.className = 'toggle-btn' + (toggles[type]===v ? (v==='y'?' on':' off-sel') : '');
-  });
-}
-
-function renderStatusTags() {
-  document.getElementById('status-tags').innerHTML = STATUSES.map(s => `
-    <div class="tag ${selectedStatuses.has(s.id)?'selected':''}" onclick="toggleStatus('${s.id}')">${s.label}</div>`).join('');
-}
-
-function toggleStatus(id) {
-  selectedStatuses.has(id) ? selectedStatuses.delete(id) : selectedStatuses.add(id);
-  document.getElementById('other-wrap').className = 'other-input-wrap' + (selectedStatuses.has('ot')?' show':'');
-  renderStatusTags();
-}
-
-function toggleMens() {
-  document.getElementById('mens-detail').style.display =
-    document.getElementById('mens-on').checked ? 'block' : 'none';
-}
-function changeDay(d) {
-  mensDay = Math.max(1, Math.min(30, mensDay+d));
-  document.getElementById('mens-day').textContent = mensDay;
-}
-
-/* ── SAVE RECORD ── */
-async function saveRecord() {
-  if (!selectedPerson) { showToast('Select a person first', true); return; }
-  const p = persons.find(x => x.id===selectedPerson);
-  const btn = document.getElementById('save-btn');
-  btn.disabled = true; btn.textContent = '儲存中…';
-  setSyncStatus('loading','儲存中…');
-  const rec = {
-    id: 'r'+Date.now(),
-    personId: selectedPerson,
-    personName: p.name,
-    date: new Date().toISOString(),
-    height: document.getElementById('height').value,
-    weight: document.getElementById('weight').value,
-    temp: document.getElementById('temp').value,
-    meals: {
-      breakfast: document.getElementById('meal-breakfast').value,
-      lunch: document.getElementById('meal-lunch').value,
-      dinner: document.getElementById('meal-dinner').value,
-      snack: document.getElementById('meal-snack').value,
-    },
-    proc: toggles.proc,
-    fried: toggles.fried,
-    med: toggles.med,
-    statuses: [...selectedStatuses],
-    otherText: document.getElementById('other-text').value,
-    mens: document.getElementById('mens-on').checked ? mensDay : null,
-  };
-  try {
-    await api('POST', {action:'saveRecord', record:rec});
-    setSyncStatus('ok','已連線 Google Sheets');
-    showToast('Saved to Google Sheets');
-  } catch(e) {
-    setSyncStatus('err','儲存失敗');
-    showToast('儲存失敗，請重試', true);
+function deletePerson(personId) {
+  const sheet = getSheet('Persons');
+  const data = sheet.getDataRange().getValues();
+  for (let i = data.length - 1; i >= 1; i--) {
+    if (data[i][0] === personId) { sheet.deleteRow(i + 1); break; }
   }
-  btn.disabled = false;
-  btn.textContent = "Save Today's Record";
-}
-
-/* ── CHARTS ── */
-function destroyCharts() { chartInstances.forEach(c => c.destroy()); chartInstances = []; }
-
-function baseOpts(yLabel) {
-  return {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: {display:false},
-      tooltip: {backgroundColor:'rgba(35,35,38,0.95)',titleColor:'#f0f0f0',bodyColor:'#a0a0a8',borderColor:'rgba(255,255,255,0.08)',borderWidth:1}
-    },
-    scales: {
-      x: {ticks:{color:'#606068',font:{size:9},maxRotation:40}, grid:{color:'rgba(255,255,255,0.05)'}},
-      y: {ticks:{color:'#606068',font:{size:10}}, grid:{color:'rgba(255,255,255,0.05)'},
-          title:{display:!!yLabel, text:yLabel||'', color:'#606068', font:{size:10}}}
-    }
-  };
-}
-
-function makeLineChart(id, labels, data, color, yLabel) {
-  const ctx = document.getElementById(id); if (!ctx) return;
-  chartInstances.push(new Chart(ctx, {
-    type:'line',
-    data:{labels, datasets:[{data, borderColor:color, backgroundColor:color+'22', tension:0.35, fill:true, pointBackgroundColor:color, pointRadius:3, pointHoverRadius:5}]},
-    options: baseOpts(yLabel)
-  }));
-}
-
-function makeBarChart(id, labels, data, color, yLabel) {
-  const ctx = document.getElementById(id); if (!ctx) return;
-  chartInstances.push(new Chart(ctx, {
-    type:'bar',
-    data:{labels, datasets:[{data, backgroundColor:color+'88', borderColor:color, borderWidth:1, borderRadius:4}]},
-    options: baseOpts(yLabel)
-  }));
-}
-
-function countByMonth(recs, pred) {
-  const map = {};
-  recs.forEach(r => { if (pred(r)) { const k = monthKey(r.date); map[k] = (map[k]||0)+1; } });
-  return map;
-}
-
-function addChartCard(container, id, title, h) {
-  const div = document.createElement('div'); div.className = 'chart-card';
-  div.innerHTML = `<div class="chart-title">${title}</div><div style="position:relative;height:${h||150}px"><canvas id="${id}"></canvas></div>`;
-  container.appendChild(div);
-}
-
-function noData(id) {
-  const el = document.getElementById(id); if (!el) return;
-  el.parentElement.insertAdjacentHTML('beforeend','<div class="no-data">No data yet</div>');
-}
-
-async function renderHistory() {
-  destroyCharts();
-  document.getElementById('hist-tabs').innerHTML = persons.map(p =>
-    `<div class="hist-ptab ${p.id===histPerson?'active':''}" onclick="selectHistPerson('${p.id}')">${p.name}</div>`).join('');
-  const c = document.getElementById('hist-charts');
-  c.innerHTML = '<div class="loading-state">載入圖表中…</div>';
-  let recs = [];
-  try {
-    recs = await api('GET', {action:'getRecords', personId:histPerson});
-    if (!Array.isArray(recs)) recs = [];
-    recs = recs.sort((a,b) => new Date(a.date)-new Date(b.date));
-  } catch(e) {
-    c.innerHTML = '<div class="loading-state" style="color:var(--danger)">載入失敗，請重試</div>';
-    return;
+  const rSheet = getSheet(SHEET_NAME);
+  const rData = rSheet.getDataRange().getValues();
+  for (let i = rData.length - 1; i >= 1; i--) {
+    if (rData[i][1] === personId) rSheet.deleteRow(i + 1);
   }
-  c.innerHTML = '';
-  if (!recs.length) {
-    c.innerHTML = '<div class="loading-state">No records for this person yet.</div>';
-    return;
-  }
+  return {ok: true};
+}
 
-  // 1. Weight curve
-  addChartCard(c,'ch-weight','體重變化 (kg)',155);
-  const wR = recs.filter(r => r.weight && +r.weight>0);
-  wR.length ? makeLineChart('ch-weight', wR.map(r=>fmtDate(r.date)), wR.map(r=>+r.weight),'#4fd1c5','kg') : noData('ch-weight');
-
-  // 2. 藥物次數
-  addChartCard(c,'ch-med','藥物次數（每月）',140);
-  const medMap = countByMonth(recs, r=>r.med==='y');
-  Object.keys(medMap).length ? makeBarChart('ch-med', Object.keys(medMap).map(monthLabel), Object.values(medMap),'#68d391','次數') : noData('ch-med');
-
-  // 3. 頭痛次數
-  addChartCard(c,'ch-head','頭痛次數（每月）',140);
-  const headMap = countByMonth(recs, r=>r.statuses&&(r.statuses.includes('h1')||r.statuses.includes('h2')||r.statuses.includes('h3')));
-  Object.keys(headMap).length ? makeBarChart('ch-head', Object.keys(headMap).map(monthLabel), Object.values(headMap),'#a78bfa','次數') : noData('ch-head');
-
-  // 4. 加工食品次數
-  addChartCard(c,'ch-proc','加工食品次數（每月）',140);
-  const procMap = countByMonth(recs, r=>r.proc==='y');
-  Object.keys(procMap).length ? makeBarChart('ch-proc', Object.keys(procMap).map(monthLabel), Object.values(procMap),'#f6ad55','次數') : noData('ch-proc');
-
-  // 5. 炸物次數
-  addChartCard(c,'ch-fried','炸物次數（每月）',140);
-  const friedMap = countByMonth(recs, r=>r.fried==='y');
-  Object.keys(friedMap).length ? makeBarChart('ch-fried', Object.keys(friedMap).map(monthLabel), Object.values(friedMap),'#fc8181','次數') : noData('ch-fried');
-
-  // 6. 發燒次數
-  addChartCard(c,'ch-fever','發燒次數（每月）',140);
-  const fevMap = countByMonth(recs, r=>r.statuses&&r.statuses.includes('fe'));
-  Object.keys(fevMap).length ? makeBarChart('ch-fever', Object.keys(fevMap).map(monthLabel), Object.values(fevMap),'#f687b3','次數') : noData('ch-fever');
-
-  // 7. 嘔吐次數
-  addChartCard(c,'ch-vomit','嘔吐次數（每月）',140);
-  const voMap = countByMonth(recs, r=>r.statuses&&r.statuses.includes('vo'));
-  Object.keys(voMap).length ? makeBarChart('ch-vomit', Object.keys(voMap).map(monthLabel), Object.values(voMap),'#60a5fa','次數') : noData('ch-vomit');
-
-  // 8. 月經第1天日期
-  addChartCard(c,'ch-mens','月經第1天日期',140);
-  const mensR = recs.filter(r => r.mens==1 || r.mens==='1');
-  if (mensR.length) {
-    const labels = mensR.map(r => fmtDate(r.date));
-    const ctx = document.getElementById('ch-mens'); if (!ctx) return;
-    chartInstances.push(new Chart(ctx, {
-      type:'scatter',
-      data:{datasets:[{data:mensR.map((_,i)=>({x:i,y:1})), backgroundColor:'#f687b3', pointRadius:7, pointHoverRadius:9}]},
-      options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{legend:{display:false}, tooltip:{callbacks:{title:items=>labels[items[0].dataIndex], label:()=>'月經第1天'}, backgroundColor:'rgba(35,35,38,0.95)',titleColor:'#f0f0f0',bodyColor:'#f687b3',borderColor:'rgba(255,255,255,0.08)',borderWidth:1}},
-        scales:{
-          x:{ticks:{callback:(_,i)=>labels[i]||'', color:'#606068', font:{size:9}, maxRotation:40}, grid:{color:'rgba(255,255,255,0.05)'}},
-          y:{display:false}
-        }
-      }
+function getRecords(personId) {
+  const sheet = getSheet(SHEET_NAME);
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+  return data.slice(1)
+    .filter(r => !personId || r[1] === personId)
+    .map(r => ({
+      id:r[0], personId:r[1], personName:r[2], date:r[3],
+      height:r[4], weight:r[5], temp:r[6],
+      meals:{breakfast:r[7],lunch:r[8],dinner:r[9],snack:r[10]},
+      proc:r[11], fried:r[12], med:r[13],
+      statuses:r[14]?r[14].split(','):[],
+      otherText:r[15], mens:r[16]||null
     }));
-  } else noData('ch-mens');
 }
 
-function selectHistPerson(id) { histPerson = id; renderHistory(); }
+function saveRecord(rec) {
+  const sheet = getSheet(SHEET_NAME);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['id','personId','personName','date',
+      'height','weight','temp','breakfast','lunch','dinner','snack',
+      'proc','fried','med','statuses','otherText','mens']);
+  }
+  sheet.appendRow([
+    rec.id, rec.personId, rec.personName, rec.date,
+    rec.height, rec.weight, rec.temp,
+    rec.meals?.breakfast||'', rec.meals?.lunch||'',
+    rec.meals?.dinner||'', rec.meals?.snack||'',
+    rec.proc||'', rec.fried||'', rec.med||'',
+    (rec.statuses||[]).join(','), rec.otherText||'', rec.mens||''
+  ]);
+  return {ok: true};
+}
 
-/* ── INIT ── */
-renderStatusTags();
-init();
-</script>
-</body>
-</html>
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+    
