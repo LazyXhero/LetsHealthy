@@ -465,7 +465,7 @@ function renderCharts(recs){
   dLineM(c,'炸物 /月',recs,r=>r.fried==='y','#fc8181');
   dLineM(c,'發燒 /月',recs,r=>getSts(r).includes('fe'),'#f687b3');
   dLineM(c,'嘔吐 /月',recs,r=>getSts(r).includes('vo'),'#c4b5fd');
-  dDots(c,'月經第1天日期',recs.filter(r=>r.mens==1||r.mens==='1').map(r=>fmtD(r.date)),'#f687b3');
+  dDots(c,'月經',recs.filter(r=>r.mens==1||r.mens==='1').map(r=>fmtD(r.date)),'#f687b3');
 }
 
 function byMonth(recs,pred){const m={};recs.forEach(r=>{if(pred(r)){const k=mKey(r.date);m[k]=(m[k]||0)+1;}});return m;}
