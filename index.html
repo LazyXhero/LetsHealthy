@@ -15,12 +15,11 @@
   --text1:#f0f0f0;--text2:#a0a0a8;--text3:#606068;
   --danger:#fc8181;--success:#68d391;--warn:#f6ad55;
   --radius:14px;--radius-sm:9px;
+  --save-bg:#c87941;
 }
 html,body{height:100%;}
 body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang TC',sans-serif;min-height:100vh;padding-top:env(safe-area-inset-top);}
 .phone-wrap{max-width:430px;margin:0 auto;}
-
-/* TOP BAR */
 .top-bar{background:var(--bg);padding:14px 16px 8px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid var(--border);}
 .top-bar h1{font-size:20px;font-weight:700;color:var(--text1);}
 .top-bar .sub{font-size:12px;color:var(--text2);margin-top:2px;display:flex;align-items:center;gap:5px;}
@@ -29,50 +28,36 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .sync-dot.err{background:var(--danger);}
 .sync-dot.loading{background:var(--warn);animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-
-/* TABS */
 .tab-bar{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:10px 16px;}
 .tab{flex:1;text-align:center;padding:7px 4px;border-radius:7px;font-size:12px;color:var(--text2);cursor:pointer;transition:all 0.2s;font-weight:500;}
 .tab.active{background:var(--card);color:var(--accent);}
-
-/* SECTIONS */
 .section{padding:0 16px;margin-bottom:14px;}
 .section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
 .card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden;}
-
-/* PERSON */
 .person-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s;}
 .person-row:last-child{border-bottom:none;}
 .person-row.selected{background:rgba(79,209,197,0.08);}
 .avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
 .person-name{font-size:15px;font-weight:600;color:var(--text1);flex:1;}
 .person-check{color:var(--accent);font-size:16px;font-weight:700;}
-.del-btn{background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:600;}
+.del-btn{background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:600;flex-shrink:0;}
 .add-person-row{display:flex;gap:8px;margin-top:8px;}
 .add-person-row input{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text1);font-size:14px;outline:none;}
 .add-person-row input::placeholder{color:var(--text3);}
 .btn-add{background:var(--accent);color:#0d2b29;border:none;border-radius:var(--radius-sm);padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
-
-/* DATE ROW */
 .date-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;}
 .date-label{font-size:14px;color:var(--text1);font-weight:500;}
 .date-input{background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--text1);font-size:13px;outline:none;font-family:inherit;}
-
-/* VITALS */
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .metric-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:10px;}
 .metric-label{font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500;}
 .metric-input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:6px;padding:6px 8px;color:var(--text1);font-size:15px;font-weight:600;text-align:center;outline:none;}
 .metric-unit{font-size:10px;color:var(--text3);text-align:center;margin-top:3px;}
-
-/* MEALS */
 .meal-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);}
 .meal-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:0.5px solid var(--border);}
 .meal-row:last-child{border-bottom:none;}
 .meal-name{font-size:14px;color:var(--text2);width:36px;font-weight:500;}
 .meal-input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--text1);font-size:13px;outline:none;}
-
-/* TOGGLES */
 .toggle-group{display:flex;gap:6px;}
 .toggle-btn{flex:1;padding:8px;border-radius:7px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;}
 .toggle-btn.on{background:rgba(104,211,145,0.18);color:var(--success);border-color:rgba(104,211,145,0.4);}
@@ -80,24 +65,18 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:0.5px solid var(--border);}
 .toggle-row:last-child{border-bottom:none;}
 .toggle-label{font-size:14px;color:var(--text1);font-weight:500;}
-
-/* STATUS TAGS */
 .tag-grid{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px;}
 .tag{padding:6px 11px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .tag.selected{background:rgba(246,173,85,0.18);color:var(--warn);border-color:rgba(246,173,85,0.4);}
 .other-input-wrap{width:100%;padding:0 14px 12px;display:none;}
 .other-input-wrap.show{display:block;}
 .other-input-wrap input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--text1);font-size:13px;outline:none;}
-
-/* SWITCH */
 .ios-switch{position:relative;width:48px;height:28px;flex-shrink:0;}
 .ios-switch input{opacity:0;width:0;height:0;}
 .ios-switch .slider{position:absolute;inset:0;background:var(--bg3);border-radius:14px;transition:0.2s;cursor:pointer;}
 .ios-switch input:checked+.slider{background:var(--accent2);}
 .ios-switch .slider::after{content:'';position:absolute;width:22px;height:22px;border-radius:50%;background:white;left:3px;top:3px;transition:0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
 .ios-switch input:checked+.slider::after{transform:translateX(20px);}
-
-/* MENSTRUAL */
 .menstrual-toggle{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .menstrual-row{display:flex;align-items:center;gap:10px;padding:16px 14px;}
 .menstrual-label{font-size:14px;color:var(--text1);font-weight:500;flex:1;}
@@ -105,22 +84,16 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .day-btn{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg2);color:var(--text1);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
 .day-val{font-size:20px;font-weight:700;color:var(--accent2);min-width:28px;text-align:center;}
 .day-unit{font-size:13px;color:var(--text2);}
-
-/* SAVE BUTTON — compact pill */
+/* SAVE BTN — solid teal, white text, small radius */
 .save-wrap{display:flex;justify-content:center;padding:24px 16px 60px;}
-.save-btn{background:var(--accent);color:#ffffff;border:none;border-radius:50px;font-size:17px;font-weight:700;cursor:pointer;padding:14px 48px;letter-spacing:0.5px;}
-.save-btn:active{opacity:0.8;}
-.save-btn:disabled{opacity:0.45;cursor:not-allowed;}
-
-/* TOAST */
-.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(79,209,197,0.15);border:0.5px solid rgba(79,209,197,0.4);color:var(--accent);padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap;}
+.save-btn{background:#3aafa9;color:#ffffff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;padding:13px 48px;letter-spacing:2px;}
+.save-btn:active{opacity:0.85;}
+.save-btn:disabled{opacity:0.55;cursor:not-allowed;}
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:#3aafa9;color:#ffffff;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:700;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.toast.error{background:rgba(252,129,129,0.15);border-color:rgba(252,129,129,0.4);color:var(--danger);}
-
-/* PAGES */
+.toast.error{background:#e05555;color:#ffffff;}
 .page{display:none;}
 .page.active{display:block;}
-
 /* HISTORY */
 .hist-person-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px;margin-bottom:10px;}
 .hist-ptab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
@@ -128,26 +101,27 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .hist-sub-tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:0 16px 12px;}
 .hist-sub-tab{flex:1;text-align:center;padding:6px 4px;border-radius:7px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:500;}
 .hist-sub-tab.active{background:var(--card);color:var(--accent);}
-
 /* RECORD CARDS */
 .rec-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);margin:0 16px 10px;overflow:hidden;}
 .rec-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:0.5px solid var(--border);}
 .rec-date-txt{font-size:14px;font-weight:700;color:var(--text1);}
+.rec-actions{display:flex;gap:6px;}
 .rec-edit-btn{background:rgba(79,209,197,0.12);border:none;color:var(--accent);font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
+.rec-del-btn{background:rgba(252,129,129,0.12);border:none;color:var(--danger);font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
 .rec-body{padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px;}
 .rec-chip{padding:4px 9px;border-radius:10px;font-size:11px;font-weight:600;background:var(--bg2);color:var(--text2);}
 .rec-chip.w{background:rgba(246,173,85,0.14);color:var(--warn);}
 .rec-chip.g{background:rgba(104,211,145,0.14);color:var(--success);}
 .rec-chip.p{background:rgba(246,135,179,0.14);color:var(--accent2);}
 .rec-chip.a{background:rgba(79,209,197,0.14);color:var(--accent);}
-
+.rec-chip.b{background:rgba(96,165,250,0.14);color:#60a5fa;}
 /* CHART */
 .chart-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:14px;margin:0 16px 12px;}
-.chart-title{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:10px;}
+.chart-title{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:4px;}
+.chart-sub{font-size:11px;color:var(--text3);margin-bottom:10px;}
 canvas{display:block;}
 .no-data{text-align:center;padding:16px 0 4px;color:var(--text3);font-size:12px;}
 .loading-state{text-align:center;padding:40px 16px;color:var(--text2);font-size:14px;}
-
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:400;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
@@ -155,10 +129,19 @@ canvas{display:block;}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;}
 .modal-title{font-size:16px;font-weight:700;color:var(--text1);}
 .modal-close{background:var(--bg3);border:none;color:var(--text2);font-size:13px;padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:600;}
-.modal-save-btn{background:var(--accent);border:none;color:#fff;font-size:13px;padding:6px 16px;border-radius:20px;cursor:pointer;font-weight:700;}
+.modal-save-btn{background:#3aafa9;border:none;color:#fff;font-size:13px;padding:6px 18px;border-radius:8px;cursor:pointer;font-weight:700;letter-spacing:1px;}
 .modal-body{padding:14px 16px;}
 .modal-section{margin-bottom:14px;}
 .modal-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+/* CONFIRM */
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:600;display:none;align-items:center;justify-content:center;}
+.confirm-overlay.show{display:flex;}
+.confirm-box{background:var(--bg2);border-radius:16px;padding:24px 20px;width:284px;text-align:center;}
+.confirm-title{font-size:16px;font-weight:700;color:var(--text1);margin-bottom:8px;}
+.confirm-msg{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.5;}
+.confirm-btns{display:flex;gap:10px;}
+.confirm-cancel{flex:1;padding:11px;border-radius:10px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;}
+.confirm-ok{flex:1;padding:11px;border-radius:10px;border:none;background:var(--danger);color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -176,12 +159,7 @@ canvas{display:block;}
   <!-- RECORD PAGE -->
   <div id="page-record" class="page active">
     <div class="section"><div class="section-title">Select Person</div><div class="card" id="person-selector"><div class="loading-state">載入中…</div></div></div>
-
-    <div class="section">
-      <div class="section-title">Date</div>
-      <div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="record-date"></div></div>
-    </div>
-
+    <div class="section"><div class="section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="record-date"></div></div></div>
     <div class="section">
       <div class="section-title">Vitals</div>
       <div class="metrics-grid">
@@ -190,7 +168,6 @@ canvas{display:block;}
         <div class="metric-card"><div class="metric-label">體溫</div><input class="metric-input" type="number" id="temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Meals</div>
       <div class="meal-card">
@@ -200,52 +177,37 @@ canvas{display:block;}
         <div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="meal-snack" placeholder="Snack…"></div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Diet Flags</div>
       <div class="card">
-        <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="proc-y" onclick="setToggle('proc','y')">有</div><div class="toggle-btn" id="proc-n" onclick="setToggle('proc','n')">沒有</div></div></div>
-        <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="fried-y" onclick="setToggle('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setToggle('fried','n')">沒有</div></div></div>
-        <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="med-y" onclick="setToggle('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setToggle('med','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="proc-y" onclick="setTgl('proc','y')">有</div><div class="toggle-btn" id="proc-n" onclick="setTgl('proc','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
       </div>
     </div>
-
+    <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="Describe other condition…"></div></div></div>
     <div class="section">
-      <div class="section-title">Status</div>
-      <div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="Describe other condition…"></div></div>
+      <div class="section-title">Remark</div>
+      <div class="card"><div style="padding:10px 14px;"><textarea id="notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:13px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div>
     </div>
-
     <div class="section">
       <div class="section-title">Menstrual</div>
       <div class="card">
-        <div class="menstrual-toggle"><div class="toggle-label" style="flex:1">月經今日</div><label class="ios-switch"><input type="checkbox" id="mens-on" onchange="toggleMens()"><span class="slider"></span></label></div>
-        <div id="mens-detail" style="display:none">
-          <div class="menstrual-row">
-            <div class="menstrual-label">第幾天</div>
-            <div class="menstrual-ctrl">
-              <div class="day-btn" onclick="changeDay(-1)">−</div>
-              <div class="day-val" id="mens-day">1</div>
-              <div class="day-unit">天</div>
-              <div class="day-btn" onclick="changeDay(1)">＋</div>
-            </div>
-          </div>
-        </div>
+        <div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="mens-on" onchange="toggleMens()"><span class="slider"></span></label></div>
+        <div id="mens-detail" style="display:none"><div class="menstrual-row"><div class="menstrual-label">第幾天</div><div class="menstrual-ctrl"><div class="day-btn" onclick="chDay(-1)">−</div><div class="day-val" id="mens-day">1</div><div class="day-unit">天</div><div class="day-btn" onclick="chDay(1)">＋</div></div></div></div>
       </div>
     </div>
-
-    <!-- extra breathing room + compact save -->
     <div style="height:32px;"></div>
-    <div class="save-wrap">
-      <button class="save-btn" id="save-btn" onclick="saveRecord()">儲存</button>
-    </div>
+    <div class="save-wrap"><button class="save-btn" id="save-btn" onclick="saveRecord()">儲存</button></div>
   </div>
 
   <!-- HISTORY PAGE -->
   <div id="page-history" class="page">
     <div class="hist-person-tabs" id="hist-tabs"></div>
     <div class="hist-sub-tabs">
-      <div class="hist-sub-tab active" id="sub-list" onclick="switchHistTab('list')">紀錄列表</div>
-      <div class="hist-sub-tab" id="sub-charts" onclick="switchHistTab('charts')">統計圖表</div>
+      <div class="hist-sub-tab active" id="sub-list" onclick="switchHTab('list')">紀錄列表</div>
+      <div class="hist-sub-tab" id="sub-charts" onclick="switchHTab('charts')">統計圖表</div>
     </div>
     <div id="hist-list-view"></div>
     <div id="hist-charts-view" style="display:none;"></div>
@@ -263,63 +225,34 @@ canvas{display:block;}
   <div class="modal">
     <div class="modal-header">
       <span class="modal-title">修改紀錄</span>
-      <div style="display:flex;gap:8px;">
-        <button class="modal-close" onclick="closeModal()">取消</button>
-        <button class="modal-save-btn" id="modal-save-btn" onclick="saveEdit()">儲存</button>
-      </div>
+      <div style="display:flex;gap:8px;"><button class="modal-close" onclick="closeModal()">取消</button><button class="modal-save-btn" id="modal-save-btn" onclick="saveEdit()">儲存</button></div>
     </div>
     <div class="modal-body">
-      <div class="modal-section">
-        <div class="modal-section-title">Date</div>
-        <div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="edit-date"></div></div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">Vitals</div>
-        <div class="metrics-grid">
-          <div class="metric-card"><div class="metric-label">身高</div><input class="metric-input" type="number" id="edit-height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div>
-          <div class="metric-card"><div class="metric-label">體重</div><input class="metric-input" type="number" id="edit-weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div>
-          <div class="metric-card"><div class="metric-label">體溫</div><input class="metric-input" type="number" id="edit-temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div>
-        </div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">Meals</div>
-        <div class="meal-card">
-          <div class="meal-row"><div class="meal-name">早餐</div><input class="meal-input" type="text" id="edit-breakfast" placeholder="Breakfast…"></div>
-          <div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="edit-lunch" placeholder="Lunch…"></div>
-          <div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="edit-dinner" placeholder="Dinner…"></div>
-          <div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="edit-snack" placeholder="Snack…"></div>
-        </div>
-      </div>
+      <div class="modal-section"><div class="modal-section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="edit-date"></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Vitals</div><div class="metrics-grid"><div class="metric-card"><div class="metric-label">身高</div><input class="metric-input" type="number" id="edit-height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div><div class="metric-card"><div class="metric-label">體重</div><input class="metric-input" type="number" id="edit-weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div><div class="metric-card"><div class="metric-label">體溫</div><input class="metric-input" type="number" id="edit-temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Meals</div><div class="meal-card"><div class="meal-row"><div class="meal-name">早餐</div><input class="meal-input" type="text" id="edit-breakfast"></div><div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="edit-lunch"></div><div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="edit-dinner"></div><div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="edit-snack"></div></div></div>
       <div class="modal-section">
         <div class="modal-section-title">Diet Flags</div>
         <div class="card">
-          <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="eproc-y" onclick="setEditToggle('proc','y')">有</div><div class="toggle-btn" id="eproc-n" onclick="setEditToggle('proc','n')">沒有</div></div></div>
-          <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="efried-y" onclick="setEditToggle('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setEditToggle('fried','n')">沒有</div></div></div>
-          <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="emed-y" onclick="setEditToggle('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setEditToggle('med','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="eproc-y" onclick="setETgl('proc','y')">有</div><div class="toggle-btn" id="eproc-n" onclick="setETgl('proc','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
         </div>
       </div>
-      <div class="modal-section">
-        <div class="modal-section-title">Status</div>
-        <div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="Describe other condition…"></div></div>
-      </div>
-      <div class="modal-section">
-        <div class="modal-section-title">Menstrual</div>
-        <div class="card">
-          <div class="menstrual-toggle"><div class="toggle-label" style="flex:1">月經今日</div><label class="ios-switch"><input type="checkbox" id="edit-mens-on" onchange="toggleEditMens()"><span class="slider"></span></label></div>
-          <div id="edit-mens-detail" style="display:none">
-            <div class="menstrual-row">
-              <div class="menstrual-label">第幾天</div>
-              <div class="menstrual-ctrl">
-                <div class="day-btn" onclick="changeEditDay(-1)">−</div>
-                <div class="day-val" id="edit-mens-day">1</div>
-                <div class="day-unit">天</div>
-                <div class="day-btn" onclick="changeEditDay(1)">＋</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="Describe other condition…"></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:13px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Menstrual</div><div class="card"><div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="edit-mens-on" onchange="toggleEMens()"><span class="slider"></span></label></div><div id="edit-mens-detail" style="display:none"><div class="menstrual-row"><div class="menstrual-label">第幾天</div><div class="menstrual-ctrl"><div class="day-btn" onclick="chEDay(-1)">−</div><div class="day-val" id="edit-mens-day">1</div><div class="day-unit">天</div><div class="day-btn" onclick="chEDay(1)">＋</div></div></div></div></div></div>
     </div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirm-title">確定刪除？</div>
+    <div class="confirm-msg" id="confirm-msg">此操作無法復原</div>
+    <div class="confirm-btns"><button class="confirm-cancel" onclick="closeConfirm()">取消</button><button class="confirm-ok" id="confirm-ok-btn">刪除</button></div>
   </div>
 </div>
 
@@ -328,214 +261,178 @@ canvas{display:block;}
 <script>
 const API='https://script.google.com/macros/s/AKfycbzjI4DGZ4tRUPFLHgDqIQDSOJRVBjFsQXMsRkK3EyHoQI3kHLwzEXhvrW4ZmFYCBrwkfA/exec';
 const COLORS=['#4fd1c5','#f687b3','#68d391','#f6ad55','#fc8181','#a78bfa','#60a5fa'];
-const STATUSES=[
-  {id:'h3',label:'頭痛_重'},{id:'h2',label:'頭痛_中'},{id:'h1',label:'頭痛_輕微'},
-  {id:'cp',label:'心痛'},{id:'ar',label:'心律不整'},{id:'ti',label:'疲累'},
-  {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},{id:'ot',label:'其他'},
-];
+const STATUSES=[{id:'ok',label:'良好'},{id:'h3',label:'頭痛_重'},{id:'h2',label:'頭痛_中'},{id:'h1',label:'頭痛_輕微'},{id:'cp',label:'心痛'},{id:'ar',label:'心律不整'},{id:'ti',label:'疲累'},{id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},{id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},{id:'ot',label:'其他'}];
 let persons=[],selectedPerson=null,histPerson=null;
-let toggles={proc:null,fried:null,med:null};
-let editToggles={proc:null,fried:null,med:null};
-let selectedStatuses=new Set(),editStatuses=new Set();
-let mensDay=1,editMensDay=1;
-let editingRec=null,cachedRecs=[];
-let histTab='list';
+let tgl={proc:null,fried:null,med:null,drink:null};
+let etgl={proc:null,fried:null,med:null,drink:null};
+let selSts=new Set(),editSts=new Set();
+let mensDay=1,eMensDay=1,editRec=null,histTab='list';
 
-/* ── TODAY DATE ── */
 function todayStr(){const n=new Date();return n.getFullYear()+'-'+(n.getMonth()+1).toString().padStart(2,'0')+'-'+n.getDate().toString().padStart(2,'0');}
 document.getElementById('record-date').value=todayStr();
 
-/* ── API ── */
-function setSyncStatus(s,m){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-status').textContent=m;}
+function setSS(s,m){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-status').textContent=m;}
 async function api(method,params){
   if(method==='GET'){const r=await fetch(API+'?'+new URLSearchParams(params).toString());return r.json();}
   const r=await fetch(API,{method:'POST',body:JSON.stringify(params)});return r.json();
 }
 async function init(){
-  setSyncStatus('loading','連線中…');
+  setSS('loading','連線中…');
   try{
     persons=await api('GET',{action:'getPersons'});
     if(!Array.isArray(persons))persons=[];
     if(!persons.length){const f={id:'p'+Date.now(),name:'Luke',color:COLORS[0]};await api('POST',{action:'savePerson',person:f});persons=[f];}
     selectedPerson=persons[0].id;histPerson=persons[0].id;
-    renderPersonSelector();renderPersonsList();
-    setSyncStatus('ok','已連線 Google Sheets');
-  }catch(e){setSyncStatus('err','連線失敗');showToast('無法連線',true);}
+    renderPS();renderPL();setSS('ok','已連線 Google Sheets');
+  }catch(e){setSS('err','連線失敗');showToast('無法連線',true);}
 }
-
-/* ── UTILS ── */
-function fmtDate(d){const o=new Date(d);return o.getFullYear()+'/'+(o.getMonth()+1).toString().padStart(2,'0')+'/'+o.getDate().toString().padStart(2,'0');}
-function toDateInput(d){const o=new Date(d);return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0')+'-'+o.getDate().toString().padStart(2,'0');}
-function monthKey(d){const o=new Date(d);return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0');}
-function monthLabel(k){const[y,m]=k.split('-');return y+'/'+(+m).toString().padStart(2,'0');}
+function fmtD(d){const o=new Date(d);return o.getFullYear()+'/'+(o.getMonth()+1).toString().padStart(2,'0')+'/'+o.getDate().toString().padStart(2,'0');}
+function toDateInp(d){const o=new Date(d);return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0')+'-'+o.getDate().toString().padStart(2,'0');}
+function mKey(d){const o=new Date(d);return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0');}
+function mLabel(k){const[y,m]=k.split('-');return y+'/'+(+m).toString().padStart(2,'0');}
 function showToast(msg,isErr){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(isErr?' error':'');setTimeout(()=>el.className='toast',2400);}
-function getStatuses(r){return Array.isArray(r.statuses)?r.statuses:(r.statuses?r.statuses.split(','):[]);}
+function getSts(r){return Array.isArray(r.statuses)?r.statuses:(r.statuses?String(r.statuses).split(',').filter(Boolean):[]);}
 
-/* ── TABS ── */
 function switchTab(t){
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['record','history','persons'][i]===t));
   ['record','history','persons'].forEach(p=>document.getElementById('page-'+p).classList.toggle('active',p===t));
   if(t==='history')renderHistory();
 }
-function switchHistTab(t){
+function switchHTab(t){
   histTab=t;
   document.getElementById('sub-list').className='hist-sub-tab'+(t==='list'?' active':'');
   document.getElementById('sub-charts').className='hist-sub-tab'+(t==='charts'?' active':'');
   document.getElementById('hist-list-view').style.display=t==='list'?'block':'none';
   document.getElementById('hist-charts-view').style.display=t==='charts'?'block':'none';
 }
+function showConfirm(title,msg,cb){
+  document.getElementById('confirm-title').textContent=title;
+  document.getElementById('confirm-msg').textContent=msg;
+  document.getElementById('confirm-ok-btn').onclick=()=>{closeConfirm();cb();};
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
 
-/* ── PERSONS ── */
-function renderPersonSelector(){
-  document.getElementById('person-selector').innerHTML=persons.map(p=>`
-    <div class="person-row ${p.id===selectedPerson?'selected':''}" onclick="selectPerson('${p.id}')">
-      <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
-      <div class="person-name">${p.name}</div>
-      ${p.id===selectedPerson?'<span class="person-check">✓</span>':''}
-    </div>`).join('');
+/* PERSONS */
+function renderPS(){
+  document.getElementById('person-selector').innerHTML=persons.map(p=>`<div class="person-row ${p.id===selectedPerson?'selected':''}" onclick="selP('${p.id}')"><div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div><div class="person-name">${p.name}</div>${p.id===selectedPerson?'<span class="person-check">✓</span>':''}</div>`).join('');
 }
-function renderPersonsList(){
-  document.getElementById('persons-list').innerHTML=persons.length?persons.map(p=>`
-    <div class="person-row">
-      <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
-      <div class="person-name">${p.name}</div>
-      ${persons.length>1?`<button class="del-btn" onclick="deletePerson('${p.id}')">Delete</button>`:''}
-    </div>`).join(''):'<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No people yet</div>';
+function renderPL(){
+  document.getElementById('persons-list').innerHTML=persons.length?persons.map(p=>`<div class="person-row"><div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div><div class="person-name">${p.name}</div>${persons.length>1?`<button class="del-btn" onclick="cfmDelP('${p.id}','${p.name}')">刪除</button>`:''}</div>`).join(''):'<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No people yet</div>';
 }
-function selectPerson(id){selectedPerson=id;renderPersonSelector();}
+function selP(id){selectedPerson=id;renderPS();}
 async function addPerson(){
   const inp=document.getElementById('new-person-name');const name=inp.value.trim();if(!name)return;
   const p={id:'p'+Date.now(),name,color:COLORS[persons.length%COLORS.length]};
-  setSyncStatus('loading','儲存中…');
-  try{await api('POST',{action:'savePerson',person:p});persons.push(p);inp.value='';renderPersonsList();renderPersonSelector();setSyncStatus('ok','已連線 Google Sheets');showToast('Added '+name);}
-  catch(e){setSyncStatus('err','失敗');showToast('儲存失敗',true);}
+  setSS('loading','儲存中…');
+  try{await api('POST',{action:'savePerson',person:p});persons.push(p);inp.value='';renderPL();renderPS();setSS('ok','已連線 Google Sheets');showToast('Added '+name);}
+  catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
 }
-async function deletePerson(id){
-  if(persons.length<=1){showToast('至少保留一位人員',true);return;}
+function cfmDelP(id,name){showConfirm('刪除人員','確定要刪除「'+name+'」及其所有紀錄？',()=>delPerson(id));}
+async function delPerson(id){
   const p=persons.find(x=>x.id===id);
-  try{await api('POST',{action:'deletePerson',personId:id});persons=persons.filter(x=>x.id!==id);if(selectedPerson===id)selectedPerson=persons[0].id;renderPersonsList();renderPersonSelector();setSyncStatus('ok','已連線 Google Sheets');showToast('Deleted '+p.name);}
+  try{await api('POST',{action:'deletePerson',personId:id});persons=persons.filter(x=>x.id!==id);if(selectedPerson===id)selectedPerson=persons[0]?.id;renderPL();renderPS();setSS('ok','已連線 Google Sheets');showToast('Deleted '+p.name);}
   catch(e){showToast('刪除失敗',true);}
 }
 
-/* ── FORM CONTROLS ── */
-function setToggle(type,val){
-  toggles[type]=toggles[type]===val?null:val;
-  ['y','n'].forEach(v=>{document.getElementById(type+'-'+v).className='toggle-btn'+(toggles[type]===v?(v==='y'?' on':' off-sel'):'');});
-}
-function setEditToggle(type,val){
-  editToggles[type]=editToggles[type]===val?null:val;
-  ['y','n'].forEach(v=>{document.getElementById('e'+type+'-'+v).className='toggle-btn'+(editToggles[type]===v?(v==='y'?' on':' off-sel'):'');});
-}
-function renderStatusTags(){
-  document.getElementById('status-tags').innerHTML=STATUSES.map(s=>`<div class="tag ${selectedStatuses.has(s.id)?'selected':''}" onclick="toggleStatus('${s.id}')">${s.label}</div>`).join('');
-}
-function toggleStatus(id){
-  selectedStatuses.has(id)?selectedStatuses.delete(id):selectedStatuses.add(id);
-  document.getElementById('other-wrap').className='other-input-wrap'+(selectedStatuses.has('ot')?' show':'');
-  renderStatusTags();
-}
-function renderEditStatusTags(){
-  document.getElementById('edit-status-tags').innerHTML=STATUSES.map(s=>`<div class="tag ${editStatuses.has(s.id)?'selected':''}" onclick="toggleEditStatus('${s.id}')">${s.label}</div>`).join('');
-}
-function toggleEditStatus(id){
-  editStatuses.has(id)?editStatuses.delete(id):editStatuses.add(id);
-  document.getElementById('edit-other-wrap').className='other-input-wrap'+(editStatuses.has('ot')?' show':'');
-  renderEditStatusTags();
-}
+/* FORM */
+function setTgl(type,val){tgl[type]=tgl[type]===val?null:val;['y','n'].forEach(v=>{document.getElementById(type+'-'+v).className='toggle-btn'+(tgl[type]===v?(v==='y'?' on':' off-sel'):'');});}
+function setETgl(type,val){etgl[type]=etgl[type]===val?null:val;['y','n'].forEach(v=>{document.getElementById('e'+type+'-'+v).className='toggle-btn'+(etgl[type]===v?(v==='y'?' on':' off-sel'):'');});}
+function renderStsTags(){document.getElementById('status-tags').innerHTML=STATUSES.map(s=>`<div class="tag ${selSts.has(s.id)?'selected':''}" onclick="togSts('${s.id}')">${s.label}</div>`).join('');}
+function togSts(id){selSts.has(id)?selSts.delete(id):selSts.add(id);document.getElementById('other-wrap').className='other-input-wrap'+(selSts.has('ot')?' show':'');renderStsTags();}
+function renderEStsTags(){document.getElementById('edit-status-tags').innerHTML=STATUSES.map(s=>`<div class="tag ${editSts.has(s.id)?'selected':''}" onclick="togESts('${s.id}')">${s.label}</div>`).join('');}
+function togESts(id){editSts.has(id)?editSts.delete(id):editSts.add(id);document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');renderEStsTags();}
 function toggleMens(){document.getElementById('mens-detail').style.display=document.getElementById('mens-on').checked?'block':'none';}
-function toggleEditMens(){document.getElementById('edit-mens-detail').style.display=document.getElementById('edit-mens-on').checked?'block':'none';}
-function changeDay(d){mensDay=Math.max(1,Math.min(30,mensDay+d));document.getElementById('mens-day').textContent=mensDay;}
-function changeEditDay(d){editMensDay=Math.max(1,Math.min(30,editMensDay+d));document.getElementById('edit-mens-day').textContent=editMensDay;}
+function toggleEMens(){document.getElementById('edit-mens-detail').style.display=document.getElementById('edit-mens-on').checked?'block':'none';}
+function chDay(d){mensDay=Math.max(1,Math.min(30,mensDay+d));document.getElementById('mens-day').textContent=mensDay;}
+function chEDay(d){eMensDay=Math.max(1,Math.min(30,eMensDay+d));document.getElementById('edit-mens-day').textContent=eMensDay;}
 
-/* ── SAVE RECORD ── */
+/* SAVE RECORD — upsert by person+date (one record per day) */
 async function saveRecord(){
   if(!selectedPerson){showToast('請先選擇人員',true);return;}
   const p=persons.find(x=>x.id===selectedPerson);
   const btn=document.getElementById('save-btn');btn.disabled=true;btn.textContent='…';
-  setSyncStatus('loading','儲存中…');
+  setSS('loading','儲存中…');
   const dateVal=document.getElementById('record-date').value||todayStr();
   const rec={
-    id:'r'+Date.now(),personId:selectedPerson,personName:p.name,
+    id:'r_'+selectedPerson+'_'+dateVal,
+    personId:selectedPerson,personName:p.name,
     date:new Date(dateVal+'T12:00:00').toISOString(),
-    height:document.getElementById('height').value,
-    weight:document.getElementById('weight').value,
-    temp:document.getElementById('temp').value,
+    height:document.getElementById('height').value,weight:document.getElementById('weight').value,temp:document.getElementById('temp').value,
     meals:{breakfast:document.getElementById('meal-breakfast').value,lunch:document.getElementById('meal-lunch').value,dinner:document.getElementById('meal-dinner').value,snack:document.getElementById('meal-snack').value},
-    proc:toggles.proc,fried:toggles.fried,med:toggles.med,
-    statuses:[...selectedStatuses],
-    otherText:document.getElementById('other-text').value,
+    proc:tgl.proc,fried:tgl.fried,med:tgl.med,drink:tgl.drink,
+    statuses:[...selSts],otherText:document.getElementById('other-text').value,
+    notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
-  try{await api('POST',{action:'saveRecord',record:rec});setSyncStatus('ok','已連線 Google Sheets');showToast('已儲存');}
-  catch(e){setSyncStatus('err','失敗');showToast('儲存失敗，請重試',true);}
+  try{await api('POST',{action:'upsertRecord',record:rec});setSS('ok','已連線 Google Sheets');showToast('已儲存');}
+  catch(e){setSS('err','失敗');showToast('儲存失敗，請重試',true);}
   btn.disabled=false;btn.textContent='儲存';
 }
 
-/* ── EDIT MODAL ── */
+/* EDIT MODAL */
 function openEditModal(rec){
-  editingRec=rec;
-  document.getElementById('edit-date').value=toDateInput(rec.date);
-  document.getElementById('edit-height').value=rec.height||'';
-  document.getElementById('edit-weight').value=rec.weight||'';
-  document.getElementById('edit-temp').value=rec.temp||'';
-  document.getElementById('edit-breakfast').value=rec.meals?.breakfast||rec.breakfast||'';
-  document.getElementById('edit-lunch').value=rec.meals?.lunch||rec.lunch||'';
-  document.getElementById('edit-dinner').value=rec.meals?.dinner||rec.dinner||'';
-  document.getElementById('edit-snack').value=rec.meals?.snack||rec.snack||'';
-  editToggles={proc:rec.proc||null,fried:rec.fried||null,med:rec.med||null};
-  ['proc','fried','med'].forEach(t=>{['y','n'].forEach(v=>{document.getElementById('e'+t+'-'+v).className='toggle-btn'+(editToggles[t]===v?(v==='y'?' on':' off-sel'):'');});});
-  const sts=getStatuses(rec);
-  editStatuses=new Set(sts);
-  document.getElementById('edit-other-wrap').className='other-input-wrap'+(editStatuses.has('ot')?' show':'');
+  editRec=rec;
+  document.getElementById('edit-date').value=toDateInp(rec.date);
+  document.getElementById('edit-height').value=rec.height||'';document.getElementById('edit-weight').value=rec.weight||'';document.getElementById('edit-temp').value=rec.temp||'';
+  document.getElementById('edit-breakfast').value=rec.meals?.breakfast||'';document.getElementById('edit-lunch').value=rec.meals?.lunch||'';document.getElementById('edit-dinner').value=rec.meals?.dinner||'';document.getElementById('edit-snack').value=rec.meals?.snack||'';
+  etgl={proc:rec.proc||null,fried:rec.fried||null,med:rec.med||null,drink:rec.drink||null};
+  ['proc','fried','med','drink'].forEach(t=>['y','n'].forEach(v=>{document.getElementById('e'+t+'-'+v).className='toggle-btn'+(etgl[t]===v?(v==='y'?' on':' off-sel'):'');}));
+  editSts=new Set(getSts(rec));
+  document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');
   document.getElementById('edit-other-text').value=rec.otherText||'';
-  renderEditStatusTags();
-  const mensOn=rec.mens&&+rec.mens>=1;
-  document.getElementById('edit-mens-on').checked=!!mensOn;
-  editMensDay=mensOn?+rec.mens:1;
-  document.getElementById('edit-mens-day').textContent=editMensDay;
-  document.getElementById('edit-mens-detail').style.display=mensOn?'block':'none';
+  document.getElementById('edit-notes').value=rec.notes||'';
+  renderEStsTags();
+  const mo=rec.mens&&+rec.mens>=1;
+  document.getElementById('edit-mens-on').checked=!!mo;eMensDay=mo?+rec.mens:1;
+  document.getElementById('edit-mens-day').textContent=eMensDay;
+  document.getElementById('edit-mens-detail').style.display=mo?'block':'none';
   document.getElementById('edit-modal').classList.add('show');
 }
-function closeModal(){document.getElementById('edit-modal').classList.remove('show');editingRec=null;}
+function closeModal(){document.getElementById('edit-modal').classList.remove('show');editRec=null;}
 async function saveEdit(){
-  if(!editingRec)return;
+  if(!editRec)return;
   const btn=document.getElementById('modal-save-btn');btn.disabled=true;btn.textContent='…';
-  const dateVal=document.getElementById('edit-date').value||toDateInput(editingRec.date);
-  const updated={
-    ...editingRec,
-    date:new Date(dateVal+'T12:00:00').toISOString(),
-    height:document.getElementById('edit-height').value,
-    weight:document.getElementById('edit-weight').value,
-    temp:document.getElementById('edit-temp').value,
+  const dateVal=document.getElementById('edit-date').value||toDateInp(editRec.date);
+  const newId='r_'+editRec.personId+'_'+dateVal;
+  const updated={...editRec,id:newId,date:new Date(dateVal+'T12:00:00').toISOString(),
+    height:document.getElementById('edit-height').value,weight:document.getElementById('edit-weight').value,temp:document.getElementById('edit-temp').value,
     meals:{breakfast:document.getElementById('edit-breakfast').value,lunch:document.getElementById('edit-lunch').value,dinner:document.getElementById('edit-dinner').value,snack:document.getElementById('edit-snack').value},
-    proc:editToggles.proc,fried:editToggles.fried,med:editToggles.med,
-    statuses:[...editStatuses],
-    otherText:document.getElementById('edit-other-text').value,
-    mens:document.getElementById('edit-mens-on').checked?editMensDay:null,
-  };
-  setSyncStatus('loading','修改中…');
+    proc:etgl.proc,fried:etgl.fried,med:etgl.med,drink:etgl.drink,
+    statuses:[...editSts],otherText:document.getElementById('edit-other-text').value,
+    notes:document.getElementById('edit-notes').value,
+    mens:document.getElementById('edit-mens-on').checked?eMensDay:null};
+  setSS('loading','修改中…');
   try{
-    await api('POST',{action:'updateRecord',record:updated});
-    closeModal();setSyncStatus('ok','已連線 Google Sheets');showToast('修改完成');
-    renderHistory();
-  }catch(e){setSyncStatus('err','失敗');showToast('修改失敗',true);}
+    await api('POST',{action:'upsertRecord',record:updated});
+    if(editRec.id!==newId)await api('POST',{action:'deleteRecord',recordId:editRec.id});
+    closeModal();setSS('ok','已連線 Google Sheets');showToast('修改完成');renderHistory();
+  }catch(e){setSS('err','失敗');showToast('修改失敗',true);}
   btn.disabled=false;btn.textContent='儲存';
 }
 
-/* ── HISTORY ── */
-function selectHistPerson(id){histPerson=id;renderHistory();}
+/* DELETE RECORD */
+function cfmDelRec(rec){showConfirm('刪除紀錄','確定要刪除 '+fmtD(rec.date)+' 的紀錄？此操作無法復原。',()=>delRecord(rec));}
+async function delRecord(rec){
+  setSS('loading','刪除中…');
+  try{await api('POST',{action:'deleteRecord',recordId:rec.id});setSS('ok','已連線 Google Sheets');showToast('紀錄已刪除');renderHistory();}
+  catch(e){setSS('err','失敗');showToast('刪除失敗',true);}
+}
+
+/* HISTORY */
+function selHP(id){histPerson=id;renderHistory();}
 async function renderHistory(){
-  document.getElementById('hist-tabs').innerHTML=persons.map(p=>`<div class="hist-ptab ${p.id===histPerson?'active':''}" onclick="selectHistPerson('${p.id}')">${p.name}</div>`).join('');
+  document.getElementById('hist-tabs').innerHTML=persons.map(p=>`<div class="hist-ptab ${p.id===histPerson?'active':''}" onclick="selHP('${p.id}')">${p.name}</div>`).join('');
   document.getElementById('hist-list-view').innerHTML='<div class="loading-state">載入中…</div>';
   document.getElementById('hist-charts-view').innerHTML='';
   let recs=[];
   try{recs=await api('GET',{action:'getRecords',personId:histPerson});if(!Array.isArray(recs))recs=[];recs.sort((a,b)=>new Date(b.date)-new Date(a.date));}
   catch(e){document.getElementById('hist-list-view').innerHTML='<div class="loading-state" style="color:var(--danger)">載入失敗</div>';return;}
-  cachedRecs=recs;
-  renderRecordsList(recs);
+  renderRL(recs);
   renderCharts([...recs].reverse());
 }
-function renderRecordsList(recs){
+
+function renderRL(recs){
   const el=document.getElementById('hist-list-view');
   if(!recs.length){el.innerHTML='<div class="loading-state">尚無紀錄</div>';return;}
   el.innerHTML=recs.map(r=>{
@@ -546,96 +443,122 @@ function renderRecordsList(recs){
     if(r.proc==='y')chips.push(`<span class="rec-chip w">加工</span>`);
     if(r.fried==='y')chips.push(`<span class="rec-chip w">炸物</span>`);
     if(r.med==='y')chips.push(`<span class="rec-chip g">藥物</span>`);
-    getStatuses(r).forEach(s=>{const f=STATUSES.find(x=>x.id===s);if(f)chips.push(`<span class="rec-chip w">${f.label}</span>`);});
+    if(r.drink==='y')chips.push(`<span class="rec-chip b">飲料</span>`);
+    getSts(r).forEach(s=>{const f=STATUSES.find(x=>x.id===s);if(f)chips.push(`<span class="rec-chip w">${f.label}</span>`);});
     if(r.mens)chips.push(`<span class="rec-chip p">月經第${r.mens}天</span>`);
+    if(r.notes)chips.push(`<span class="rec-chip">Remark: ${r.notes}</span>`);
     const meals=[r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].filter(Boolean);
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
-    const safeRec=JSON.stringify(r).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    return `<div class="rec-card">
-      <div class="rec-header"><span class="rec-date-txt">${fmtDate(r.date)}</span><button class="rec-edit-btn" onclick="openEditModal(JSON.parse(decodeURIComponent('${encodeURIComponent(JSON.stringify(r))}')))">修改</button></div>
-      <div class="rec-body">${chips.join('')}</div>
-    </div>`;
+    const enc=encodeURIComponent(JSON.stringify(r));
+    return `<div class="rec-card"><div class="rec-header"><span class="rec-date-txt">${fmtD(r.date)}</span><div class="rec-actions"><button class="rec-edit-btn" onclick="openEditModal(JSON.parse(decodeURIComponent('${enc}')))">修改</button><button class="rec-del-btn" onclick="cfmDelRec(JSON.parse(decodeURIComponent('${enc}')))">刪除</button></div></div><div class="rec-body">${chips.join('')}</div></div>`;
   }).join('');
 }
 
-/* ── CHARTS (self-contained canvas) ── */
+/* CHARTS — all dot-line, with cumulative total in subtitle */
 function renderCharts(recs){
   const c=document.getElementById('hist-charts-view');c.innerHTML='';
-  drawLine(c,'體重變化 (kg)',recs.filter(r=>r.weight&&+r.weight>0).map(r=>({x:fmtDate(r.date),y:+r.weight})),'#4fd1c5');
-  drawBar(c,'藥物次數（每月）',byMonth(recs,r=>r.med==='y'),'#68d391');
-  drawBar(c,'頭痛次數（每月）',byMonth(recs,r=>getStatuses(r).some(s=>['h1','h2','h3'].includes(s))),'#a78bfa');
-  drawBar(c,'加工食品次數（每月）',byMonth(recs,r=>r.proc==='y'),'#f6ad55');
-  drawBar(c,'炸物次數（每月）',byMonth(recs,r=>r.fried==='y'),'#fc8181');
-  drawBar(c,'發燒次數（每月）',byMonth(recs,r=>getStatuses(r).includes('fe')),'#f687b3');
-  drawBar(c,'嘔吐次數（每月）',byMonth(recs,r=>getStatuses(r).includes('vo')),'#60a5fa');
-  drawDots(c,'月經第1天日期',recs.filter(r=>r.mens==1||r.mens==='1').map(r=>fmtDate(r.date)),'#f687b3');
+  dLine(c,'體重變化',null,recs.filter(r=>r.weight&&+r.weight>0).map(r=>({x:fmtD(r.date),y:+r.weight})),'#4fd1c5','kg');
+  dLineM(c,'藥物 /月',recs,r=>r.med==='y','#68d391');
+  dLineM(c,'飲料 /月',recs,r=>r.drink==='y','#60a5fa');
+  dLineM(c,'頭痛 /月',recs,r=>getSts(r).some(s=>['h1','h2','h3'].includes(s)),'#a78bfa');
+  dLineM(c,'加工食品 /月',recs,r=>r.proc==='y','#f6ad55');
+  dLineM(c,'炸物 /月',recs,r=>r.fried==='y','#fc8181');
+  dLineM(c,'發燒 /月',recs,r=>getSts(r).includes('fe'),'#f687b3');
+  dLineM(c,'嘔吐 /月',recs,r=>getSts(r).includes('vo'),'#c4b5fd');
+  dDots(c,'月經第1天日期',recs.filter(r=>r.mens==1||r.mens==='1').map(r=>fmtD(r.date)),'#f687b3');
 }
-function byMonth(recs,pred){const m={};recs.forEach(r=>{if(pred(r)){const k=monthKey(r.date);m[k]=(m[k]||0)+1;}});return m;}
-function makeCard(c,title){const d=document.createElement('div');d.className='chart-card';d.innerHTML=`<div class="chart-title">${title}</div>`;c.appendChild(d);return d;}
-function W(){return Math.min((window.innerWidth||375)-64,340);}
-function drawLine(c,title,data,color){
-  const card=makeCard(c,title);
+
+function byMonth(recs,pred){const m={};recs.forEach(r=>{if(pred(r)){const k=mKey(r.date);m[k]=(m[k]||0)+1;}});return m;}
+function toPoints(map){return Object.keys(map).sort().map(k=>({x:mLabel(k),y:map[k]}));}
+
+function mkCard(c,title,sub){
+  const d=document.createElement('div');d.className='chart-card';
+  d.innerHTML=`<div class="chart-title">${title}</div>${sub?`<div class="chart-sub">${sub}</div>`:''}`;
+  c.appendChild(d);return d;
+}
+function CW(){return Math.min((window.innerWidth||375)-64,340);}
+
+/* dot-line for monthly counts */
+function dLineM(c,title,recs,pred,color){
+  const map=byMonth(recs,pred);
+  const total=Object.values(map).reduce((a,b)=>a+b,0);
+  const pts=toPoints(map);
+  const sub=total>0?`累積 ${total} 次`:'尚無紀錄';
+  dLine(c,title,sub,pts,color,'次');
+}
+
+function dLine(c,title,sub,data,color,yUnit){
+  const card=mkCard(c,title,sub);
   if(!data.length){card.insertAdjacentHTML('beforeend','<div class="no-data">No data yet</div>');return;}
-  const w=W(),h=130,pl=38,pr=10,pt=10,pb=28,cw=w-pl-pr,ch=h-pt-pb;
+  const w=CW(),h=148,pl=38,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
-  const ys=data.map(d=>d.y),minY=Math.min(...ys),maxY=Math.max(...ys),rng=maxY-minY||1;
+  const ys=data.map(d=>d.y);
+  const minY=Math.min(...ys),maxY=Math.max(...ys),rng=maxY-minY||1;
   const xs=data.map((_,i)=>pl+i*(cw/Math.max(data.length-1,1)));
   const fy=v=>pt+ch-((v-minY)/rng)*ch;
+
+  // grid lines
   ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
   for(let i=0;i<=4;i++){const y=pt+(ch/4)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
+
+  // y axis labels
   ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
-  for(let i=0;i<=4;i++){ctx.fillText((maxY-((maxY-minY)/4)*i).toFixed(1),pl-3,pt+(ch/4)*i+3);}
-  ctx.beginPath();xs.forEach((x,i)=>i?ctx.lineTo(x,fy(ys[i])):ctx.moveTo(x,fy(ys[i])));
+  for(let i=0;i<=4;i++){
+    const v=maxY-((maxY-minY)/4)*i;
+    ctx.fillText(Number.isInteger(v)?v:v.toFixed(1),pl-3,pt+(ch/4)*i+3);
+  }
+
+  // area fill
+  ctx.beginPath();
+  xs.forEach((x,i)=>i===0?ctx.moveTo(x,fy(ys[i])):ctx.lineTo(x,fy(ys[i])));
   ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
-  ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle=color+'22';ctx.fill();
-  xs.forEach((x,i)=>{ctx.beginPath();ctx.arc(x,fy(ys[i]),3.5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();});
-  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
-  const step=Math.ceil(data.length/5);
-  data.forEach((d,i)=>{if(i%step===0||i===data.length-1)ctx.fillText(d.x.slice(5),xs[i],h-4);});
-}
-function drawBar(c,title,map,color){
-  const card=makeCard(c,title);
-  const keys=Object.keys(map).sort();
-  if(!keys.length){card.insertAdjacentHTML('beforeend','<div class="no-data">No data yet</div>');return;}
-  const vals=keys.map(k=>map[k]);
-  const w=W(),h=120,pl=28,pr=10,pt=10,pb=28,cw=w-pl-pr,ch=h-pt-pb;
-  const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
-  const ctx=cv.getContext('2d');
-  const maxV=Math.max(...vals)||1;
-  const bw=Math.max(8,(cw/keys.length)*0.6);
-  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
-  for(let i=0;i<=3;i++){const y=pt+(ch/3)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
-  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
-  for(let i=0;i<=3;i++){ctx.fillText(Math.round(maxV-(maxV/3)*i),pl-3,pt+(ch/3)*i+3);}
-  keys.forEach((k,i)=>{
-    const x=pl+(cw/keys.length)*(i+0.5)-bw/2,bh=(vals[i]/maxV)*ch;
-    ctx.fillStyle=color+'99';ctx.fillRect(x,pt+ch-bh,bw,bh);
-    ctx.strokeStyle=color;ctx.lineWidth=1;ctx.strokeRect(x,pt+ch-bh,bw,bh);
-    ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
-    ctx.fillText(monthLabel(k).slice(2),x+bw/2,h-4);
+  ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();
+  ctx.fillStyle=color+'28';ctx.fill();
+
+  // dashed drop lines
+  ctx.setLineDash([2,3]);ctx.strokeStyle=color+'44';ctx.lineWidth=1;
+  xs.forEach((x,i)=>{ctx.beginPath();ctx.moveTo(x,fy(ys[i]));ctx.lineTo(x,pt+ch);ctx.stroke();});
+  ctx.setLineDash([]);
+
+  // dots
+  xs.forEach((x,i)=>{
+    ctx.beginPath();ctx.arc(x,fy(ys[i]),5.5,0,Math.PI*2);ctx.fillStyle='#1a1a1e';ctx.fill();
+    ctx.beginPath();ctx.arc(x,fy(ys[i]),4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
   });
+
+  // value labels above dots
+  ctx.fillStyle=color;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';
+  xs.forEach((x,i)=>{
+    const y=fy(ys[i])-9;
+    ctx.fillText(Number.isInteger(ys[i])?ys[i]:ys[i].toFixed(1),x,Math.max(y,pt+4));
+  });
+
+  // x axis labels
+  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
+  const step=Math.ceil(data.length/6);
+  data.forEach((d,i)=>{if(i%step===0||i===data.length-1){const lbl=d.x.length>7?d.x.slice(5):d.x;ctx.fillText(lbl,xs[i],h-4);}});
 }
-function drawDots(c,title,dates,color){
-  const card=makeCard(c,title);
-  if(!dates.length){card.insertAdjacentHTML('beforeend','<div class="no-data">No data yet</div>');return;}
-  const w=W(),h=72,pl=10,pr=10,mid=30;
+
+function dDots(c,title,dates,color){
+  const card=mkCard(c,title,dates.length?`共 ${dates.length} 次`:'尚無紀錄');
+  if(!dates.length)return;
+  const w=CW(),h=72,pl=10,pr=10,mid=28;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
-  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;
   ctx.beginPath();ctx.moveTo(pl,mid);ctx.lineTo(w-pr,mid);ctx.stroke();
   const step=(w-pl-pr)/Math.max(dates.length-1,1);
   dates.forEach((d,i)=>{
     const x=pl+i*step;
-    ctx.beginPath();ctx.arc(x,mid,5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+    ctx.beginPath();ctx.arc(x,mid,5.5,0,Math.PI*2);ctx.fillStyle='#1a1a1e';ctx.fill();
+    ctx.beginPath();ctx.arc(x,mid,4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
     ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
     ctx.fillText(d.slice(5),x,h-4);
   });
 }
 
-renderStatusTags();
-renderEditStatusTags();
-init();
+renderStsTags();renderEStsTags();init();
 </script>
 </body>
 </html>
