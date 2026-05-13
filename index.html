@@ -11,137 +11,170 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
   --bg:#1a1a1e;--bg2:#2c2c30;--bg3:#3a3a3e;--card:#232326;
-  --border:rgba(255,255,255,0.08);--accent:#4fd1c5;--accent2:#f687b3;
+  --border:rgba(255,255,255,0.09);--accent:#3aafa9;--accent2:#f687b3;
   --text1:#f0f0f0;--text2:#a0a0a8;--text3:#606068;
   --danger:#fc8181;--success:#68d391;--warn:#f6ad55;
   --radius:14px;--radius-sm:9px;
-  --save-bg:#c87941;
 }
 html,body{height:100%;}
-body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang TC',sans-serif;min-height:100vh;padding-top:env(safe-area-inset-top);}
+body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang TC',sans-serif;min-height:100vh;padding-top:env(safe-area-inset-top);font-size:15px;}
 .phone-wrap{max-width:430px;margin:0 auto;}
+
+/* TOP BAR */
 .top-bar{background:var(--bg);padding:14px 16px 8px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid var(--border);}
-.top-bar h1{font-size:20px;font-weight:700;color:var(--text1);}
+.top-bar h1{font-size:21px;font-weight:700;color:var(--text1);}
 .top-bar .sub{font-size:12px;color:var(--text2);margin-top:2px;display:flex;align-items:center;gap:5px;}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0;}
 .sync-dot.ok{background:var(--success);}
 .sync-dot.err{background:var(--danger);}
 .sync-dot.loading{background:var(--warn);animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* TABS */
 .tab-bar{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:10px 16px;}
-.tab{flex:1;text-align:center;padding:7px 4px;border-radius:7px;font-size:12px;color:var(--text2);cursor:pointer;transition:all 0.2s;font-weight:500;}
+.tab{flex:1;text-align:center;padding:8px 4px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.2s;font-weight:500;}
 .tab.active{background:var(--card);color:var(--accent);}
+
+/* SECTIONS */
 .section{padding:0 16px;margin-bottom:14px;}
 .section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
 .card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden;}
-.person-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s;}
+
+/* PERSON ROWS */
+.person-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s;}
 .person-row:last-child{border-bottom:none;}
-.person-row.selected{background:rgba(79,209,197,0.08);}
-.avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
+.person-row.selected{background:rgba(58,175,169,0.08);}
+.avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;}
 .person-name{font-size:15px;font-weight:600;color:var(--text1);flex:1;}
-.person-check{color:var(--accent);font-size:16px;font-weight:700;}
-.del-btn{background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:600;flex-shrink:0;}
+.person-check{color:var(--accent);font-size:17px;font-weight:700;}
+.del-btn{background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:13px;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;flex-shrink:0;}
 .add-person-row{display:flex;gap:8px;margin-top:8px;}
-.add-person-row input{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text1);font-size:14px;outline:none;}
+.add-person-row input{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 12px;color:var(--text1);font-size:15px;outline:none;}
 .add-person-row input::placeholder{color:var(--text3);}
-.btn-add{background:var(--accent);color:#0d2b29;border:none;border-radius:var(--radius-sm);padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
-.date-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;}
-.date-label{font-size:14px;color:var(--text1);font-weight:500;}
-.date-input{background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--text1);font-size:13px;outline:none;font-family:inherit;}
+.btn-add{background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 16px;font-size:15px;font-weight:700;cursor:pointer;}
+
+/* DATE */
+.date-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;}
+.date-label{font-size:15px;color:var(--text1);font-weight:500;}
+.date-input{background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;}
+
+/* VITALS */
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.metric-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:10px;}
-.metric-label{font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500;}
-.metric-input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:6px;padding:6px 8px;color:var(--text1);font-size:15px;font-weight:600;text-align:center;outline:none;}
-.metric-unit{font-size:10px;color:var(--text3);text-align:center;margin-top:3px;}
+.metric-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:11px;}
+.metric-label{font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:500;}
+.metric-input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:6px;padding:7px 8px;color:var(--text1);font-size:16px;font-weight:600;text-align:center;outline:none;}
+.metric-unit{font-size:11px;color:var(--text3);text-align:center;margin-top:3px;}
+
+/* MEALS */
 .meal-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);}
-.meal-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:0.5px solid var(--border);}
+.meal-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .meal-row:last-child{border-bottom:none;}
 .meal-name{font-size:14px;color:var(--text2);width:36px;font-weight:500;}
-.meal-input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--text1);font-size:13px;outline:none;}
+.meal-input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;}
+
+/* TOGGLES */
 .toggle-group{display:flex;gap:6px;}
-.toggle-btn{flex:1;padding:8px;border-radius:7px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;}
+.toggle-btn{flex:1;padding:9px;border-radius:7px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;}
 .toggle-btn.on{background:rgba(104,211,145,0.18);color:var(--success);border-color:rgba(104,211,145,0.4);}
 .toggle-btn.off-sel{background:rgba(252,129,129,0.14);color:var(--danger);border-color:rgba(252,129,129,0.3);}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:0.5px solid var(--border);}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .toggle-row:last-child{border-bottom:none;}
-.toggle-label{font-size:14px;color:var(--text1);font-weight:500;}
-.tag-grid{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px;}
-.tag{padding:6px 11px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.toggle-label{font-size:15px;color:var(--text1);font-weight:500;}
+
+/* TAGS */
+.tag-grid{display:flex;flex-wrap:wrap;gap:7px;padding:13px 14px;}
+.tag{padding:7px 13px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .tag.selected{background:rgba(246,173,85,0.18);color:var(--warn);border-color:rgba(246,173,85,0.4);}
 .other-input-wrap{width:100%;padding:0 14px 12px;display:none;}
 .other-input-wrap.show{display:block;}
-.other-input-wrap input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--text1);font-size:13px;outline:none;}
-.ios-switch{position:relative;width:48px;height:28px;flex-shrink:0;}
+.other-input-wrap input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text1);font-size:14px;outline:none;}
+
+/* SWITCH */
+.ios-switch{position:relative;width:50px;height:30px;flex-shrink:0;}
 .ios-switch input{opacity:0;width:0;height:0;}
-.ios-switch .slider{position:absolute;inset:0;background:var(--bg3);border-radius:14px;transition:0.2s;cursor:pointer;}
+.ios-switch .slider{position:absolute;inset:0;background:var(--bg3);border-radius:15px;transition:0.2s;cursor:pointer;}
 .ios-switch input:checked+.slider{background:var(--accent2);}
-.ios-switch .slider::after{content:'';position:absolute;width:22px;height:22px;border-radius:50%;background:white;left:3px;top:3px;transition:0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
+.ios-switch .slider::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;background:white;left:3px;top:3px;transition:0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
 .ios-switch input:checked+.slider::after{transform:translateX(20px);}
-.menstrual-toggle{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:0.5px solid var(--border);}
+
+/* MENSTRUAL */
+.menstrual-toggle{display:flex;align-items:center;gap:8px;padding:13px 14px;border-bottom:0.5px solid var(--border);}
 .menstrual-row{display:flex;align-items:center;gap:10px;padding:16px 14px;}
-.menstrual-label{font-size:14px;color:var(--text1);font-weight:500;flex:1;}
+.menstrual-label{font-size:15px;color:var(--text1);font-weight:500;flex:1;}
 .menstrual-ctrl{display:flex;align-items:center;gap:10px;}
-.day-btn{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg2);color:var(--text1);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
-.day-val{font-size:20px;font-weight:700;color:var(--accent2);min-width:28px;text-align:center;}
-.day-unit{font-size:13px;color:var(--text2);}
-/* SAVE BTN — solid teal, white text, small radius */
+.day-btn{width:38px;height:38px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg2);color:var(--text1);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.day-val{font-size:22px;font-weight:700;color:var(--accent2);min-width:30px;text-align:center;}
+.day-unit{font-size:14px;color:var(--text2);}
+
+/* SAVE */
 .save-wrap{display:flex;justify-content:center;padding:24px 16px 60px;}
-.save-btn{background:#3aafa9;color:#ffffff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;padding:13px 48px;letter-spacing:2px;}
+.save-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;padding:14px 52px;letter-spacing:2px;}
 .save-btn:active{opacity:0.85;}
 .save-btn:disabled{opacity:0.55;cursor:not-allowed;}
-.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:#3aafa9;color:#ffffff;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:700;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap;}
+
+/* TOAST */
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--accent);color:#fff;padding:11px 22px;border-radius:10px;font-size:15px;font-weight:700;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.toast.error{background:#e05555;color:#ffffff;}
+.toast.error{background:#e05555;}
+
+/* PAGES */
 .page{display:none;}
 .page.active{display:block;}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:8px;padding:0 16px;margin-bottom:12px;align-items:center;}
+.filter-select{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;}
+
 /* HISTORY */
-.hist-person-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px;margin-bottom:10px;}
-.hist-ptab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
-.hist-ptab.active{background:rgba(79,209,197,0.15);color:var(--accent);border-color:rgba(79,209,197,0.4);}
 .hist-sub-tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:0 16px 12px;}
-.hist-sub-tab{flex:1;text-align:center;padding:6px 4px;border-radius:7px;font-size:12px;color:var(--text2);cursor:pointer;font-weight:500;}
+.hist-sub-tab{flex:1;text-align:center;padding:7px 4px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;}
 .hist-sub-tab.active{background:var(--card);color:var(--accent);}
+
 /* RECORD CARDS */
 .rec-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);margin:0 16px 10px;overflow:hidden;}
-.rec-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:0.5px solid var(--border);}
-.rec-date-txt{font-size:14px;font-weight:700;color:var(--text1);}
+.rec-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--border);}
+.rec-date-txt{font-size:15px;font-weight:700;color:var(--text1);}
+.rec-person-txt{font-size:12px;color:var(--text2);margin-top:2px;}
 .rec-actions{display:flex;gap:6px;}
-.rec-edit-btn{background:rgba(79,209,197,0.12);border:none;color:var(--accent);font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
-.rec-del-btn{background:rgba(252,129,129,0.12);border:none;color:var(--danger);font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
-.rec-body{padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px;}
-.rec-chip{padding:4px 9px;border-radius:10px;font-size:11px;font-weight:600;background:var(--bg2);color:var(--text2);}
+.rec-edit-btn{background:rgba(58,175,169,0.12);border:none;color:var(--accent);font-size:13px;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
+.rec-del-btn{background:rgba(252,129,129,0.12);border:none;color:var(--danger);font-size:13px;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
+.rec-body{padding:11px 14px;display:flex;flex-wrap:wrap;gap:6px;}
+.rec-chip{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:600;background:var(--bg2);color:var(--text2);}
 .rec-chip.w{background:rgba(246,173,85,0.14);color:var(--warn);}
 .rec-chip.g{background:rgba(104,211,145,0.14);color:var(--success);}
 .rec-chip.p{background:rgba(246,135,179,0.14);color:var(--accent2);}
-.rec-chip.a{background:rgba(79,209,197,0.14);color:var(--accent);}
+.rec-chip.a{background:rgba(58,175,169,0.14);color:var(--accent);}
 .rec-chip.b{background:rgba(96,165,250,0.14);color:#60a5fa;}
+
 /* CHART */
 .chart-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:14px;margin:0 16px 12px;}
-.chart-title{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:4px;}
-.chart-sub{font-size:11px;color:var(--text3);margin-bottom:10px;}
+.chart-title{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:3px;}
+.chart-sub{font-size:12px;color:var(--text3);margin-bottom:10px;}
 canvas{display:block;}
-.no-data{text-align:center;padding:16px 0 4px;color:var(--text3);font-size:12px;}
-.loading-state{text-align:center;padding:40px 16px;color:var(--text2);font-size:14px;}
+.no-data{text-align:center;padding:16px 0 4px;color:var(--text3);font-size:13px;}
+.loading-state{text-align:center;padding:40px 16px;color:var(--text2);font-size:15px;}
+
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:400;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
 .modal{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding-bottom:calc(20px + env(safe-area-inset-bottom));}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;}
-.modal-title{font-size:16px;font-weight:700;color:var(--text1);}
-.modal-close{background:var(--bg3);border:none;color:var(--text2);font-size:13px;padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:600;}
-.modal-save-btn{background:#3aafa9;border:none;color:#fff;font-size:13px;padding:6px 18px;border-radius:8px;cursor:pointer;font-weight:700;letter-spacing:1px;}
+.modal-title{font-size:17px;font-weight:700;color:var(--text1);}
+.modal-close{background:var(--bg3);border:none;color:var(--text2);font-size:14px;padding:7px 15px;border-radius:20px;cursor:pointer;font-weight:600;}
+.modal-save-btn{background:var(--accent);border:none;color:#fff;font-size:14px;padding:7px 18px;border-radius:8px;cursor:pointer;font-weight:700;letter-spacing:1px;}
 .modal-body{padding:14px 16px;}
 .modal-section{margin-bottom:14px;}
 .modal-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+
 /* CONFIRM */
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:600;display:none;align-items:center;justify-content:center;}
 .confirm-overlay.show{display:flex;}
-.confirm-box{background:var(--bg2);border-radius:16px;padding:24px 20px;width:284px;text-align:center;}
-.confirm-title{font-size:16px;font-weight:700;color:var(--text1);margin-bottom:8px;}
-.confirm-msg{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.5;}
+.confirm-box{background:var(--bg2);border-radius:16px;padding:24px 20px;width:290px;text-align:center;}
+.confirm-title{font-size:17px;font-weight:700;color:var(--text1);margin-bottom:8px;}
+.confirm-msg{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.5;}
 .confirm-btns{display:flex;gap:10px;}
-.confirm-cancel{flex:1;padding:11px;border-radius:10px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;}
-.confirm-ok{flex:1;padding:11px;border-radius:10px;border:none;background:var(--danger);color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+.confirm-cancel{flex:1;padding:12px;border-radius:10px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:15px;font-weight:600;cursor:pointer;}
+.confirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:var(--danger);color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -180,19 +213,16 @@ canvas{display:block;}
     <div class="section">
       <div class="section-title">Diet Flags</div>
       <div class="card">
-        <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="proc-y" onclick="setTgl('proc','y')">有</div><div class="toggle-btn" id="proc-n" onclick="setTgl('proc','n')">沒有</div></div></div>
-        <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
-        <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
-        <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="proc-y" onclick="setTgl('proc','y')">有</div><div class="toggle-btn" id="proc-n" onclick="setTgl('proc','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
       </div>
     </div>
-    <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="Describe other condition…"></div></div></div>
+    <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
+    <div class="section"><div class="section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
     <div class="section">
-      <div class="section-title">Remark</div>
-      <div class="card"><div style="padding:10px 14px;"><textarea id="notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:13px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Menstrual</div>
+      <div class="section-title">Menstrual Cycle</div>
       <div class="card">
         <div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="mens-on" onchange="toggleMens()"><span class="slider"></span></label></div>
         <div id="mens-detail" style="display:none"><div class="menstrual-row"><div class="menstrual-label">第幾天</div><div class="menstrual-ctrl"><div class="day-btn" onclick="chDay(-1)">−</div><div class="day-val" id="mens-day">1</div><div class="day-unit">天</div><div class="day-btn" onclick="chDay(1)">＋</div></div></div></div>
@@ -204,13 +234,34 @@ canvas{display:block;}
 
   <!-- HISTORY PAGE -->
   <div id="page-history" class="page">
-    <div class="hist-person-tabs" id="hist-tabs"></div>
     <div class="hist-sub-tabs">
       <div class="hist-sub-tab active" id="sub-list" onclick="switchHTab('list')">紀錄列表</div>
       <div class="hist-sub-tab" id="sub-charts" onclick="switchHTab('charts')">統計圖表</div>
     </div>
-    <div id="hist-list-view"></div>
-    <div id="hist-charts-view" style="display:none;"></div>
+
+    <!-- LIST FILTERS -->
+    <div id="list-section">
+      <div class="filter-row">
+        <select class="filter-select" id="list-person-filter" onchange="applyListFilter()">
+          <option value="">所有人員</option>
+        </select>
+        <input type="month" class="filter-select" id="list-month-filter" onchange="applyListFilter()" style="flex:1;">
+      </div>
+      <div id="hist-list-view"><div class="loading-state">請先切換頁面載入資料</div></div>
+    </div>
+
+    <!-- CHART FILTERS -->
+    <div id="chart-section" style="display:none;">
+      <div class="filter-row">
+        <select class="filter-select" id="chart-person-filter" onchange="applyChartFilter()">
+          <option value="">所有人員</option>
+        </select>
+        <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()">
+          <option value="">所有年份</option>
+        </select>
+      </div>
+      <div id="hist-charts-view"></div>
+    </div>
   </div>
 
   <!-- PEOPLE PAGE -->
@@ -234,15 +285,15 @@ canvas{display:block;}
       <div class="modal-section">
         <div class="modal-section-title">Diet Flags</div>
         <div class="card">
-          <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="eproc-y" onclick="setETgl('proc','y')">有</div><div class="toggle-btn" id="eproc-n" onclick="setETgl('proc','n')">沒有</div></div></div>
-          <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
-          <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
-          <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:130px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="eproc-y" onclick="setETgl('proc','y')">有</div><div class="toggle-btn" id="eproc-n" onclick="setETgl('proc','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
         </div>
       </div>
-      <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="Describe other condition…"></div></div></div>
-      <div class="modal-section"><div class="modal-section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:13px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
-      <div class="modal-section"><div class="modal-section-title">Menstrual</div><div class="card"><div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="edit-mens-on" onchange="toggleEMens()"><span class="slider"></span></label></div><div id="edit-mens-detail" style="display:none"><div class="menstrual-row"><div class="menstrual-label">第幾天</div><div class="menstrual-ctrl"><div class="day-btn" onclick="chEDay(-1)">−</div><div class="day-val" id="edit-mens-day">1</div><div class="day-unit">天</div><div class="day-btn" onclick="chEDay(1)">＋</div></div></div></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Menstrual Cycle</div><div class="card"><div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="edit-mens-on" onchange="toggleEMens()"><span class="slider"></span></label></div><div id="edit-mens-detail" style="display:none"><div class="menstrual-row"><div class="menstrual-label">第幾天</div><div class="menstrual-ctrl"><div class="day-btn" onclick="chEDay(-1)">−</div><div class="day-val" id="edit-mens-day">1</div><div class="day-unit">天</div><div class="day-btn" onclick="chEDay(1)">＋</div></div></div></div></div></div>
     </div>
   </div>
 </div>
@@ -255,14 +306,18 @@ canvas{display:block;}
     <div class="confirm-btns"><button class="confirm-cancel" onclick="closeConfirm()">取消</button><button class="confirm-ok" id="confirm-ok-btn">刪除</button></div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
 const API='https://script.google.com/macros/s/AKfycbzjI4DGZ4tRUPFLHgDqIQDSOJRVBjFsQXMsRkK3EyHoQI3kHLwzEXhvrW4ZmFYCBrwkfA/exec';
-const COLORS=['#4fd1c5','#f687b3','#68d391','#f6ad55','#fc8181','#a78bfa','#60a5fa'];
-const STATUSES=[{id:'ok',label:'良好'},{id:'h3',label:'頭痛_重'},{id:'h2',label:'頭痛_中'},{id:'h1',label:'頭痛_輕微'},{id:'cp',label:'心痛'},{id:'ar',label:'心律不整'},{id:'ti',label:'疲累'},{id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},{id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},{id:'ot',label:'其他'}];
-let persons=[],selectedPerson=null,histPerson=null;
+const COLORS=['#3aafa9','#f687b3','#68d391','#f6ad55','#fc8181','#a78bfa','#60a5fa'];
+const STATUSES=[
+  {id:'ok',label:'良好'},{id:'h3',label:'頭痛_重'},{id:'h2',label:'頭痛_中'},{id:'h1',label:'頭痛_輕微'},
+  {id:'cp',label:'心痛'},{id:'ar',label:'心律不整'},{id:'ti',label:'疲累'},
+  {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},
+  {id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},{id:'ot',label:'其他'}
+];
+let persons=[],allRecs=[],selectedPerson=null;
 let tgl={proc:null,fried:null,med:null,drink:null};
 let etgl={proc:null,fried:null,med:null,drink:null};
 let selSts=new Set(),editSts=new Set();
@@ -276,34 +331,37 @@ async function api(method,params){
   if(method==='GET'){const r=await fetch(API+'?'+new URLSearchParams(params).toString());return r.json();}
   const r=await fetch(API,{method:'POST',body:JSON.stringify(params)});return r.json();
 }
+
 async function init(){
   setSS('loading','連線中…');
   try{
     persons=await api('GET',{action:'getPersons'});
     if(!Array.isArray(persons))persons=[];
     if(!persons.length){const f={id:'p'+Date.now(),name:'Luke',color:COLORS[0]};await api('POST',{action:'savePerson',person:f});persons=[f];}
-    selectedPerson=persons[0].id;histPerson=persons[0].id;
-    renderPS();renderPL();setSS('ok','已連線 Google Sheets');
+    selectedPerson=persons[0].id;
+    renderPS();renderPL();populatePersonFilters();
+    setSS('ok','已連線 Google Sheets');
   }catch(e){setSS('err','連線失敗');showToast('無法連線',true);}
 }
+
 function fmtD(d){const o=new Date(d);return o.getFullYear()+'/'+(o.getMonth()+1).toString().padStart(2,'0')+'/'+o.getDate().toString().padStart(2,'0');}
 function toDateInp(d){const o=new Date(d);return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0')+'-'+o.getDate().toString().padStart(2,'0');}
-function mKey(d){const o=new Date(d);return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0');}
-function mLabel(k){const[y,m]=k.split('-');return y+'/'+(+m).toString().padStart(2,'0');}
 function showToast(msg,isErr){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(isErr?' error':'');setTimeout(()=>el.className='toast',2400);}
 function getSts(r){return Array.isArray(r.statuses)?r.statuses:(r.statuses?String(r.statuses).split(',').filter(Boolean):[]);}
+function getYear(d){return new Date(d).getFullYear();}
+function getMonth(d){return new Date(d).getMonth()+1;}
 
 function switchTab(t){
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['record','history','persons'][i]===t));
   ['record','history','persons'].forEach(p=>document.getElementById('page-'+p).classList.toggle('active',p===t));
-  if(t==='history')renderHistory();
+  if(t==='history')loadAllRecs();
 }
 function switchHTab(t){
   histTab=t;
   document.getElementById('sub-list').className='hist-sub-tab'+(t==='list'?' active':'');
   document.getElementById('sub-charts').className='hist-sub-tab'+(t==='charts'?' active':'');
-  document.getElementById('hist-list-view').style.display=t==='list'?'block':'none';
-  document.getElementById('hist-charts-view').style.display=t==='charts'?'block':'none';
+  document.getElementById('list-section').style.display=t==='list'?'block':'none';
+  document.getElementById('chart-section').style.display=t==='charts'?'block':'none';
 }
 function showConfirm(title,msg,cb){
   document.getElementById('confirm-title').textContent=title;
@@ -318,21 +376,37 @@ function renderPS(){
   document.getElementById('person-selector').innerHTML=persons.map(p=>`<div class="person-row ${p.id===selectedPerson?'selected':''}" onclick="selP('${p.id}')"><div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div><div class="person-name">${p.name}</div>${p.id===selectedPerson?'<span class="person-check">✓</span>':''}</div>`).join('');
 }
 function renderPL(){
-  document.getElementById('persons-list').innerHTML=persons.length?persons.map(p=>`<div class="person-row"><div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div><div class="person-name">${p.name}</div>${persons.length>1?`<button class="del-btn" onclick="cfmDelP('${p.id}','${p.name}')">刪除</button>`:''}</div>`).join(''):'<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No people yet</div>';
+  document.getElementById('persons-list').innerHTML=persons.length?persons.map(p=>`<div class="person-row"><div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div><div class="person-name">${p.name}</div>${persons.length>1?`<button class="del-btn" onclick="cfmDelP('${p.id}','${p.name}')">刪除</button>`:''}</div>`).join(''):'<div style="padding:20px;text-align:center;color:var(--text3);">尚無人員</div>';
 }
 function selP(id){selectedPerson=id;renderPS();}
 async function addPerson(){
   const inp=document.getElementById('new-person-name');const name=inp.value.trim();if(!name)return;
   const p={id:'p'+Date.now(),name,color:COLORS[persons.length%COLORS.length]};
   setSS('loading','儲存中…');
-  try{await api('POST',{action:'savePerson',person:p});persons.push(p);inp.value='';renderPL();renderPS();setSS('ok','已連線 Google Sheets');showToast('Added '+name);}
+  try{await api('POST',{action:'savePerson',person:p});persons.push(p);inp.value='';renderPL();renderPS();populatePersonFilters();setSS('ok','已連線 Google Sheets');showToast('Added '+name);}
   catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
 }
 function cfmDelP(id,name){showConfirm('刪除人員','確定要刪除「'+name+'」及其所有紀錄？',()=>delPerson(id));}
 async function delPerson(id){
   const p=persons.find(x=>x.id===id);
-  try{await api('POST',{action:'deletePerson',personId:id});persons=persons.filter(x=>x.id!==id);if(selectedPerson===id)selectedPerson=persons[0]?.id;renderPL();renderPS();setSS('ok','已連線 Google Sheets');showToast('Deleted '+p.name);}
-  catch(e){showToast('刪除失敗',true);}
+  try{
+    await api('POST',{action:'deletePerson',personId:id});
+    persons=persons.filter(x=>x.id!==id);
+    allRecs=allRecs.filter(r=>r.personId!==id);
+    if(selectedPerson===id)selectedPerson=persons[0]?.id;
+    renderPL();renderPS();populatePersonFilters();
+    setSS('ok','已連線 Google Sheets');showToast('Deleted '+p.name);
+  }catch(e){showToast('刪除失敗',true);}
+}
+
+/* PERSON FILTERS */
+function populatePersonFilters(){
+  ['list-person-filter','chart-person-filter'].forEach(id=>{
+    const sel=document.getElementById(id);
+    const cur=sel.value;
+    sel.innerHTML='<option value="">所有人員</option>'+persons.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+    sel.value=cur;
+  });
 }
 
 /* FORM */
@@ -347,7 +421,7 @@ function toggleEMens(){document.getElementById('edit-mens-detail').style.display
 function chDay(d){mensDay=Math.max(1,Math.min(30,mensDay+d));document.getElementById('mens-day').textContent=mensDay;}
 function chEDay(d){eMensDay=Math.max(1,Math.min(30,eMensDay+d));document.getElementById('edit-mens-day').textContent=eMensDay;}
 
-/* SAVE RECORD — upsert by person+date (one record per day) */
+/* SAVE */
 async function saveRecord(){
   if(!selectedPerson){showToast('請先選擇人員',true);return;}
   const p=persons.find(x=>x.id===selectedPerson);
@@ -365,8 +439,13 @@ async function saveRecord(){
     notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
-  try{await api('POST',{action:'upsertRecord',record:rec});setSS('ok','已連線 Google Sheets');showToast('已儲存');}
-  catch(e){setSS('err','失敗');showToast('儲存失敗，請重試',true);}
+  try{
+    const res=await api('POST',{action:'upsertRecord',record:rec});
+    // update local cache
+    const idx=allRecs.findIndex(r=>r.id===rec.id);
+    if(idx>=0)allRecs[idx]=rec; else allRecs.push(rec);
+    setSS('ok','已連線 Google Sheets');showToast('已儲存');
+  }catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
   btn.disabled=false;btn.textContent='儲存';
 }
 
@@ -406,35 +485,76 @@ async function saveEdit(){
   try{
     await api('POST',{action:'upsertRecord',record:updated});
     if(editRec.id!==newId)await api('POST',{action:'deleteRecord',recordId:editRec.id});
-    closeModal();setSS('ok','已連線 Google Sheets');showToast('修改完成');renderHistory();
+    // update cache
+    allRecs=allRecs.filter(r=>r.id!==editRec.id);
+    const idx=allRecs.findIndex(r=>r.id===newId);
+    if(idx>=0)allRecs[idx]=updated; else allRecs.push(updated);
+    closeModal();setSS('ok','已連線 Google Sheets');showToast('修改完成');
+    applyListFilter();applyChartFilter();
   }catch(e){setSS('err','失敗');showToast('修改失敗',true);}
   btn.disabled=false;btn.textContent='儲存';
 }
 
 /* DELETE RECORD */
-function cfmDelRec(rec){showConfirm('刪除紀錄','確定要刪除 '+fmtD(rec.date)+' 的紀錄？此操作無法復原。',()=>delRecord(rec));}
+function cfmDelRec(rec){showConfirm('刪除紀錄','確定要刪除 '+fmtD(rec.date)+' 的紀錄？',()=>delRecord(rec));}
 async function delRecord(rec){
   setSS('loading','刪除中…');
-  try{await api('POST',{action:'deleteRecord',recordId:rec.id});setSS('ok','已連線 Google Sheets');showToast('紀錄已刪除');renderHistory();}
-  catch(e){setSS('err','失敗');showToast('刪除失敗',true);}
+  try{
+    await api('POST',{action:'deleteRecord',recordId:rec.id});
+    allRecs=allRecs.filter(r=>r.id!==rec.id);
+    setSS('ok','已連線 Google Sheets');showToast('紀錄已刪除');
+    applyListFilter();applyChartFilter();
+  }catch(e){setSS('err','失敗');showToast('刪除失敗',true);}
 }
 
-/* HISTORY */
-function selHP(id){histPerson=id;renderHistory();}
-async function renderHistory(){
-  document.getElementById('hist-tabs').innerHTML=persons.map(p=>`<div class="hist-ptab ${p.id===histPerson?'active':''}" onclick="selHP('${p.id}')">${p.name}</div>`).join('');
+/* LOAD ALL RECORDS */
+async function loadAllRecs(){
   document.getElementById('hist-list-view').innerHTML='<div class="loading-state">載入中…</div>';
-  document.getElementById('hist-charts-view').innerHTML='';
-  let recs=[];
-  try{recs=await api('GET',{action:'getRecords',personId:histPerson});if(!Array.isArray(recs))recs=[];recs.sort((a,b)=>new Date(b.date)-new Date(a.date));}
-  catch(e){document.getElementById('hist-list-view').innerHTML='<div class="loading-state" style="color:var(--danger)">載入失敗</div>';return;}
-  renderRL(recs);
-  renderCharts([...recs].reverse());
+  try{
+    allRecs=await api('GET',{action:'getRecords'});
+    if(!Array.isArray(allRecs))allRecs=[];
+    populateYearFilter();
+    applyListFilter();
+    applyChartFilter();
+  }catch(e){document.getElementById('hist-list-view').innerHTML='<div class="loading-state" style="color:var(--danger)">載入失敗</div>';}
 }
 
+function populateYearFilter(){
+  const years=[...new Set(allRecs.map(r=>getYear(r.date)))].sort((a,b)=>b-a);
+  const sel=document.getElementById('chart-year-filter');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">所有年份</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  if(years.length&&!cur)sel.value=years[0]; else sel.value=cur;
+}
+
+/* LIST FILTER */
+function applyListFilter(){
+  const pid=document.getElementById('list-person-filter').value;
+  const mon=document.getElementById('list-month-filter').value; // "2025-05"
+  let recs=[...allRecs];
+  if(pid)recs=recs.filter(r=>r.personId===pid);
+  if(mon){const[y,m]=mon.split('-');recs=recs.filter(r=>{const o=new Date(r.date);return o.getFullYear()===+y&&(o.getMonth()+1)===+m;});}
+  recs.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  renderRL(recs);
+}
+
+/* CHART FILTER */
+function applyChartFilter(){
+  const pid=document.getElementById('chart-person-filter').value;
+  const yr=document.getElementById('chart-year-filter').value;
+  let recs=[...allRecs];
+  if(pid)recs=recs.filter(r=>r.personId===pid);
+  if(yr)recs=recs.filter(r=>getYear(r.date)===+yr);
+  recs.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const yearLabel=yr||'所有年份';
+  const personLabel=pid?(persons.find(p=>p.id===pid)?.name||''):'所有人員';
+  renderCharts(recs,+yr||null,yearLabel,personLabel);
+}
+
+/* RENDER RECORD LIST */
 function renderRL(recs){
   const el=document.getElementById('hist-list-view');
-  if(!recs.length){el.innerHTML='<div class="loading-state">尚無紀錄</div>';return;}
+  if(!recs.length){el.innerHTML='<div class="loading-state">尚無符合紀錄</div>';return;}
   el.innerHTML=recs.map(r=>{
     const chips=[];
     if(r.height)chips.push(`<span class="rec-chip a">${r.height}cm</span>`);
@@ -442,120 +562,184 @@ function renderRL(recs){
     if(r.temp)chips.push(`<span class="rec-chip a">${r.temp}°C</span>`);
     if(r.proc==='y')chips.push(`<span class="rec-chip w">加工</span>`);
     if(r.fried==='y')chips.push(`<span class="rec-chip w">炸物</span>`);
-    if(r.med==='y')chips.push(`<span class="rec-chip g">藥物</span>`);
     if(r.drink==='y')chips.push(`<span class="rec-chip b">飲料</span>`);
+    if(r.med==='y')chips.push(`<span class="rec-chip g">藥物</span>`);
     getSts(r).forEach(s=>{const f=STATUSES.find(x=>x.id===s);if(f)chips.push(`<span class="rec-chip w">${f.label}</span>`);});
     if(r.mens)chips.push(`<span class="rec-chip p">月經第${r.mens}天</span>`);
-    if(r.notes)chips.push(`<span class="rec-chip">Remark: ${r.notes}</span>`);
     const meals=[r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].filter(Boolean);
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
+    if(r.notes)chips.push(`<span class="rec-chip">📝 ${r.notes}</span>`);
     const enc=encodeURIComponent(JSON.stringify(r));
-    return `<div class="rec-card"><div class="rec-header"><span class="rec-date-txt">${fmtD(r.date)}</span><div class="rec-actions"><button class="rec-edit-btn" onclick="openEditModal(JSON.parse(decodeURIComponent('${enc}')))">修改</button><button class="rec-del-btn" onclick="cfmDelRec(JSON.parse(decodeURIComponent('${enc}')))">刪除</button></div></div><div class="rec-body">${chips.join('')}</div></div>`;
+    const pName=persons.find(p=>p.id===r.personId)?.name||r.personName||'';
+    return `<div class="rec-card"><div class="rec-header"><div><div class="rec-date-txt">${fmtD(r.date)}</div><div class="rec-person-txt">${pName}</div></div><div class="rec-actions"><button class="rec-edit-btn" onclick="openEditModal(JSON.parse(decodeURIComponent('${enc}')))">修改</button><button class="rec-del-btn" onclick="cfmDelRec(JSON.parse(decodeURIComponent('${enc}')))">刪除</button></div></div><div class="rec-body">${chips.join('')}</div></div>`;
   }).join('');
 }
 
-/* CHARTS — all dot-line, with cumulative total in subtitle */
-function renderCharts(recs){
+/* ═══ CHARTS ═══ */
+function renderCharts(recs,yr,yearLabel,personLabel){
   const c=document.getElementById('hist-charts-view');c.innerHTML='';
-  dLine(c,'體重變化',null,recs.filter(r=>r.weight&&+r.weight>0).map(r=>({x:fmtD(r.date),y:+r.weight})),'#4fd1c5','kg');
-  dLineM(c,'藥物 /月',recs,r=>r.med==='y','#68d391');
-  dLineM(c,'飲料 /月',recs,r=>r.drink==='y','#60a5fa');
-  dLineM(c,'頭痛 /月',recs,r=>getSts(r).some(s=>['h1','h2','h3'].includes(s)),'#a78bfa');
-  dLineM(c,'加工食品 /月',recs,r=>r.proc==='y','#f6ad55');
-  dLineM(c,'炸物 /月',recs,r=>r.fried==='y','#fc8181');
-  dLineM(c,'發燒 /月',recs,r=>getSts(r).includes('fe'),'#f687b3');
-  dLineM(c,'嘔吐 /月',recs,r=>getSts(r).includes('vo'),'#c4b5fd');
-  dDots(c,'月經',recs.filter(r=>r.mens==1||r.mens==='1').map(r=>fmtD(r.date)),'#f687b3');
+  const sub=`${personLabel}・${yearLabel}`;
+
+  // 體重 (line chart by date, not monthly)
+  const wRecs=recs.filter(r=>r.weight&&+r.weight>0);
+  drawWeightChart(c,wRecs,sub);
+
+  // Diet flags monthly
+  drawMonthly(c,'加工食品',sub,recs,r=>r.proc==='y','#f6ad55',yr);
+  drawMonthly(c,'炸物',sub,recs,r=>r.fried==='y','#fc8181',yr);
+  drawMonthly(c,'飲料',sub,recs,r=>r.drink==='y','#60a5fa',yr);
+  drawMonthly(c,'藥物',sub,recs,r=>r.med==='y','#68d391',yr);
+
+  // Status items monthly
+  STATUSES.forEach(s=>{
+    if(s.id==='ot')return;
+    drawMonthly(c,s.label,sub,recs,r=>getSts(r).includes(s.id),'#a78bfa',yr);
+  });
+
+  // Menstrual special
+  drawMenstrual(c,recs,sub,yr);
 }
 
-function byMonth(recs,pred){const m={};recs.forEach(r=>{if(pred(r)){const k=mKey(r.date);m[k]=(m[k]||0)+1;}});return m;}
-function toPoints(map){return Object.keys(map).sort().map(k=>({x:mLabel(k),y:map[k]}));}
+function byMonthArr(recs,pred,yr){
+  // returns array of 12 values (months 1-12)
+  const counts=new Array(12).fill(0);
+  recs.forEach(r=>{
+    if(!yr||getYear(r.date)===yr){
+      if(pred(r))counts[getMonth(r.date)-1]++;
+    }
+  });
+  return counts;
+}
+
+function CW(){return Math.min((window.innerWidth||375)-64,340);}
 
 function mkCard(c,title,sub){
   const d=document.createElement('div');d.className='chart-card';
-  d.innerHTML=`<div class="chart-title">${title}</div>${sub?`<div class="chart-sub">${sub}</div>`:''}`;
+  d.innerHTML=`<div class="chart-title">${title}</div><div class="chart-sub">${sub}</div>`;
   c.appendChild(d);return d;
 }
-function CW(){return Math.min((window.innerWidth||375)-64,340);}
 
-/* dot-line for monthly counts */
-function dLineM(c,title,recs,pred,color){
-  const map=byMonth(recs,pred);
-  const total=Object.values(map).reduce((a,b)=>a+b,0);
-  const pts=toPoints(map);
-  const sub=total>0?`累積 ${total} 次`:'尚無紀錄';
-  dLine(c,title,sub,pts,color,'次');
-}
-
-function dLine(c,title,sub,data,color,yUnit){
-  const card=mkCard(c,title,sub);
-  if(!data.length){card.insertAdjacentHTML('beforeend','<div class="no-data">No data yet</div>');return;}
-  const w=CW(),h=148,pl=38,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
+/* WEIGHT CHART — line by date */
+function drawWeightChart(c,recs,sub){
+  const card=mkCard(c,'體重',sub);
+  if(!recs.length){card.insertAdjacentHTML('beforeend','<div class="no-data">尚無資料</div>');return;}
+  const w=CW(),h=150,pl=40,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
-  const ys=data.map(d=>d.y);
-  const minY=Math.min(...ys),maxY=Math.max(...ys),rng=maxY-minY||1;
-  const xs=data.map((_,i)=>pl+i*(cw/Math.max(data.length-1,1)));
+  const ys=recs.map(r=>+r.weight);
+  const minY=Math.floor(Math.min(...ys)-1),maxY=Math.ceil(Math.max(...ys)+1),rng=maxY-minY;
+  const xs=recs.map((_,i)=>pl+i*(cw/Math.max(recs.length-1,1)));
   const fy=v=>pt+ch-((v-minY)/rng)*ch;
+  drawGrid(ctx,pl,pr,pt,pb,cw,ch,w,h,minY,maxY,4);
+  // line + area
+  ctx.beginPath();xs.forEach((x,i)=>i?ctx.lineTo(x,fy(ys[i])):ctx.moveTo(x,fy(ys[i])));
+  ctx.strokeStyle='#4fd1c5';ctx.lineWidth=2;ctx.stroke();
+  ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle='#4fd1c528';ctx.fill();
+  xs.forEach((x,i)=>drawDot(ctx,x,fy(ys[i]),'#4fd1c5'));
+  // x labels (dates)
+  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
+  const step=Math.ceil(recs.length/6);
+  recs.forEach((r,i)=>{if(i%step===0||i===recs.length-1){const d=new Date(r.date);ctx.fillText(`${d.getMonth()+1}/${d.getDate()}`,xs[i],h-4);}});
+  // y unit
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText('kg',2,pt+8);
+}
 
-  // grid lines
+/* MONTHLY DOT-LINE CHART */
+function drawMonthly(c,title,sub,recs,pred,color,yr){
+  const counts=byMonthArr(recs,pred,yr);
+  const total=counts.reduce((a,b)=>a+b,0);
+  const card=mkCard(c,title,`${sub}・共 ${total} 次/年`);
+  const w=CW(),h=150,pl=28,pr=8,pt=14,pb=22,cw=w-pl-pr,ch=h-pt-pb;
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
+  const ctx=cv.getContext('2d');
+
+  // fixed y: 0-10, above 10 capped visually
+  const maxY=10,minY=0,rng=10;
+  const fy=v=>pt+ch-Math.min(v,maxY)/rng*ch;
+
+  // grid lines (0,2,4,6,8,10)
   ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
-  for(let i=0;i<=4;i++){const y=pt+(ch/4)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
-
-  // y axis labels
-  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
-  for(let i=0;i<=4;i++){
-    const v=maxY-((maxY-minY)/4)*i;
-    ctx.fillText(Number.isInteger(v)?v:v.toFixed(1),pl-3,pt+(ch/4)*i+3);
+  for(let i=0;i<=5;i++){
+    const yv=i*2;const yp=pt+ch-(yv/rng)*ch;
+    ctx.beginPath();ctx.moveTo(pl,yp);ctx.lineTo(pl+cw,yp);ctx.stroke();
+    ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
+    ctx.fillText(yv===10?'10+':yv,pl-3,yp+3);
   }
+
+  // x: months 1-12
+  const xs=Array.from({length:12},(_,i)=>pl+(i*(cw/11)));
 
   // area fill
   ctx.beginPath();
-  xs.forEach((x,i)=>i===0?ctx.moveTo(x,fy(ys[i])):ctx.lineTo(x,fy(ys[i])));
+  xs.forEach((x,i)=>{const y=fy(counts[i]);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});
   ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
-  ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();
-  ctx.fillStyle=color+'28';ctx.fill();
+  ctx.lineTo(xs[11],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle=color+'28';ctx.fill();
 
   // dashed drop lines
-  ctx.setLineDash([2,3]);ctx.strokeStyle=color+'44';ctx.lineWidth=1;
-  xs.forEach((x,i)=>{ctx.beginPath();ctx.moveTo(x,fy(ys[i]));ctx.lineTo(x,pt+ch);ctx.stroke();});
+  ctx.setLineDash([2,3]);ctx.strokeStyle=color+'55';ctx.lineWidth=1;
+  xs.forEach((x,i)=>{if(counts[i]>0){ctx.beginPath();ctx.moveTo(x,fy(counts[i]));ctx.lineTo(x,pt+ch);ctx.stroke();}});
   ctx.setLineDash([]);
 
-  // dots
+  // dots + value labels
   xs.forEach((x,i)=>{
-    ctx.beginPath();ctx.arc(x,fy(ys[i]),5.5,0,Math.PI*2);ctx.fillStyle='#1a1a1e';ctx.fill();
-    ctx.beginPath();ctx.arc(x,fy(ys[i]),4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+    drawDot(ctx,x,fy(counts[i]),color);
+    if(counts[i]>0){ctx.fillStyle=color;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillText(counts[i],x,fy(counts[i])-8);}
   });
 
-  // value labels above dots
-  ctx.fillStyle=color;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';
-  xs.forEach((x,i)=>{
-    const y=fy(ys[i])-9;
-    ctx.fillText(Number.isInteger(ys[i])?ys[i]:ys[i].toFixed(1),x,Math.max(y,pt+4));
-  });
-
-  // x axis labels
-  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
-  const step=Math.ceil(data.length/6);
-  data.forEach((d,i)=>{if(i%step===0||i===data.length-1){const lbl=d.x.length>7?d.x.slice(5):d.x;ctx.fillText(lbl,xs[i],h-4);}});
+  // x axis: month labels 1-12
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='center';
+  xs.forEach((x,i)=>ctx.fillText(i+1,x,h-4));
+  // x axis label
+  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillText('月',w/2,h+2);
 }
 
-function dDots(c,title,dates,color){
-  const card=mkCard(c,title,dates.length?`共 ${dates.length} 次`:'尚無紀錄');
-  if(!dates.length)return;
-  const w=CW(),h=72,pl=10,pr=10,mid=28;
+/* MENSTRUAL CHART — horizontal axis 1-12 months, dot per period start, label = day of month */
+function drawMenstrual(c,recs,sub,yr){
+  const mensRecs=recs.filter(r=>r.mens==1||r.mens==='1');
+  const total=mensRecs.length;
+  const card=mkCard(c,'月經',`${sub}・共 ${total} 次/年`);
+  const w=CW(),h=90,pl=28,pr=8,pt=20,pb=22;
+  const cw=w-pl-pr;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
-  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;
-  ctx.beginPath();ctx.moveTo(pl,mid);ctx.lineTo(w-pr,mid);ctx.stroke();
-  const step=(w-pl-pr)/Math.max(dates.length-1,1);
-  dates.forEach((d,i)=>{
-    const x=pl+i*step;
-    ctx.beginPath();ctx.arc(x,mid,5.5,0,Math.PI*2);ctx.fillStyle='#1a1a1e';ctx.fill();
-    ctx.beginPath();ctx.arc(x,mid,4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
-    ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
-    ctx.fillText(d.slice(5),x,h-4);
+  const mid=pt+(h-pt-pb)/2+8;
+
+  // horizontal line
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=0.5;
+  ctx.beginPath();ctx.moveTo(pl,mid);ctx.lineTo(pl+cw,mid);ctx.stroke();
+
+  // month positions
+  const xs=Array.from({length:12},(_,i)=>pl+(i*(cw/11)));
+
+  // x labels
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='center';
+  xs.forEach((x,i)=>ctx.fillText(i+1,x,h-4));
+
+  // dots at month position, label = day
+  mensRecs.forEach(r=>{
+    const d=new Date(r.date);
+    const m=d.getMonth(); // 0-indexed
+    const day=d.getDate();
+    const x=xs[m];
+    drawDot(ctx,x,mid,'#f687b3');
+    ctx.fillStyle='#f687b3';ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='center';
+    ctx.fillText(day,x,mid-12);
   });
+}
+
+function drawGrid(ctx,pl,pr,pt,pb,cw,ch,w,h,minY,maxY,steps){
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+  for(let i=0;i<=steps;i++){
+    const y=pt+(ch/steps)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();
+    const v=maxY-((maxY-minY)/steps)*i;
+    ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
+    ctx.fillText(Number.isInteger(v)?v:v.toFixed(1),pl-3,y+3);
+  }
+}
+
+function drawDot(ctx,x,y,color){
+  ctx.beginPath();ctx.arc(x,y,5.5,0,Math.PI*2);ctx.fillStyle='#1a1a1e';ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
 }
 
 renderStsTags();renderEStsTags();init();
