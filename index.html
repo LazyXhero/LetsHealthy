@@ -313,7 +313,7 @@ const API='https://script.google.com/macros/s/AKfycbzjI4DGZ4tRUPFLHgDqIQDSOJRVBj
 const COLORS=['#3aafa9','#f687b3','#68d391','#f6ad55','#fc8181','#a78bfa','#60a5fa'];
 const STATUSES=[
   {id:'ok',label:'良好'},{id:'h3',label:'頭痛_重'},{id:'h2',label:'頭痛_中'},{id:'h1',label:'頭痛_輕微'},
-  {id:'cp',label:'心痛'},{id:'chest',label:'心悶'},{id:'ar',label:'心律不整'},{id:'ti',label:'疲累'},
+  {id:'cp',label:'心痛'},{id:'chest',label:'心悶'},{id:'ar',label:'心律不整'},{id:'chest2',label:'胸痛'},{id:'ti',label:'疲累'},
   {id:'cough',label:'咳嗽'},{id:'runny',label:'鼻水'},
   {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},
   {id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},{id:'ot',label:'其他'}
@@ -581,21 +581,21 @@ function renderCharts(recs,yr,yearLabel,personLabel){
   const c=document.getElementById('hist-charts-view');c.innerHTML='';
   const sub=`${personLabel}・${yearLabel}`;
 
-  // 體重 (line chart by date, not monthly)
+  // 體重 only if data
   const wRecs=recs.filter(r=>r.weight&&+r.weight>0);
-  drawWeightChart(c,wRecs,sub);
+  if(wRecs.length)drawWeightChart(c,wRecs,sub);
 
-  // Diet flags monthly
-  drawMonthly(c,'加工食品',sub,recs,r=>r.proc==='y','#f6ad55',yr);
-  drawMonthly(c,'炸物',sub,recs,r=>r.fried==='y','#fc8181',yr);
-  drawMonthly(c,'飲料',sub,recs,r=>r.drink==='y','#60a5fa',yr);
-  drawMonthly(c,'藥物',sub,recs,r=>r.med==='y','#68d391',yr);
+  // Diet flags monthly — only if data exists
+  if(recs.some(r=>r.proc==='y'))drawMonthly(c,'加工食品',sub,recs,r=>r.proc==='y','#f6ad55',yr);
+  if(recs.some(r=>r.fried==='y'))drawMonthly(c,'炸物',sub,recs,r=>r.fried==='y','#fc8181',yr);
+  if(recs.some(r=>r.drink==='y'))drawMonthly(c,'飲料',sub,recs,r=>r.drink==='y','#60a5fa',yr);
+  if(recs.some(r=>r.med==='y'))drawMonthly(c,'藥物',sub,recs,r=>r.med==='y','#68d391',yr);
 
   // Status items monthly
   // color map for different status groups
   const stsColor={
     'ok':'#68d391','h3':'#fc8181','h2':'#f6ad55','h1':'#fcd34d',
-    'cp':'#f687b3','chest':'#f9a8d4','ar':'#fb7185','ti':'#a78bfa',
+    'cp':'#f687b3','chest':'#f9a8d4','ar':'#fb7185','chest2':'#fda4af','ti':'#a78bfa',
     'cough':'#60a5fa','runny':'#7dd3fc',
     'fe':'#fb923c','vo':'#e879f9',
     'blink':'#a3e635','drift':'#4ade80','abd':'#34d399',
@@ -603,16 +603,15 @@ function renderCharts(recs,yr,yearLabel,personLabel){
   };
   STATUSES.forEach(s=>{
     const color=stsColor[s.id]||'#a78bfa';
-    if(s.id==='ot'){
-      // 其他：count records that have 'ot' in statuses
-      drawMonthly(c,'其他',sub,recs,r=>getSts(r).includes('ot'),color,yr);
-    } else {
-      drawMonthly(c,s.label,sub,recs,r=>getSts(r).includes(s.id),color,yr);
-    }
+    const pred=r=>getSts(r).includes(s.id);
+    const hasData=recs.some(pred);
+    if(!hasData)return;
+    drawMonthly(c,s.id==='ot'?'其他':s.label,sub,recs,pred,color,yr);
   });
 
-  // Menstrual special
-  drawMenstrual(c,recs,sub,yr);
+  // Menstrual only if data
+  const mensRecs2=recs.filter(r=>r.mens==1||r.mens==='1');
+  if(mensRecs2.length)drawMenstrual(c,recs,sub,yr);
 }
 
 function byMonthArr(recs,pred,yr){
