@@ -565,7 +565,16 @@ function renderRL(recs){
     if(r.fried==='y')chips.push(`<span class="rec-chip w">炸物</span>`);
     if(r.drink==='y')chips.push(`<span class="rec-chip b">飲料</span>`);
     if(r.med==='y')chips.push(`<span class="rec-chip g">藥物</span>`);
-    getSts(r).forEach(s=>{const f=STATUSES.find(x=>x.id===s);if(f)chips.push(`<span class="rec-chip w">${f.label}</span>`);});
+    getSts(r).forEach(s=>{
+      const f=STATUSES.find(x=>x.id===s);
+      if(!f)return;
+      if(s==='ot'){
+        const otherLabel=r.otherText?`其他：${r.otherText}`:'其他';
+        chips.push(`<span class="rec-chip w">${otherLabel}</span>`);
+      } else {
+        chips.push(`<span class="rec-chip w">${f.label}</span>`);
+      }
+    });
     if(r.mens)chips.push(`<span class="rec-chip p">月經第${r.mens}天</span>`);
     const meals=[r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].filter(Boolean);
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
