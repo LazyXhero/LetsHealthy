@@ -217,6 +217,7 @@ canvas{display:block;}
         <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
+        <div id="med-note-wrap" style="display:none;padding:0 14px 12px;"><input type="text" id="med-note" placeholder="藥物名稱／說明…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;"></div>
       </div>
     </div>
     <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -289,6 +290,7 @@ canvas{display:block;}
           <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
+          <div id="edit-med-note-wrap" style="display:none;padding:0 14px 12px;"><input type="text" id="edit-med-note" placeholder="藥物名稱／說明…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;"></div>
         </div>
       </div>
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -312,11 +314,15 @@ canvas{display:block;}
 const API='https://script.google.com/macros/s/AKfycbzjI4DGZ4tRUPFLHgDqIQDSOJRVBjFsQXMsRkK3EyHoQI3kHLwzEXhvrW4ZmFYCBrwkfA/exec';
 const COLORS=['#3aafa9','#f687b3','#68d391','#f6ad55','#fc8181','#a78bfa','#60a5fa'];
 const STATUSES=[
-  {id:'ok',label:'良好'},{id:'h3',label:'頭痛_重'},{id:'h2',label:'頭痛_中'},{id:'h1',label:'頭痛_輕微'},
-  {id:'cp',label:'心痛'},{id:'chest',label:'心悶'},{id:'ar',label:'心律不整'},{id:'chest2',label:'胸痛'},{id:'ti',label:'疲累'},
-  {id:'cough',label:'咳嗽'},{id:'runny',label:'鼻水'},
-  {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},
-  {id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},{id:'ot',label:'其他'}
+  {id:'h4',label:'頭痛_重'},{id:'h3',label:'頭痛_中'},{id:'h2',label:'頭痛_輕微'},{id:'h1',label:'頭痛_極微'},
+  {id:'cp',label:'心痛'},{id:'chest',label:'心悶'},{id:'ar',label:'心律不整'},
+  {id:'chest2',label:'胸痛'},{id:'chest3',label:'胸悶'},
+  {id:'cough1',label:'乾咳'},{id:'cough2',label:'咳痰'},
+  {id:'sn1',label:'乾鼻涕'},{id:'sn6',label:'鼻血'},
+  {id:'sn2',label:'鼻水_微'},{id:'sn3',label:'鼻水_中'},{id:'sn4',label:'鼻水_多'},{id:'sn5',label:'鼻水_濃'},
+  {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},{id:'ti',label:'疲累'},
+  {id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},
+  {id:'ot',label:'其他'}
 ];
 let persons=[],allRecs=[],selectedPerson=null;
 let tgl={proc:null,fried:null,med:null,drink:null};
@@ -411,11 +417,53 @@ function populatePersonFilters(){
 }
 
 /* FORM */
-function setTgl(type,val){tgl[type]=tgl[type]===val?null:val;['y','n'].forEach(v=>{document.getElementById(type+'-'+v).className='toggle-btn'+(tgl[type]===v?(v==='y'?' on':' off-sel'):'');});}
-function setETgl(type,val){etgl[type]=etgl[type]===val?null:val;['y','n'].forEach(v=>{document.getElementById('e'+type+'-'+v).className='toggle-btn'+(etgl[type]===v?(v==='y'?' on':' off-sel'):'');});}
-function renderStsTags(){document.getElementById('status-tags').innerHTML=STATUSES.map(s=>`<div class="tag ${selSts.has(s.id)?'selected':''}" onclick="togSts('${s.id}')">${s.label}</div>`).join('');}
+function setTgl(type,val){
+  tgl[type]=tgl[type]===val?null:val;
+  ['y','n'].forEach(v=>{document.getElementById(type+'-'+v).className='toggle-btn'+(tgl[type]===v?(v==='y'?' on':' off-sel'):'');});
+  if(type==='med'){const w=document.getElementById('med-note-wrap');if(w)w.style.display=tgl.med==='y'?'block':'none';}
+}
+function setETgl(type,val){
+  etgl[type]=etgl[type]===val?null:val;
+  ['y','n'].forEach(v=>{document.getElementById('e'+type+'-'+v).className='toggle-btn'+(etgl[type]===v?(v==='y'?' on':' off-sel'):'');});
+  if(type==='med'){const w=document.getElementById('edit-med-note-wrap');if(w)w.style.display=etgl.med==='y'?'block':'none';}
+}
+function renderStsTags(){
+  const groups=[
+    ['h4','h3','h2','h1'],
+    ['cp','chest','ar'],
+    ['chest2','chest3'],
+    ['cough1','cough2'],
+    ['sn1','sn6'],
+    ['sn2','sn3','sn4','sn5'],
+    ['fe','vo','ti'],
+    ['blink','drift','abd'],
+    ['ot']
+  ];
+  document.getElementById('status-tags').innerHTML=groups.map(g=>
+    `<div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-bottom:4px;">`+
+    g.map(id=>{const s=STATUSES.find(x=>x.id===id);return s?`<div class="tag ${selSts.has(id)?'selected':''}" onclick="togSts('${id}')">${s.label}</div>`:''}).join('')+
+    `</div>`
+  ).join('');
+}
 function togSts(id){selSts.has(id)?selSts.delete(id):selSts.add(id);document.getElementById('other-wrap').className='other-input-wrap'+(selSts.has('ot')?' show':'');renderStsTags();}
-function renderEStsTags(){document.getElementById('edit-status-tags').innerHTML=STATUSES.map(s=>`<div class="tag ${editSts.has(s.id)?'selected':''}" onclick="togESts('${s.id}')">${s.label}</div>`).join('');}
+function renderEStsTags(){
+  const groups=[
+    ['h4','h3','h2','h1'],
+    ['cp','chest','ar'],
+    ['chest2','chest3'],
+    ['cough1','cough2'],
+    ['sn1','sn6'],
+    ['sn2','sn3','sn4','sn5'],
+    ['fe','vo','ti'],
+    ['blink','drift','abd'],
+    ['ot']
+  ];
+  document.getElementById('edit-status-tags').innerHTML=groups.map(g=>
+    `<div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-bottom:4px;">`+
+    g.map(id=>{const s=STATUSES.find(x=>x.id===id);return s?`<div class="tag ${editSts.has(id)?'selected':''}" onclick="togESts('${id}')">${s.label}</div>`:''}).join('')+
+    `</div>`
+  ).join('');
+}
 function togESts(id){editSts.has(id)?editSts.delete(id):editSts.add(id);document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');renderEStsTags();}
 function toggleMens(){document.getElementById('mens-detail').style.display=document.getElementById('mens-on').checked?'block':'none';}
 function toggleEMens(){document.getElementById('edit-mens-detail').style.display=document.getElementById('edit-mens-on').checked?'block':'none';}
@@ -437,6 +485,7 @@ async function saveRecord(){
     meals:{breakfast:document.getElementById('meal-breakfast').value,lunch:document.getElementById('meal-lunch').value,dinner:document.getElementById('meal-dinner').value,snack:document.getElementById('meal-snack').value},
     proc:tgl.proc,fried:tgl.fried,med:tgl.med,drink:tgl.drink,
     statuses:[...selSts],otherText:document.getElementById('other-text').value,
+    medNote:document.getElementById('med-note').value,
     notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
@@ -461,6 +510,9 @@ function openEditModal(rec){
   editSts=new Set(getSts(rec));
   document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');
   document.getElementById('edit-other-text').value=rec.otherText||'';
+  document.getElementById('edit-med-note').value=rec.medNote||'';
+  const emw=document.getElementById('edit-med-note-wrap');
+  if(emw)emw.style.display=(rec.med==='y')?'block':'none';
   document.getElementById('edit-notes').value=rec.notes||'';
   renderEStsTags();
   const mo=rec.mens&&+rec.mens>=1;
@@ -480,6 +532,7 @@ async function saveEdit(){
     meals:{breakfast:document.getElementById('edit-breakfast').value,lunch:document.getElementById('edit-lunch').value,dinner:document.getElementById('edit-dinner').value,snack:document.getElementById('edit-snack').value},
     proc:etgl.proc,fried:etgl.fried,med:etgl.med,drink:etgl.drink,
     statuses:[...editSts],otherText:document.getElementById('edit-other-text').value,
+    medNote:document.getElementById('edit-med-note').value,
     notes:document.getElementById('edit-notes').value,
     mens:document.getElementById('edit-mens-on').checked?eMensDay:null};
   setSS('loading','修改中…');
@@ -564,7 +617,10 @@ function renderRL(recs){
     if(r.proc==='y')chips.push(`<span class="rec-chip w">加工</span>`);
     if(r.fried==='y')chips.push(`<span class="rec-chip w">炸物</span>`);
     if(r.drink==='y')chips.push(`<span class="rec-chip b">飲料</span>`);
-    if(r.med==='y')chips.push(`<span class="rec-chip g">藥物</span>`);
+    if(r.med==='y'){
+      const medLabel=r.medNote?`藥物：${r.medNote}`:'藥物';
+      chips.push(`<span class="rec-chip g">${medLabel}</span>`);
+    }
     getSts(r).forEach(s=>{
       const f=STATUSES.find(x=>x.id===s);
       if(!f)return;
@@ -603,10 +659,12 @@ function renderCharts(recs,yr,yearLabel,personLabel){
   // Status items monthly
   // color map for different status groups
   const stsColor={
-    'ok':'#68d391','h3':'#fc8181','h2':'#f6ad55','h1':'#fcd34d',
-    'cp':'#f687b3','chest':'#f9a8d4','ar':'#fb7185','chest2':'#fda4af','ti':'#a78bfa',
-    'cough':'#60a5fa','runny':'#7dd3fc',
-    'fe':'#fb923c','vo':'#e879f9',
+    'h4':'#ef4444','h3':'#f97316','h2':'#fbbf24','h1':'#fde68a',
+    'cp':'#f687b3','chest':'#f9a8d4','ar':'#fb7185',
+    'chest2':'#fda4af','chest3':'#fecdd3',
+    'cough1':'#60a5fa','cough2':'#93c5fd',
+    'sn1':'#7dd3fc','sn2':'#a5f3fc','sn3':'#67e8f9','sn4':'#22d3ee','sn5':'#0891b2','sn6':'#dc2626',
+    'fe':'#fb923c','vo':'#e879f9','ti':'#a78bfa',
     'blink':'#a3e635','drift':'#4ade80','abd':'#34d399',
     'ot':'#94a3b8'
   };
