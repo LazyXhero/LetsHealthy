@@ -217,7 +217,8 @@ canvas{display:block;}
         <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
-        <div id="med-note-wrap" style="display:none;padding:0 14px 12px;"><input type="text" id="med-note" placeholder="藥物名稱／說明…" autocomplete="off" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;" oninput="medNoteValue=this.value"></div>
+        <div class="toggle-row" id="med-note-wrap" style="display:none;"><div class="toggle-label" style="color:var(--text2);font-size:13px;">藥物說明</div></div>
+        <div id="med-note-input-row" style="display:none;padding:4px 14px 12px;"><input type="text" id="med-note" placeholder="藥物名稱／說明…" autocomplete="off" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;"></div>
       </div>
     </div>
     <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -290,7 +291,7 @@ canvas{display:block;}
           <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
-          <div id="edit-med-note-wrap" style="display:none;padding:0 14px 12px;"><input type="text" id="edit-med-note" placeholder="藥物名稱／說明…" autocomplete="off" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;" oninput="editMedNoteValue=this.value"></div>
+          <div id="edit-med-note-input-row" style="display:none;padding:4px 14px 12px;"><input type="text" id="edit-med-note" placeholder="藥物名稱／說明…" autocomplete="off" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;"></div>
         </div>
       </div>
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -326,8 +327,7 @@ const STATUSES=[
 ];
 let persons=[],allRecs=[],selectedPerson=null;
 let tgl={proc:null,fried:null,med:null,drink:null};
-let medNoteValue='';
-let editMedNoteValue='';
+
 let etgl={proc:null,fried:null,med:null,drink:null};
 let selSts=new Set(),editSts=new Set();
 let mensDay=1,eMensDay=1,editRec=null,histTab='list';
@@ -423,16 +423,20 @@ function setTgl(type,val){
   tgl[type]=tgl[type]===val?null:val;
   ['y','n'].forEach(v=>{document.getElementById(type+'-'+v).className='toggle-btn'+(tgl[type]===v?(v==='y'?' on':' off-sel'):'');});
   if(type==='med'){
-    const w=document.getElementById('med-note-wrap');
-    if(w)w.style.display=tgl.med==='y'?'block':'none';
-    if(tgl.med==='y'){setTimeout(()=>{const inp=document.getElementById('med-note');if(inp)inp.focus();},100);}
-    else{medNoteValue='';const inp=document.getElementById('med-note');if(inp)inp.value='';}
+    const show=tgl.med==='y';
+    const w=document.getElementById('med-note-wrap');if(w)w.style.display=show?'flex':'none';
+    const w2=document.getElementById('med-note-input-row');if(w2)w2.style.display=show?'block':'none';
+    if(!show){const inp=document.getElementById('med-note');if(inp)inp.value='';}
   }
 }
 function setETgl(type,val){
   etgl[type]=etgl[type]===val?null:val;
   ['y','n'].forEach(v=>{document.getElementById('e'+type+'-'+v).className='toggle-btn'+(etgl[type]===v?(v==='y'?' on':' off-sel'):'');});
-  if(type==='med'){const w=document.getElementById('edit-med-note-wrap');if(w)w.style.display=etgl.med==='y'?'block':'none';}
+  if(type==='med'){
+    const show=etgl.med==='y';
+    const w2=document.getElementById('edit-med-note-input-row');if(w2)w2.style.display=show?'block':'none';
+    if(!show){const inp=document.getElementById('edit-med-note');if(inp)inp.value='';}
+  }
 }
 function renderStsTags(){
   const groups=[
@@ -494,7 +498,7 @@ async function saveRecord(){
     meals:{breakfast:document.getElementById('meal-breakfast').value,lunch:document.getElementById('meal-lunch').value,dinner:document.getElementById('meal-dinner').value,snack:document.getElementById('meal-snack').value},
     proc:tgl.proc,fried:tgl.fried,med:tgl.med,drink:tgl.drink,
     statuses:[...selSts],otherText:document.getElementById('other-text').value,
-    medNote:(document.getElementById('med-note')?.value||medNoteValue||'').trim(),
+    medNote:tgl.med==='y'?(document.getElementById('med-note')||{value:''}).value.trim():'',
     notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
@@ -503,7 +507,7 @@ async function saveRecord(){
     // update local cache
     const idx=allRecs.findIndex(r=>r.id===rec.id);
     if(idx>=0)allRecs[idx]=rec; else allRecs.push(rec);
-    medNoteValue='';setSS('ok','已連線 Google Sheets');showToast('已儲存');
+    setSS('ok','已連線 Google Sheets');showToast('已儲存');
   }catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
   btn.disabled=false;btn.textContent='儲存';
 }
@@ -520,7 +524,7 @@ function openEditModal(rec){
   document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');
   document.getElementById('edit-other-text').value=rec.otherText||'';
   document.getElementById('edit-med-note').value=rec.medNote||'';editMedNoteValue=rec.medNote||'';
-  const emw=document.getElementById('edit-med-note-wrap');
+  const emw=document.getElementById('edit-med-note-input-row');
   if(emw)emw.style.display=(rec.med==='y'||rec.med===true)?'block':'none';
   document.getElementById('edit-notes').value=rec.notes||'';
   renderEStsTags();
@@ -541,7 +545,7 @@ async function saveEdit(){
     meals:{breakfast:document.getElementById('edit-breakfast').value,lunch:document.getElementById('edit-lunch').value,dinner:document.getElementById('edit-dinner').value,snack:document.getElementById('edit-snack').value},
     proc:etgl.proc,fried:etgl.fried,med:etgl.med,drink:etgl.drink,
     statuses:[...editSts],otherText:document.getElementById('edit-other-text').value,
-    medNote:(document.getElementById('edit-med-note')?.value||editMedNoteValue||'').trim(),
+    medNote:etgl.med==='y'?(document.getElementById('edit-med-note')||{value:''}).value.trim():'',
     notes:document.getElementById('edit-notes').value,
     mens:document.getElementById('edit-mens-on').checked?eMensDay:null};
   setSS('loading','修改中…');
