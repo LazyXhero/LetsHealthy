@@ -322,7 +322,7 @@ const STATUSES=[
   {id:'sn2',label:'鼻水_微'},{id:'sn3',label:'鼻水_中'},{id:'sn4',label:'鼻水_多'},{id:'sn5',label:'鼻水_濃'},
   {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},{id:'ti',label:'疲累'},
   {id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},{id:'neck',label:'扭脖'},
-  {id:'bowel',label:'排便'},{id:'ot',label:'其他'}
+  {id:'bowel',label:'排便'},{id:'diarr',label:'腹瀉'},{id:'ot',label:'其他'}
 ];
 let persons=[],allRecs=[],selectedPerson=null;
 let tgl={proc:null,fried:null,med:null,drink:null};
@@ -437,7 +437,7 @@ function renderStsTags(){
     ['sn2','sn3','sn4','sn5'],
     ['fe','vo','ti'],
     ['blink','drift','abd','neck'],
-    ['bowel'],
+    ['bowel','diarr'],
     ['ot']
   ];
   document.getElementById('status-tags').innerHTML=groups.map(g=>
@@ -457,7 +457,7 @@ function renderEStsTags(){
     ['sn2','sn3','sn4','sn5'],
     ['fe','vo','ti'],
     ['blink','drift','abd','neck'],
-    ['bowel'],
+    ['bowel','diarr'],
     ['ot']
   ];
   document.getElementById('edit-status-tags').innerHTML=groups.map(g=>
@@ -668,7 +668,7 @@ function renderCharts(recs,yr,yearLabel,personLabel){
     'sn1':'#7dd3fc','sn2':'#a5f3fc','sn3':'#67e8f9','sn4':'#22d3ee','sn5':'#0891b2','sn6':'#dc2626',
     'fe':'#fb923c','vo':'#e879f9','ti':'#a78bfa',
     'blink':'#a3e635','drift':'#4ade80','abd':'#34d399',
-    'neck':'#6ee7b7','bowel':'#86efac','ot':'#94a3b8'
+    'neck':'#6ee7b7','bowel':'#86efac','diarr':'#fca5a5','ot':'#94a3b8'
   };
   STATUSES.forEach(s=>{
     const color=stsColor[s.id]||'#a78bfa';
