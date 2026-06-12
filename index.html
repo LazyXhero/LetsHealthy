@@ -223,7 +223,8 @@ canvas{display:block;}
         </select>
       </div>
       <div class="filter-row">
-        <input type="text" class="filter-select" id="list-search" placeholder="🔍 搜尋關鍵字…" oninput="applyListFilter()" style="flex:1;">
+        <input type="text" class="filter-select" id="list-search" placeholder="🔍 搜尋關鍵字…" oninput="applyListFilter()" style="flex:1;" autocomplete="off">
+        <button onclick="clearFilters()" style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:13px;padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;">清除</button>
       </div>
       <div id="hist-list-view"><div class="loading-state">請切換到此頁載入</div></div>
     </div>
@@ -647,6 +648,14 @@ function populateYearFilter(){
   sel.innerHTML='<option value="">所有年份</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
   if(years.length&&!cur)sel.value=years[0]; else sel.value=cur;
 }
+function clearFilters(){
+  document.getElementById('list-person-filter').value='';
+  document.getElementById('list-month-filter').value='';
+  document.getElementById('list-category-filter').value='';
+  document.getElementById('list-search').value='';
+  applyListFilter();
+}
+
 function applyListFilter(){
   const pid=document.getElementById('list-person-filter').value;
   const mon=document.getElementById('list-month-filter').value;
@@ -712,7 +721,27 @@ function applyChartFilter(){
 // ── RENDER LIST ──
 function renderRL(recs){
   const el=document.getElementById('hist-list-view');
-  if(!recs.length){el.innerHTML='<div class="loading-state">尚無符合紀錄</div>';return;}
+  
+  // Build active filter label
+  const pid=document.getElementById('list-person-filter').value;
+  const mon=document.getElementById('list-month-filter').value;
+  const cat=document.getElementById('list-category-filter').value;
+  const kw=(document.getElementById('list-search').value||'').trim();
+  const catLabels={'meals':'飲食記錄','proc':'加工食品','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','mens':'月經','doctor':"Doctor's Order"};
+  const tags=[];
+  if(pid){const p=persons.find(x=>x.id===pid);if(p)tags.push(`👤 ${p.name}`);}
+  if(mon)tags.push(`📅 ${mon}`);
+  if(cat)tags.push(`🔖 ${catLabels[cat]||cat}`);
+  if(kw)tags.push(`🔍 「${kw}」`);
+  
+  const filterBar=tags.length?`<div style="padding:0 16px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+    <span style="font-size:12px;color:var(--text3);">篩選：</span>
+    ${tags.map(t=>`<span style="background:rgba(58,175,169,0.15);color:var(--accent);border:0.5px solid rgba(58,175,169,0.3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
+    <span style="font-size:12px;color:var(--text3);margin-left:4px;">共 ${recs.length} 筆</span>
+    <button onclick="clearFilters()" style="background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:12px;padding:4px 10px;border-radius:20px;cursor:pointer;font-weight:600;">清除</button>
+  </div>`:'<div style="padding:0 16px 8px;"><span style="font-size:12px;color:var(--text3);">共 '+recs.length+' 筆</span></div>';
+
+  if(!recs.length){el.innerHTML=filterBar+'<div class="loading-state">尚無符合紀錄</div>';return;}
   el.innerHTML=recs.map(r=>{
     const chips=[];
     if(r.height)chips.push(`<span class="rec-chip a">${r.height}cm</span>`);
