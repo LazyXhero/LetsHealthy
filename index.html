@@ -185,6 +185,7 @@ canvas{display:block;}
     </div>
     <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
     <div class="section"><div class="section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
+    <div class="section"><div class="section-title">Doctor's Order</div><div class="card"><div style="padding:10px 14px;"><textarea id="doctor-order" rows="3" placeholder="Doctor's order…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
     <div class="section">
       <div class="section-title">Menstrual Cycle</div>
       <div class="card">
@@ -206,6 +207,23 @@ canvas{display:block;}
       <div class="filter-row">
         <select class="filter-select" id="list-person-filter" onchange="applyListFilter()"><option value="">所有人員</option></select>
         <input type="month" class="filter-select" id="list-month-filter" onchange="applyListFilter()">
+      </div>
+      <div class="filter-row">
+        <select class="filter-select" id="list-category-filter" onchange="applyListFilter()">
+          <option value="">所有項目</option>
+          <option value="meals">飲食記錄</option>
+          <option value="proc">加工食品</option>
+          <option value="fried">炸物</option>
+          <option value="drink">飲料</option>
+          <option value="med">藥物</option>
+          <option value="status">Status</option>
+          <option value="remark">Remark</option>
+          <option value="mens">月經</option>
+          <option value="doctor">Doctor's Order</option>
+        </select>
+      </div>
+      <div class="filter-row">
+        <input type="text" class="filter-select" id="list-search" placeholder="🔍 搜尋關鍵字…" oninput="applyListFilter()" style="flex:1;">
       </div>
       <div id="hist-list-view"><div class="loading-state">請切換到此頁載入</div></div>
     </div>
@@ -252,6 +270,7 @@ canvas{display:block;}
       </div>
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Doctor's Order</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-doctor-order" rows="3" placeholder="Doctor's order…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Menstrual Cycle</div><div class="card"><div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="edit-mens-on" onchange="toggleEMens()"><span class="slider"></span></label></div><div id="edit-mens-detail" style="display:none"><div class="menstrual-row"><div class="menstrual-label">第幾天</div><div class="menstrual-ctrl"><div class="day-btn" onclick="chEDay(-1)">−</div><div class="day-val" id="edit-mens-day">1</div><div class="day-unit">天</div><div class="day-btn" onclick="chEDay(1)">＋</div></div></div></div></div></div>
     </div>
   </div>
@@ -484,6 +503,7 @@ async function saveRecord(){
     otherText:document.getElementById('other-text').value,
     medNote:'',
     notes:document.getElementById('notes').value,
+    doctorOrder:document.getElementById('doctor-order').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
 
@@ -529,6 +549,7 @@ function openEditModal(rec){
   document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');
   document.getElementById('edit-other-text').value=rec.otherText||'';
   document.getElementById('edit-notes').value=rec.notes||'';
+  document.getElementById('edit-doctor-order').value=rec.doctorOrder||'';
   renderEStsTags();
   const mo=rec.mens&&+rec.mens>=1;
   document.getElementById('edit-mens-on').checked=!!mo;
@@ -572,6 +593,7 @@ async function saveEdit(){
     otherText:document.getElementById('edit-other-text').value,
     medNote:'',
     notes:document.getElementById('edit-notes').value,
+    doctorOrder:document.getElementById('edit-doctor-order').value,
     mens:document.getElementById('edit-mens-on').checked?eMensDay:null
   };
 
@@ -609,6 +631,8 @@ async function loadAllRecs(){
   try{
     const raw=await api('GET',{action:'getRecords'});
     allRecs=Array.isArray(raw)?raw:[];
+    // normalize doctorOrder field
+    allRecs=allRecs.map(r=>({...r,doctorOrder:String(r.doctorOrder||r.doctor_order||'').trim()}));
     populateYearFilter();
     applyListFilter();
     applyChartFilter();
@@ -626,9 +650,50 @@ function populateYearFilter(){
 function applyListFilter(){
   const pid=document.getElementById('list-person-filter').value;
   const mon=document.getElementById('list-month-filter').value;
+  const cat=document.getElementById('list-category-filter').value;
+  const kw=(document.getElementById('list-search').value||'').trim().toLowerCase();
   let recs=[...allRecs];
+
+  // Person filter
   if(pid)recs=recs.filter(r=>r.personId===pid);
+
+  // Month filter
   if(mon){const[y,m]=mon.split('-');recs=recs.filter(r=>{const o=new Date(r.date);return o.getFullYear()===+y&&(o.getMonth()+1)===+m;});}
+
+  // Category filter
+  if(cat){
+    recs=recs.filter(r=>{
+      const sts=getSts(r);
+      if(cat==='meals')return [r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].some(v=>v&&v.trim());
+      if(cat==='proc')return r.proc&&r.proc!=='n'&&r.proc!=='';
+      if(cat==='fried')return r.fried&&r.fried!=='n'&&r.fried!=='';
+      if(cat==='drink')return r.drink&&r.drink!=='n'&&r.drink!=='';
+      if(cat==='med')return r.med&&r.med!=='n'&&r.med!=='';
+      if(cat==='status')return sts.length>0;
+      if(cat==='remark')return r.notes&&r.notes.trim();
+      if(cat==='mens')return r.mens&&+r.mens>=1;
+      if(cat==='doctor')return r.doctorOrder&&r.doctorOrder.trim();
+      return true;
+    });
+  }
+
+  // Keyword search - search across all fields
+  if(kw){
+    recs=recs.filter(r=>{
+      const sts=getSts(r);
+      const allText=[
+        r.personName,
+        r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack,
+        r.meals?.proc,r.meals?.fried,r.meals?.drink,r.meals?.med,
+        r.proc,r.fried,r.drink,r.med,
+        r.otherText,r.notes,r.doctorOrder,
+        ...sts.map(s=>STATUSES.find(x=>x.id===s)?.label||s),
+        r.mens?'月經':'',
+      ].filter(Boolean).join(' ').toLowerCase();
+      return allText.includes(kw);
+    });
+  }
+
   recs.sort((a,b)=>new Date(b.date)-new Date(a.date));
   renderRL(recs);
 }
@@ -672,6 +737,7 @@ function renderRL(recs){
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
 
     if(r.notes)chips.push(`<span class="rec-chip">📝 ${r.notes}</span>`);
+    if(r.doctorOrder)chips.push(`<span class="rec-chip a">🏥 ${r.doctorOrder}</span>`);
     const enc=encodeURIComponent(JSON.stringify(r));
     const pName=persons.find(p=>p.id===r.personId)?.name||r.personName||'';
     return `<div class="rec-card">
