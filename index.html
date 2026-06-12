@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -19,8 +20,6 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang TC',sans-serif;min-height:100vh;padding-top:env(safe-area-inset-top);font-size:15px;}
 .phone-wrap{max-width:430px;margin:0 auto;}
-
-/* TOP BAR */
 .top-bar{background:var(--bg);padding:14px 16px 8px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid var(--border);}
 .top-bar h1{font-size:21px;font-weight:700;color:var(--text1);}
 .top-bar .sub{font-size:12px;color:var(--text2);margin-top:2px;display:flex;align-items:center;gap:5px;}
@@ -29,18 +28,12 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .sync-dot.err{background:var(--danger);}
 .sync-dot.loading{background:var(--warn);animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-
-/* TABS */
 .tab-bar{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:10px 16px;}
 .tab{flex:1;text-align:center;padding:8px 4px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.2s;font-weight:500;}
 .tab.active{background:var(--card);color:var(--accent);}
-
-/* SECTIONS */
 .section{padding:0 16px;margin-bottom:14px;}
 .section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
 .card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden;}
-
-/* PERSON ROWS */
 .person-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s;}
 .person-row:last-child{border-bottom:none;}
 .person-row.selected{background:rgba(58,175,169,0.08);}
@@ -52,27 +45,19 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .add-person-row input{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 12px;color:var(--text1);font-size:15px;outline:none;}
 .add-person-row input::placeholder{color:var(--text3);}
 .btn-add{background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 16px;font-size:15px;font-weight:700;cursor:pointer;}
-
-/* DATE */
 .date-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;}
 .date-label{font-size:15px;color:var(--text1);font-weight:500;}
 .date-input{background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;}
-
-/* VITALS */
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .metric-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:11px;}
 .metric-label{font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:500;}
 .metric-input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:6px;padding:7px 8px;color:var(--text1);font-size:16px;font-weight:600;text-align:center;outline:none;}
 .metric-unit{font-size:11px;color:var(--text3);text-align:center;margin-top:3px;}
-
-/* MEALS */
 .meal-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);}
 .meal-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .meal-row:last-child{border-bottom:none;}
-.meal-name{font-size:14px;color:var(--text2);width:36px;font-weight:500;}
+.meal-name{font-size:14px;color:var(--text2);width:36px;font-weight:500;flex-shrink:0;}
 .meal-input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;}
-
-/* TOGGLES */
 .toggle-group{display:flex;gap:6px;}
 .toggle-btn{flex:1;padding:9px;border-radius:7px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;}
 .toggle-btn.on{background:rgba(104,211,145,0.18);color:var(--success);border-color:rgba(104,211,145,0.4);}
@@ -80,24 +65,18 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .toggle-row:last-child{border-bottom:none;}
 .toggle-label{font-size:15px;color:var(--text1);font-weight:500;}
-
-/* TAGS */
 .tag-grid{display:flex;flex-wrap:wrap;gap:7px;padding:13px 14px;}
 .tag{padding:7px 13px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .tag.selected{background:rgba(246,173,85,0.18);color:var(--warn);border-color:rgba(246,173,85,0.4);}
 .other-input-wrap{width:100%;padding:0 14px 12px;display:none;}
 .other-input-wrap.show{display:block;}
 .other-input-wrap input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text1);font-size:14px;outline:none;}
-
-/* SWITCH */
 .ios-switch{position:relative;width:50px;height:30px;flex-shrink:0;}
 .ios-switch input{opacity:0;width:0;height:0;}
 .ios-switch .slider{position:absolute;inset:0;background:var(--bg3);border-radius:15px;transition:0.2s;cursor:pointer;}
 .ios-switch input:checked+.slider{background:var(--accent2);}
 .ios-switch .slider::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;background:white;left:3px;top:3px;transition:0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
 .ios-switch input:checked+.slider::after{transform:translateX(20px);}
-
-/* MENSTRUAL */
 .menstrual-toggle{display:flex;align-items:center;gap:8px;padding:13px 14px;border-bottom:0.5px solid var(--border);}
 .menstrual-row{display:flex;align-items:center;gap:10px;padding:16px 14px;}
 .menstrual-label{font-size:15px;color:var(--text1);font-weight:500;flex:1;}
@@ -105,32 +84,20 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .day-btn{width:38px;height:38px;border-radius:50%;border:0.5px solid var(--border);background:var(--bg2);color:var(--text1);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
 .day-val{font-size:22px;font-weight:700;color:var(--accent2);min-width:30px;text-align:center;}
 .day-unit{font-size:14px;color:var(--text2);}
-
-/* SAVE */
 .save-wrap{display:flex;justify-content:center;padding:24px 16px 60px;}
 .save-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;padding:14px 52px;letter-spacing:2px;}
 .save-btn:active{opacity:0.85;}
 .save-btn:disabled{opacity:0.55;cursor:not-allowed;}
-
-/* TOAST */
 .toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--accent);color:#fff;padding:11px 22px;border-radius:10px;font-size:15px;font-weight:700;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.error{background:#e05555;}
-
-/* PAGES */
 .page{display:none;}
 .page.active{display:block;}
-
-/* FILTER ROW */
-.filter-row{display:flex;gap:8px;padding:0 16px;margin-bottom:12px;align-items:center;}
+.filter-row{display:flex;gap:8px;padding:0 16px;margin-bottom:12px;}
 .filter-select{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;}
-
-/* HISTORY */
 .hist-sub-tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:0 16px 12px;}
 .hist-sub-tab{flex:1;text-align:center;padding:7px 4px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;}
 .hist-sub-tab.active{background:var(--card);color:var(--accent);}
-
-/* RECORD CARDS */
 .rec-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);margin:0 16px 10px;overflow:hidden;}
 .rec-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .rec-date-txt{font-size:15px;font-weight:700;color:var(--text1);}
@@ -145,28 +112,22 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .rec-chip.p{background:rgba(246,135,179,0.14);color:var(--accent2);}
 .rec-chip.a{background:rgba(58,175,169,0.14);color:var(--accent);}
 .rec-chip.b{background:rgba(96,165,250,0.14);color:#60a5fa;}
-
-/* CHART */
 .chart-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:14px;margin:0 16px 12px;}
 .chart-title{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:3px;}
 .chart-sub{font-size:12px;color:var(--text3);margin-bottom:10px;}
 canvas{display:block;}
 .no-data{text-align:center;padding:16px 0 4px;color:var(--text3);font-size:13px;}
 .loading-state{text-align:center;padding:40px 16px;color:var(--text2);font-size:15px;}
-
-/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:400;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
 .modal{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding-bottom:calc(20px + env(safe-area-inset-bottom));}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;}
 .modal-title{font-size:17px;font-weight:700;color:var(--text1);}
 .modal-close{background:var(--bg3);border:none;color:var(--text2);font-size:14px;padding:7px 15px;border-radius:20px;cursor:pointer;font-weight:600;}
-.modal-save-btn{background:var(--accent);border:none;color:#fff;font-size:14px;padding:7px 18px;border-radius:8px;cursor:pointer;font-weight:700;letter-spacing:1px;}
+.modal-save-btn{background:var(--accent);border:none;color:#fff;font-size:14px;padding:7px 18px;border-radius:8px;cursor:pointer;font-weight:700;}
 .modal-body{padding:14px 16px;}
 .modal-section{margin-bottom:14px;}
 .modal-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
-
-/* CONFIRM */
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:600;display:none;align-items:center;justify-content:center;}
 .confirm-overlay.show{display:flex;}
 .confirm-box{background:var(--bg2);border-radius:16px;padding:24px 20px;width:290px;text-align:center;}
@@ -217,7 +178,7 @@ canvas{display:block;}
         <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
-        <div class="meal-row"><div class="meal-name" style="width:60px;color:var(--text2);font-size:13px;">藥物說明</div><input type="text" id="med-note" placeholder="藥物名稱／說明…" class="meal-input"></div>
+        <div class="meal-row" style="border-top:0.5px solid var(--border);border-bottom:none;"><div class="meal-name" style="width:60px;font-size:13px;color:var(--text2);">藥物說明</div><input type="text" id="med-note" class="meal-input" placeholder="藥物名稱／說明…"></div>
       </div>
     </div>
     <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -239,27 +200,17 @@ canvas{display:block;}
       <div class="hist-sub-tab active" id="sub-list" onclick="switchHTab('list')">紀錄列表</div>
       <div class="hist-sub-tab" id="sub-charts" onclick="switchHTab('charts')">統計圖表</div>
     </div>
-
-    <!-- LIST FILTERS -->
     <div id="list-section">
       <div class="filter-row">
-        <select class="filter-select" id="list-person-filter" onchange="applyListFilter()">
-          <option value="">所有人員</option>
-        </select>
-        <input type="month" class="filter-select" id="list-month-filter" onchange="applyListFilter()" style="flex:1;">
+        <select class="filter-select" id="list-person-filter" onchange="applyListFilter()"><option value="">所有人員</option></select>
+        <input type="month" class="filter-select" id="list-month-filter" onchange="applyListFilter()">
       </div>
-      <div id="hist-list-view"><div class="loading-state">請先切換頁面載入資料</div></div>
+      <div id="hist-list-view"><div class="loading-state">請切換到此頁載入</div></div>
     </div>
-
-    <!-- CHART FILTERS -->
     <div id="chart-section" style="display:none;">
       <div class="filter-row">
-        <select class="filter-select" id="chart-person-filter" onchange="applyChartFilter()">
-          <option value="">所有人員</option>
-        </select>
-        <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()">
-          <option value="">所有年份</option>
-        </select>
+        <select class="filter-select" id="chart-person-filter" onchange="applyChartFilter()"><option value="">所有人員</option></select>
+        <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()"><option value="">所有年份</option></select>
       </div>
       <div id="hist-charts-view"></div>
     </div>
@@ -290,7 +241,7 @@ canvas{display:block;}
           <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
-          <div class="meal-row"><div class="meal-name" style="width:60px;color:var(--text2);font-size:13px;">藥物說明</div><input type="text" id="edit-med-note" placeholder="藥物名稱／說明…" class="meal-input"></div>
+          <div class="meal-row" style="border-top:0.5px solid var(--border);border-bottom:none;"><div class="meal-name" style="width:60px;font-size:13px;color:var(--text2);">藥物說明</div><input type="text" id="edit-med-note" class="meal-input" placeholder="藥物名稱／說明…"></div>
         </div>
       </div>
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -322,11 +273,24 @@ const STATUSES=[
   {id:'sn2',label:'鼻水_微'},{id:'sn3',label:'鼻水_中'},{id:'sn4',label:'鼻水_多'},{id:'sn5',label:'鼻水_濃'},
   {id:'fe',label:'發燒'},{id:'vo',label:'嘔吐'},{id:'ti',label:'疲累'},
   {id:'blink',label:'眨眼'},{id:'drift',label:'飄眼'},{id:'abd',label:'抽肚'},{id:'neck',label:'扭脖'},
-  {id:'bowel',label:'排便'},{id:'diarr',label:'腹瀉'},{id:'ot',label:'其他'}
+  {id:'bowel',label:'排便'},{id:'diarr',label:'腹瀉'},
+  {id:'ot',label:'其他'}
 ];
+const STS_GROUPS=[
+  ['h4','h3','h2','h1'],
+  ['cp','chest','ar'],
+  ['chest2','chest3'],
+  ['cough1','cough2','throat'],
+  ['sn1','sn6'],
+  ['sn2','sn3','sn4','sn5'],
+  ['fe','vo','ti'],
+  ['blink','drift','abd','neck'],
+  ['bowel','diarr'],
+  ['ot']
+];
+
 let persons=[],allRecs=[],selectedPerson=null;
 let tgl={proc:null,fried:null,med:null,drink:null};
-
 let etgl={proc:null,fried:null,med:null,drink:null};
 let selSts=new Set(),editSts=new Set();
 let mensDay=1,eMensDay=1,editRec=null,histTab='list';
@@ -335,9 +299,17 @@ function todayStr(){const n=new Date();return n.getFullYear()+'-'+(n.getMonth()+
 document.getElementById('record-date').value=todayStr();
 
 function setSS(s,m){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-status').textContent=m;}
+
 async function api(method,params){
-  if(method==='GET'){const r=await fetch(API+'?'+new URLSearchParams(params).toString());return r.json();}
-  const r=await fetch(API,{method:'POST',body:JSON.stringify(params)});return r.json();
+  if(method==='GET'){
+    const r=await fetch(API+'?'+new URLSearchParams(params).toString());
+    return r.json();
+  }
+  const r=await fetch(API,{
+    method:'POST',
+    body:JSON.stringify(params)
+  });
+  return r.json();
 }
 
 async function init(){
@@ -345,19 +317,26 @@ async function init(){
   try{
     persons=await api('GET',{action:'getPersons'});
     if(!Array.isArray(persons))persons=[];
-    if(!persons.length){const f={id:'p'+Date.now(),name:'Luke',color:COLORS[0]};await api('POST',{action:'savePerson',person:f});persons=[f];}
+    if(!persons.length){
+      const f={id:'p'+Date.now(),name:'Luke',color:COLORS[0]};
+      await api('POST',{action:'savePerson',person:f});
+      persons=[f];
+    }
     selectedPerson=persons[0].id;
     renderPS();renderPL();populatePersonFilters();
     setSS('ok','已連線 Google Sheets');
-  }catch(e){setSS('err','連線失敗');showToast('無法連線',true);}
+  }catch(e){
+    setSS('err','連線失敗');
+    showToast('無法連線',true);
+  }
 }
 
 function fmtD(d){const o=new Date(d);return o.getFullYear()+'/'+(o.getMonth()+1).toString().padStart(2,'0')+'/'+o.getDate().toString().padStart(2,'0');}
 function toDateInp(d){const o=new Date(d);return o.getFullYear()+'-'+(o.getMonth()+1).toString().padStart(2,'0')+'-'+o.getDate().toString().padStart(2,'0');}
-function showToast(msg,isErr){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(isErr?' error':'');setTimeout(()=>el.className='toast',2400);}
-function getSts(r){return Array.isArray(r.statuses)?r.statuses:(r.statuses?String(r.statuses).split(',').filter(Boolean):[]);}
 function getYear(d){return new Date(d).getFullYear();}
 function getMonth(d){return new Date(d).getMonth()+1;}
+function showToast(msg,isErr){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(isErr?' error':'');setTimeout(()=>el.className='toast',2400);}
+function getSts(r){return Array.isArray(r.statuses)?r.statuses:(r.statuses?String(r.statuses).split(',').filter(Boolean):[]);}
 
 function switchTab(t){
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['record','history','persons'][i]===t));
@@ -379,20 +358,33 @@ function showConfirm(title,msg,cb){
 }
 function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
 
-/* PERSONS */
 function renderPS(){
-  document.getElementById('person-selector').innerHTML=persons.map(p=>`<div class="person-row ${p.id===selectedPerson?'selected':''}" onclick="selP('${p.id}')"><div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div><div class="person-name">${p.name}</div>${p.id===selectedPerson?'<span class="person-check">✓</span>':''}</div>`).join('');
+  document.getElementById('person-selector').innerHTML=persons.map(p=>`
+    <div class="person-row ${p.id===selectedPerson?'selected':''}" onclick="selP('${p.id}')">
+      <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
+      <div class="person-name">${p.name}</div>
+      ${p.id===selectedPerson?'<span class="person-check">✓</span>':''}
+    </div>`).join('');
 }
 function renderPL(){
-  document.getElementById('persons-list').innerHTML=persons.length?persons.map(p=>`<div class="person-row"><div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div><div class="person-name">${p.name}</div>${persons.length>1?`<button class="del-btn" onclick="cfmDelP('${p.id}','${p.name}')">刪除</button>`:''}</div>`).join(''):'<div style="padding:20px;text-align:center;color:var(--text3);">尚無人員</div>';
+  document.getElementById('persons-list').innerHTML=persons.length?persons.map(p=>`
+    <div class="person-row">
+      <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
+      <div class="person-name">${p.name}</div>
+      ${persons.length>1?`<button class="del-btn" onclick="cfmDelP('${p.id}','${p.name}')">刪除</button>`:''}
+    </div>`).join(''):'<div style="padding:20px;text-align:center;color:var(--text3);">尚無人員</div>';
 }
 function selP(id){selectedPerson=id;renderPS();}
 async function addPerson(){
-  const inp=document.getElementById('new-person-name');const name=inp.value.trim();if(!name)return;
+  const inp=document.getElementById('new-person-name');
+  const name=inp.value.trim();if(!name)return;
   const p={id:'p'+Date.now(),name,color:COLORS[persons.length%COLORS.length]};
   setSS('loading','儲存中…');
-  try{await api('POST',{action:'savePerson',person:p});persons.push(p);inp.value='';renderPL();renderPS();populatePersonFilters();setSS('ok','已連線 Google Sheets');showToast('Added '+name);}
-  catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
+  try{
+    await api('POST',{action:'savePerson',person:p});
+    persons.push(p);inp.value='';renderPL();renderPS();populatePersonFilters();
+    setSS('ok','已連線 Google Sheets');showToast('Added '+name);
+  }catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
 }
 function cfmDelP(id,name){showConfirm('刪除人員','確定要刪除「'+name+'」及其所有紀錄？',()=>delPerson(id));}
 async function delPerson(id){
@@ -406,8 +398,6 @@ async function delPerson(id){
     setSS('ok','已連線 Google Sheets');showToast('Deleted '+p.name);
   }catch(e){showToast('刪除失敗',true);}
 }
-
-/* PERSON FILTERS */
 function populatePersonFilters(){
   ['list-person-filter','chart-person-filter'].forEach(id=>{
     const sel=document.getElementById(id);
@@ -417,144 +407,170 @@ function populatePersonFilters(){
   });
 }
 
-/* FORM */
 function setTgl(type,val){
   tgl[type]=tgl[type]===val?null:val;
   ['y','n'].forEach(v=>{document.getElementById(type+'-'+v).className='toggle-btn'+(tgl[type]===v?(v==='y'?' on':' off-sel'):'');});
-
 }
 function setETgl(type,val){
   etgl[type]=etgl[type]===val?null:val;
   ['y','n'].forEach(v=>{document.getElementById('e'+type+'-'+v).className='toggle-btn'+(etgl[type]===v?(v==='y'?' on':' off-sel'):'');});
-
 }
+
 function renderStsTags(){
-  const groups=[
-    ['h4','h3','h2','h1'],
-    ['cp','chest','ar'],
-    ['chest2','chest3'],
-    ['cough1','cough2','throat'],
-    ['sn1','sn6'],
-    ['sn2','sn3','sn4','sn5'],
-    ['fe','vo','ti'],
-    ['blink','drift','abd','neck'],
-    ['bowel','diarr'],
-    ['ot']
-  ];
-  document.getElementById('status-tags').innerHTML=groups.map(g=>
+  document.getElementById('status-tags').innerHTML=STS_GROUPS.map(g=>
     `<div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-bottom:4px;">`+
     g.map(id=>{const s=STATUSES.find(x=>x.id===id);return s?`<div class="tag ${selSts.has(id)?'selected':''}" onclick="togSts('${id}')">${s.label}</div>`:''}).join('')+
-    `</div>`
-  ).join('');
+    `</div>`).join('');
 }
-function togSts(id){selSts.has(id)?selSts.delete(id):selSts.add(id);document.getElementById('other-wrap').className='other-input-wrap'+(selSts.has('ot')?' show':'');renderStsTags();}
+function togSts(id){
+  selSts.has(id)?selSts.delete(id):selSts.add(id);
+  document.getElementById('other-wrap').className='other-input-wrap'+(selSts.has('ot')?' show':'');
+  renderStsTags();
+}
 function renderEStsTags(){
-  const groups=[
-    ['h4','h3','h2','h1'],
-    ['cp','chest','ar'],
-    ['chest2','chest3'],
-    ['cough1','cough2','throat'],
-    ['sn1','sn6'],
-    ['sn2','sn3','sn4','sn5'],
-    ['fe','vo','ti'],
-    ['blink','drift','abd','neck'],
-    ['bowel','diarr'],
-    ['ot']
-  ];
-  document.getElementById('edit-status-tags').innerHTML=groups.map(g=>
+  document.getElementById('edit-status-tags').innerHTML=STS_GROUPS.map(g=>
     `<div style="display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-bottom:4px;">`+
     g.map(id=>{const s=STATUSES.find(x=>x.id===id);return s?`<div class="tag ${editSts.has(id)?'selected':''}" onclick="togESts('${id}')">${s.label}</div>`:''}).join('')+
-    `</div>`
-  ).join('');
+    `</div>`).join('');
 }
-function togESts(id){editSts.has(id)?editSts.delete(id):editSts.add(id);document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');renderEStsTags();}
+function togESts(id){
+  editSts.has(id)?editSts.delete(id):editSts.add(id);
+  document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');
+  renderEStsTags();
+}
 function toggleMens(){document.getElementById('mens-detail').style.display=document.getElementById('mens-on').checked?'block':'none';}
 function toggleEMens(){document.getElementById('edit-mens-detail').style.display=document.getElementById('edit-mens-on').checked?'block':'none';}
 function chDay(d){mensDay=Math.max(1,Math.min(30,mensDay+d));document.getElementById('mens-day').textContent=mensDay;}
 function chEDay(d){eMensDay=Math.max(1,Math.min(30,eMensDay+d));document.getElementById('edit-mens-day').textContent=eMensDay;}
 
-/* SAVE */
+// ── SAVE RECORD ──
 async function saveRecord(){
   if(!selectedPerson){showToast('請先選擇人員',true);return;}
   const p=persons.find(x=>x.id===selectedPerson);
-  const btn=document.getElementById('save-btn');btn.disabled=true;btn.textContent='…';
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.textContent='…';
   setSS('loading','儲存中…');
+
   const dateVal=document.getElementById('record-date').value||todayStr();
-  const _medNoteEl=document.getElementById('med-note');
-  const _medNoteVal=_medNoteEl?_medNoteEl.value.trim():'';
+  const medNoteVal=document.getElementById('med-note').value;
+
   const rec={
     id:'r_'+selectedPerson+'_'+dateVal,
-    personId:selectedPerson,personName:p.name,
+    personId:selectedPerson,
+    personName:p.name,
     date:new Date(dateVal+'T12:00:00').toISOString(),
-    height:document.getElementById('height').value,weight:document.getElementById('weight').value,temp:document.getElementById('temp').value,
-    meals:{breakfast:document.getElementById('meal-breakfast').value,lunch:document.getElementById('meal-lunch').value,dinner:document.getElementById('meal-dinner').value,snack:document.getElementById('meal-snack').value},
-    proc:tgl.proc,fried:tgl.fried,med:tgl.med,drink:tgl.drink,
-    statuses:[...selSts],otherText:document.getElementById('other-text').value,
-    medNote:_medNoteVal,
+    height:document.getElementById('height').value,
+    weight:document.getElementById('weight').value,
+    temp:document.getElementById('temp').value,
+    meals:{
+      breakfast:document.getElementById('meal-breakfast').value,
+      lunch:document.getElementById('meal-lunch').value,
+      dinner:document.getElementById('meal-dinner').value,
+      snack:document.getElementById('meal-snack').value
+    },
+    proc:tgl.proc||'',
+    fried:tgl.fried||'',
+    med:tgl.med||'',
+    drink:tgl.drink||'',
+    statuses:[...selSts],
+    otherText:document.getElementById('other-text').value,
+    medNote:medNoteVal,
     notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
-  console.log('DEBUG medNote value:', _medNoteVal, '| med toggle:', tgl.med);
+
   try{
     const res=await api('POST',{action:'upsertRecord',record:rec});
-    // update local cache
     const idx=allRecs.findIndex(r=>r.id===rec.id);
     if(idx>=0)allRecs[idx]=rec; else allRecs.push(rec);
-    setSS('ok','已連線 Google Sheets');showToast('已儲存');
-  }catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
+    setSS('ok','已連線 Google Sheets');
+    showToast('已儲存');
+  }catch(e){
+    setSS('err','失敗');
+    showToast('儲存失敗',true);
+  }
   btn.disabled=false;btn.textContent='儲存';
 }
 
-/* EDIT MODAL */
+// ── EDIT MODAL ──
 function openEditModal(rec){
   editRec=rec;
   document.getElementById('edit-date').value=toDateInp(rec.date);
-  document.getElementById('edit-height').value=rec.height||'';document.getElementById('edit-weight').value=rec.weight||'';document.getElementById('edit-temp').value=rec.temp||'';
-  document.getElementById('edit-breakfast').value=rec.meals?.breakfast||'';document.getElementById('edit-lunch').value=rec.meals?.lunch||'';document.getElementById('edit-dinner').value=rec.meals?.dinner||'';document.getElementById('edit-snack').value=rec.meals?.snack||'';
+  document.getElementById('edit-height').value=rec.height||'';
+  document.getElementById('edit-weight').value=rec.weight||'';
+  document.getElementById('edit-temp').value=rec.temp||'';
+  document.getElementById('edit-breakfast').value=rec.meals?.breakfast||'';
+  document.getElementById('edit-lunch').value=rec.meals?.lunch||'';
+  document.getElementById('edit-dinner').value=rec.meals?.dinner||'';
+  document.getElementById('edit-snack').value=rec.meals?.snack||'';
   etgl={proc:rec.proc||null,fried:rec.fried||null,med:rec.med||null,drink:rec.drink||null};
-  ['proc','fried','med','drink'].forEach(t=>['y','n'].forEach(v=>{document.getElementById('e'+t+'-'+v).className='toggle-btn'+(etgl[t]===v?(v==='y'?' on':' off-sel'):'');}));
+  ['proc','fried','med','drink'].forEach(t=>['y','n'].forEach(v=>{
+    document.getElementById('e'+t+'-'+v).className='toggle-btn'+(etgl[t]===v?(v==='y'?' on':' off-sel'):'');
+  }));
+  document.getElementById('edit-med-note').value=rec.medNote||'';
   editSts=new Set(getSts(rec));
   document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');
   document.getElementById('edit-other-text').value=rec.otherText||'';
-  document.getElementById('edit-med-note').value=rec.medNote||'';editMedNoteValue=rec.medNote||'';
-
   document.getElementById('edit-notes').value=rec.notes||'';
   renderEStsTags();
   const mo=rec.mens&&+rec.mens>=1;
-  document.getElementById('edit-mens-on').checked=!!mo;eMensDay=mo?+rec.mens:1;
+  document.getElementById('edit-mens-on').checked=!!mo;
+  eMensDay=mo?+rec.mens:1;
   document.getElementById('edit-mens-day').textContent=eMensDay;
   document.getElementById('edit-mens-detail').style.display=mo?'block':'none';
   document.getElementById('edit-modal').classList.add('show');
 }
 function closeModal(){document.getElementById('edit-modal').classList.remove('show');editRec=null;}
+
 async function saveEdit(){
   if(!editRec)return;
-  const btn=document.getElementById('modal-save-btn');btn.disabled=true;btn.textContent='…';
+  const btn=document.getElementById('modal-save-btn');
+  btn.disabled=true;btn.textContent='…';
   const dateVal=document.getElementById('edit-date').value||toDateInp(editRec.date);
   const newId='r_'+editRec.personId+'_'+dateVal;
-  const updated={...editRec,id:newId,date:new Date(dateVal+'T12:00:00').toISOString(),
-    height:document.getElementById('edit-height').value,weight:document.getElementById('edit-weight').value,temp:document.getElementById('edit-temp').value,
-    meals:{breakfast:document.getElementById('edit-breakfast').value,lunch:document.getElementById('edit-lunch').value,dinner:document.getElementById('edit-dinner').value,snack:document.getElementById('edit-snack').value},
-    proc:etgl.proc,fried:etgl.fried,med:etgl.med,drink:etgl.drink,
-    statuses:[...editSts],otherText:document.getElementById('edit-other-text').value,
-    medNote:document.getElementById('edit-med-note').value.trim(),
+  const medNoteVal=document.getElementById('edit-med-note').value;
+
+  const updated={
+    ...editRec,
+    id:newId,
+    date:new Date(dateVal+'T12:00:00').toISOString(),
+    height:document.getElementById('edit-height').value,
+    weight:document.getElementById('edit-weight').value,
+    temp:document.getElementById('edit-temp').value,
+    meals:{
+      breakfast:document.getElementById('edit-breakfast').value,
+      lunch:document.getElementById('edit-lunch').value,
+      dinner:document.getElementById('edit-dinner').value,
+      snack:document.getElementById('edit-snack').value
+    },
+    proc:etgl.proc||'',
+    fried:etgl.fried||'',
+    med:etgl.med||'',
+    drink:etgl.drink||'',
+    statuses:[...editSts],
+    otherText:document.getElementById('edit-other-text').value,
+    medNote:medNoteVal,
     notes:document.getElementById('edit-notes').value,
-    mens:document.getElementById('edit-mens-on').checked?eMensDay:null};
+    mens:document.getElementById('edit-mens-on').checked?eMensDay:null
+  };
+
   setSS('loading','修改中…');
   try{
     await api('POST',{action:'upsertRecord',record:updated});
     if(editRec.id!==newId)await api('POST',{action:'deleteRecord',recordId:editRec.id});
-    // update cache
     allRecs=allRecs.filter(r=>r.id!==editRec.id);
     const idx=allRecs.findIndex(r=>r.id===newId);
     if(idx>=0)allRecs[idx]=updated; else allRecs.push(updated);
-    closeModal();setSS('ok','已連線 Google Sheets');showToast('修改完成');
+    closeModal();
+    setSS('ok','已連線 Google Sheets');
+    showToast('修改完成');
     applyListFilter();applyChartFilter();
-  }catch(e){setSS('err','失敗');showToast('修改失敗',true);}
+  }catch(e){
+    setSS('err','失敗');showToast('修改失敗',true);
+  }
   btn.disabled=false;btn.textContent='儲存';
 }
 
-/* DELETE RECORD */
 function cfmDelRec(rec){showConfirm('刪除紀錄','確定要刪除 '+fmtD(rec.date)+' 的紀錄？',()=>delRecord(rec));}
 async function delRecord(rec){
   setSS('loading','刪除中…');
@@ -566,25 +582,19 @@ async function delRecord(rec){
   }catch(e){setSS('err','失敗');showToast('刪除失敗',true);}
 }
 
-/* LOAD ALL RECORDS */
+// ── LOAD & FILTER ──
 async function loadAllRecs(){
   document.getElementById('hist-list-view').innerHTML='<div class="loading-state">載入中…</div>';
   try{
-    allRecs=await api('GET',{action:'getRecords'});
-    if(!Array.isArray(allRecs))allRecs=[];
-    // normalize medNote field - ensure it exists
-    allRecs=allRecs.map(r=>({
-      ...r,
-      medNote:(r.medNote||r.med_note||'').toString().trim(),
-      notes:(r.notes||'').toString().trim(),
-      otherText:(r.otherText||r.other_text||'').toString().trim(),
-    }));
+    const raw=await api('GET',{action:'getRecords'});
+    allRecs=Array.isArray(raw)?raw:[];
     populateYearFilter();
     applyListFilter();
     applyChartFilter();
-  }catch(e){document.getElementById('hist-list-view').innerHTML='<div class="loading-state" style="color:var(--danger)">載入失敗</div>';}
+  }catch(e){
+    document.getElementById('hist-list-view').innerHTML='<div class="loading-state" style="color:var(--danger)">載入失敗</div>';
+  }
 }
-
 function populateYearFilter(){
   const years=[...new Set(allRecs.map(r=>getYear(r.date)))].sort((a,b)=>b-a);
   const sel=document.getElementById('chart-year-filter');
@@ -592,19 +602,15 @@ function populateYearFilter(){
   sel.innerHTML='<option value="">所有年份</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
   if(years.length&&!cur)sel.value=years[0]; else sel.value=cur;
 }
-
-/* LIST FILTER */
 function applyListFilter(){
   const pid=document.getElementById('list-person-filter').value;
-  const mon=document.getElementById('list-month-filter').value; // "2025-05"
+  const mon=document.getElementById('list-month-filter').value;
   let recs=[...allRecs];
   if(pid)recs=recs.filter(r=>r.personId===pid);
   if(mon){const[y,m]=mon.split('-');recs=recs.filter(r=>{const o=new Date(r.date);return o.getFullYear()===+y&&(o.getMonth()+1)===+m;});}
   recs.sort((a,b)=>new Date(b.date)-new Date(a.date));
   renderRL(recs);
 }
-
-/* CHART FILTER */
 function applyChartFilter(){
   const pid=document.getElementById('chart-person-filter').value;
   const yr=document.getElementById('chart-year-filter').value;
@@ -617,7 +623,7 @@ function applyChartFilter(){
   renderCharts(recs,+yr||null,yearLabel,personLabel);
 }
 
-/* RENDER RECORD LIST */
+// ── RENDER LIST ──
 function renderRL(recs){
   const el=document.getElementById('hist-list-view');
   if(!recs.length){el.innerHTML='<div class="loading-state">尚無符合紀錄</div>';return;}
@@ -629,19 +635,17 @@ function renderRL(recs){
     if(r.proc==='y')chips.push(`<span class="rec-chip w">加工</span>`);
     if(r.fried==='y')chips.push(`<span class="rec-chip w">炸物</span>`);
     if(r.drink==='y')chips.push(`<span class="rec-chip b">飲料</span>`);
-    {
-      const mn=(r.medNote||'').toString().trim();
-      if(r.med==='y'||r.med===true||mn){
-        const medLabel=mn?`藥物：${mn}`:'藥物';
-        chips.push(`<span class="rec-chip g">${medLabel}</span>`);
-      }
+    // 藥物 + 說明
+    if(r.med==='y'){
+      const mn=String(r.medNote||'').trim();
+      chips.push(`<span class="rec-chip g">${mn?'藥物：'+mn:'藥物'}</span>`);
     }
     getSts(r).forEach(s=>{
       const f=STATUSES.find(x=>x.id===s);
       if(!f)return;
       if(s==='ot'){
-        const otherLabel=r.otherText?`其他：${r.otherText}`:'其他';
-        chips.push(`<span class="rec-chip w">${otherLabel}</span>`);
+        const ol=String(r.otherText||'').trim();
+        chips.push(`<span class="rec-chip w">${ol?'其他：'+ol:'其他'}</span>`);
       } else {
         chips.push(`<span class="rec-chip w">${f.label}</span>`);
       }
@@ -652,73 +656,68 @@ function renderRL(recs){
     if(r.notes)chips.push(`<span class="rec-chip">📝 ${r.notes}</span>`);
     const enc=encodeURIComponent(JSON.stringify(r));
     const pName=persons.find(p=>p.id===r.personId)?.name||r.personName||'';
-    return `<div class="rec-card"><div class="rec-header"><div><div class="rec-date-txt">${fmtD(r.date)}</div><div class="rec-person-txt">${pName}</div></div><div class="rec-actions"><button class="rec-edit-btn" onclick="openEditModal(JSON.parse(decodeURIComponent('${enc}')))">修改</button><button class="rec-del-btn" onclick="cfmDelRec(JSON.parse(decodeURIComponent('${enc}')))">刪除</button></div></div><div class="rec-body">${chips.join('')}</div></div>`;
+    return `<div class="rec-card">
+      <div class="rec-header">
+        <div><div class="rec-date-txt">${fmtD(r.date)}</div><div class="rec-person-txt">${pName}</div></div>
+        <div class="rec-actions">
+          <button class="rec-edit-btn" onclick="openEditModal(JSON.parse(decodeURIComponent('${enc}')))">修改</button>
+          <button class="rec-del-btn" onclick="cfmDelRec(JSON.parse(decodeURIComponent('${enc}')))">刪除</button>
+        </div>
+      </div>
+      <div class="rec-body">${chips.join('')}</div>
+    </div>`;
   }).join('');
 }
 
-/* ═══ CHARTS ═══ */
+// ── CHARTS ──
+const STS_COLOR={
+  'h4':'#ef4444','h3':'#f97316','h2':'#fbbf24','h1':'#fde68a',
+  'cp':'#f687b3','chest':'#f9a8d4','ar':'#fb7185',
+  'chest2':'#fda4af','chest3':'#fecdd3',
+  'cough1':'#60a5fa','cough2':'#93c5fd','throat':'#c4b5fd',
+  'sn1':'#7dd3fc','sn6':'#dc2626',
+  'sn2':'#a5f3fc','sn3':'#67e8f9','sn4':'#22d3ee','sn5':'#0891b2',
+  'fe':'#fb923c','vo':'#e879f9','ti':'#a78bfa',
+  'blink':'#a3e635','drift':'#4ade80','abd':'#34d399','neck':'#6ee7b7',
+  'bowel':'#86efac','diarr':'#fca5a5',
+  'ot':'#94a3b8'
+};
+
 function renderCharts(recs,yr,yearLabel,personLabel){
   const c=document.getElementById('hist-charts-view');c.innerHTML='';
   const sub=`${personLabel}・${yearLabel}`;
-
-  // 體重 only if data
   const wRecs=recs.filter(r=>r.weight&&+r.weight>0);
   if(wRecs.length)drawWeightChart(c,wRecs,sub);
-
-  // Diet flags monthly — only if data exists
-  if(recs.some(r=>r.proc==='y'))drawMonthly(c,'加工食品',sub,recs,r=>r.proc==='y','#f6ad55',yr);
-  if(recs.some(r=>r.fried==='y'))drawMonthly(c,'炸物',sub,recs,r=>r.fried==='y','#fc8181',yr);
-  if(recs.some(r=>r.drink==='y'))drawMonthly(c,'飲料',sub,recs,r=>r.drink==='y','#60a5fa',yr);
-  if(recs.some(r=>r.med==='y'))drawMonthly(c,'藥物',sub,recs,r=>r.med==='y','#68d391',yr);
-
-  // Status items monthly
-  // color map for different status groups
-  const stsColor={
-    'h4':'#ef4444','h3':'#f97316','h2':'#fbbf24','h1':'#fde68a',
-    'cp':'#f687b3','chest':'#f9a8d4','ar':'#fb7185',
-    'chest2':'#fda4af','chest3':'#fecdd3',
-    'cough1':'#60a5fa','cough2':'#93c5fd','throat':'#c4b5fd',
-    'sn1':'#7dd3fc','sn2':'#a5f3fc','sn3':'#67e8f9','sn4':'#22d3ee','sn5':'#0891b2','sn6':'#dc2626',
-    'fe':'#fb923c','vo':'#e879f9','ti':'#a78bfa',
-    'blink':'#a3e635','drift':'#4ade80','abd':'#34d399',
-    'neck':'#6ee7b7','bowel':'#86efac','diarr':'#fca5a5','ot':'#94a3b8'
-  };
+  if(recs.some(r=>r.proc==='y'))dLineM(c,'加工食品',sub,recs,r=>r.proc==='y','#f6ad55',yr);
+  if(recs.some(r=>r.fried==='y'))dLineM(c,'炸物',sub,recs,r=>r.fried==='y','#fc8181',yr);
+  if(recs.some(r=>r.drink==='y'))dLineM(c,'飲料',sub,recs,r=>r.drink==='y','#60a5fa',yr);
+  if(recs.some(r=>r.med==='y'))dLineM(c,'藥物',sub,recs,r=>r.med==='y','#68d391',yr);
   STATUSES.forEach(s=>{
-    const color=stsColor[s.id]||'#a78bfa';
     const pred=r=>getSts(r).includes(s.id);
-    const hasData=recs.some(pred);
-    if(!hasData)return;
-    drawMonthly(c,s.id==='ot'?'其他':s.label,sub,recs,pred,color,yr);
+    if(!recs.some(pred))return;
+    dLineM(c,s.id==='ot'?'其他':s.label,sub,recs,pred,STS_COLOR[s.id]||'#a78bfa',yr);
   });
-
-  // Menstrual only if data
-  const mensRecs2=recs.filter(r=>r.mens==1||r.mens==='1');
-  if(mensRecs2.length)drawMenstrual(c,recs,sub,yr);
+  const mensRecs=recs.filter(r=>r.mens==1||r.mens==='1');
+  if(mensRecs.length)drawMenstrual(c,recs,sub,yr);
 }
 
 function byMonthArr(recs,pred,yr){
-  // returns array of 12 values (months 1-12)
   const counts=new Array(12).fill(0);
-  recs.forEach(r=>{
-    if(!yr||getYear(r.date)===yr){
-      if(pred(r))counts[getMonth(r.date)-1]++;
-    }
-  });
+  recs.forEach(r=>{if(!yr||getYear(r.date)===yr){if(pred(r))counts[getMonth(r.date)-1]++;}});
   return counts;
 }
-
 function CW(){return Math.min((window.innerWidth||375)-64,340);}
-
 function mkCard(c,title,sub){
   const d=document.createElement('div');d.className='chart-card';
   d.innerHTML=`<div class="chart-title">${title}</div><div class="chart-sub">${sub}</div>`;
   c.appendChild(d);return d;
 }
-
-/* WEIGHT CHART — line by date */
+function drawDot(ctx,x,y,color){
+  ctx.beginPath();ctx.arc(x,y,5.5,0,Math.PI*2);ctx.fillStyle='#1a1a1e';ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+}
 function drawWeightChart(c,recs,sub){
   const card=mkCard(c,'體重',sub);
-  if(!recs.length){card.insertAdjacentHTML('beforeend','<div class="no-data">尚無資料</div>');return;}
   const w=CW(),h=150,pl=40,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
@@ -726,116 +725,66 @@ function drawWeightChart(c,recs,sub){
   const minY=Math.floor(Math.min(...ys)-1),maxY=Math.ceil(Math.max(...ys)+1),rng=maxY-minY;
   const xs=recs.map((_,i)=>pl+i*(cw/Math.max(recs.length-1,1)));
   const fy=v=>pt+ch-((v-minY)/rng)*ch;
-  drawGrid(ctx,pl,pr,pt,pb,cw,ch,w,h,minY,maxY,4);
-  // line + area
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+  for(let i=0;i<=4;i++){const y=pt+(ch/4)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=4;i++){const v=maxY-((maxY-minY)/4)*i;ctx.fillText(Number.isInteger(v)?v:v.toFixed(1),pl-3,pt+(ch/4)*i+3);}
   ctx.beginPath();xs.forEach((x,i)=>i?ctx.lineTo(x,fy(ys[i])):ctx.moveTo(x,fy(ys[i])));
   ctx.strokeStyle='#4fd1c5';ctx.lineWidth=2;ctx.stroke();
   ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle='#4fd1c528';ctx.fill();
   xs.forEach((x,i)=>drawDot(ctx,x,fy(ys[i]),'#4fd1c5'));
-  // x labels (dates)
   ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
   const step=Math.ceil(recs.length/6);
   recs.forEach((r,i)=>{if(i%step===0||i===recs.length-1){const d=new Date(r.date);ctx.fillText(`${d.getMonth()+1}/${d.getDate()}`,xs[i],h-4);}});
-  // y unit
-  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText('kg',2,pt+8);
 }
-
-/* MONTHLY DOT-LINE CHART */
-function drawMonthly(c,title,sub,recs,pred,color,yr){
+function dLineM(c,title,sub,recs,pred,color,yr){
   const counts=byMonthArr(recs,pred,yr);
   const total=counts.reduce((a,b)=>a+b,0);
   const card=mkCard(c,title,`${sub}・共 ${total} 次/年`);
   const w=CW(),h=150,pl=28,pr=8,pt=14,pb=22,cw=w-pl-pr,ch=h-pt-pb;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
-
-  // fixed y: 0-10, above 10 capped visually
-  const maxY=10,minY=0,rng=10;
-  const fy=v=>pt+ch-Math.min(v,maxY)/rng*ch;
-
-  // grid lines (0,2,4,6,8,10)
+  const fy=v=>pt+ch-Math.min(v,10)/10*ch;
   ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
   for(let i=0;i<=5;i++){
-    const yv=i*2;const yp=pt+ch-(yv/rng)*ch;
+    const yv=i*2,yp=pt+ch-(yv/10)*ch;
     ctx.beginPath();ctx.moveTo(pl,yp);ctx.lineTo(pl+cw,yp);ctx.stroke();
     ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
     ctx.fillText(yv===10?'10+':yv,pl-3,yp+3);
   }
-
-  // x: months 1-12
   const xs=Array.from({length:12},(_,i)=>pl+(i*(cw/11)));
-
-  // area fill
-  ctx.beginPath();
-  xs.forEach((x,i)=>{const y=fy(counts[i]);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});
+  ctx.beginPath();xs.forEach((x,i)=>{const y=fy(counts[i]);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});
   ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
   ctx.lineTo(xs[11],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle=color+'28';ctx.fill();
-
-  // dashed drop lines
   ctx.setLineDash([2,3]);ctx.strokeStyle=color+'55';ctx.lineWidth=1;
   xs.forEach((x,i)=>{if(counts[i]>0){ctx.beginPath();ctx.moveTo(x,fy(counts[i]));ctx.lineTo(x,pt+ch);ctx.stroke();}});
   ctx.setLineDash([]);
-
-  // dots + value labels
   xs.forEach((x,i)=>{
     drawDot(ctx,x,fy(counts[i]),color);
     if(counts[i]>0){ctx.fillStyle=color;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillText(counts[i],x,fy(counts[i])-8);}
   });
-
-  // x axis: month labels 1-12
   ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='center';
   xs.forEach((x,i)=>ctx.fillText(i+1,x,h-4));
-  // x axis label
-  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillText('月',w/2,h+2);
 }
-
-/* MENSTRUAL CHART — horizontal axis 1-12 months, dot per period start, label = day of month */
 function drawMenstrual(c,recs,sub,yr){
   const mensRecs=recs.filter(r=>r.mens==1||r.mens==='1');
-  const total=mensRecs.length;
-  const card=mkCard(c,'月經',`${sub}・共 ${total} 次/年`);
-  const w=CW(),h=90,pl=28,pr=8,pt=20,pb=22;
-  const cw=w-pl-pr;
+  const card=mkCard(c,'月經',`${sub}・共 ${mensRecs.length} 次/年`);
+  const w=CW(),h=90,pl=28,pr=8,pt=20,pb=22,cw=w-pl-pr,mid=pt+(h-pt-pb)/2+8;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
-  const mid=pt+(h-pt-pb)/2+8;
-
-  // horizontal line
   ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=0.5;
   ctx.beginPath();ctx.moveTo(pl,mid);ctx.lineTo(pl+cw,mid);ctx.stroke();
-
-  // month positions
   const xs=Array.from({length:12},(_,i)=>pl+(i*(cw/11)));
-
-  // x labels
   ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='center';
   xs.forEach((x,i)=>ctx.fillText(i+1,x,h-4));
-
-  // dots at month position, label = day
   mensRecs.forEach(r=>{
     const d=new Date(r.date);
-    const m=d.getMonth(); // 0-indexed
+    const x=xs[d.getMonth()];
     const day=d.getDate();
-    const x=xs[m];
     drawDot(ctx,x,mid,'#f687b3');
     ctx.fillStyle='#f687b3';ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='center';
     ctx.fillText(day,x,mid-12);
   });
-}
-
-function drawGrid(ctx,pl,pr,pt,pb,cw,ch,w,h,minY,maxY,steps){
-  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
-  for(let i=0;i<=steps;i++){
-    const y=pt+(ch/steps)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();
-    const v=maxY-((maxY-minY)/steps)*i;
-    ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
-    ctx.fillText(Number.isInteger(v)?v:v.toFixed(1),pl-3,y+3);
-  }
-}
-
-function drawDot(ctx,x,y,color){
-  ctx.beginPath();ctx.arc(x,y,5.5,0,Math.PI*2);ctx.fillStyle='#1a1a1e';ctx.fill();
-  ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
 }
 
 renderStsTags();renderEStsTags();init();
