@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -169,6 +168,10 @@ canvas{display:block;}
         <div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="meal-lunch" placeholder="Lunch…"></div>
         <div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="meal-dinner" placeholder="Dinner…"></div>
         <div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="meal-snack" placeholder="Snack…"></div>
+        <div class="meal-row"><div class="meal-name">加工</div><input class="meal-input" type="text" id="meal-proc" placeholder="加工食品說明…"></div>
+        <div class="meal-row"><div class="meal-name">炸物</div><input class="meal-input" type="text" id="meal-fried" placeholder="炸物說明…"></div>
+        <div class="meal-row"><div class="meal-name">飲料</div><input class="meal-input" type="text" id="meal-drink" placeholder="飲料說明…"></div>
+        <div class="meal-row"><div class="meal-name">藥物</div><input class="meal-input" type="text" id="meal-med" placeholder="藥物名稱／說明…"></div>
       </div>
     </div>
     <div class="section">
@@ -178,7 +181,6 @@ canvas{display:block;}
         <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
-        <div class="meal-row" style="border-top:0.5px solid var(--border);border-bottom:none;"><div class="meal-name" style="width:60px;font-size:13px;color:var(--text2);">藥物說明</div><input type="text" id="med-note" class="meal-input" placeholder="藥物名稱／說明…"></div>
       </div>
     </div>
     <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -233,7 +235,12 @@ canvas{display:block;}
     <div class="modal-body">
       <div class="modal-section"><div class="modal-section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="edit-date"></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Vitals</div><div class="metrics-grid"><div class="metric-card"><div class="metric-label">身高</div><input class="metric-input" type="number" id="edit-height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div><div class="metric-card"><div class="metric-label">體重</div><input class="metric-input" type="number" id="edit-weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div><div class="metric-card"><div class="metric-label">體溫</div><input class="metric-input" type="number" id="edit-temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div></div></div>
-      <div class="modal-section"><div class="modal-section-title">Meals</div><div class="meal-card"><div class="meal-row"><div class="meal-name">早餐</div><input class="meal-input" type="text" id="edit-breakfast"></div><div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="edit-lunch"></div><div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="edit-dinner"></div><div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="edit-snack"></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Meals</div><div class="meal-card"><div class="meal-row"><div class="meal-name">早餐</div><input class="meal-input" type="text" id="edit-breakfast"></div><div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="edit-lunch"></div><div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="edit-dinner"></div><div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="edit-snack"></div>
+        <div class="meal-row"><div class="meal-name">加工</div><input class="meal-input" type="text" id="edit-meal-proc" placeholder="加工食品說明…"></div>
+        <div class="meal-row"><div class="meal-name">炸物</div><input class="meal-input" type="text" id="edit-meal-fried" placeholder="炸物說明…"></div>
+        <div class="meal-row"><div class="meal-name">飲料</div><input class="meal-input" type="text" id="edit-meal-drink" placeholder="飲料說明…"></div>
+        <div class="meal-row"><div class="meal-name">藥物</div><input class="meal-input" type="text" id="edit-meal-med" placeholder="藥物名稱／說明…"></div>
+        </div></div></div>
       <div class="modal-section">
         <div class="modal-section-title">Diet Flags</div>
         <div class="card">
@@ -241,7 +248,6 @@ canvas{display:block;}
           <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
-          <div class="meal-row" style="border-top:0.5px solid var(--border);border-bottom:none;"><div class="meal-name" style="width:60px;font-size:13px;color:var(--text2);">藥物說明</div><input type="text" id="edit-med-note" class="meal-input" placeholder="藥物名稱／說明…"></div>
         </div>
       </div>
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -452,8 +458,6 @@ async function saveRecord(){
   setSS('loading','儲存中…');
 
   const dateVal=document.getElementById('record-date').value||todayStr();
-  const medNoteVal=document.getElementById('med-note').value;
-
   const rec={
     id:'r_'+selectedPerson+'_'+dateVal,
     personId:selectedPerson,
@@ -466,15 +470,19 @@ async function saveRecord(){
       breakfast:document.getElementById('meal-breakfast').value,
       lunch:document.getElementById('meal-lunch').value,
       dinner:document.getElementById('meal-dinner').value,
-      snack:document.getElementById('meal-snack').value
+      snack:document.getElementById('meal-snack').value,
+      proc:document.getElementById('meal-proc').value,
+      fried:document.getElementById('meal-fried').value,
+      drink:document.getElementById('meal-drink').value,
+      med:document.getElementById('meal-med').value,
     },
-    proc:tgl.proc||'',
-    fried:tgl.fried||'',
-    med:tgl.med||'',
-    drink:tgl.drink||'',
+    proc:document.getElementById('meal-proc').value||tgl.proc||'',
+    fried:document.getElementById('meal-fried').value||tgl.fried||'',
+    med:document.getElementById('meal-med').value||tgl.med||'',
+    drink:document.getElementById('meal-drink').value||tgl.drink||'',
     statuses:[...selSts],
     otherText:document.getElementById('other-text').value,
-    medNote:medNoteVal,
+    medNote:'',
     notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
@@ -503,7 +511,16 @@ function openEditModal(rec){
   document.getElementById('edit-lunch').value=rec.meals?.lunch||'';
   document.getElementById('edit-dinner').value=rec.meals?.dinner||'';
   document.getElementById('edit-snack').value=rec.meals?.snack||'';
-  etgl={proc:rec.proc||null,fried:rec.fried||null,med:rec.med||null,drink:rec.drink||null};
+  document.getElementById('edit-meal-proc').value=rec.meals?.proc||'';
+  document.getElementById('edit-meal-fried').value=rec.meals?.fried||'';
+  document.getElementById('edit-meal-drink').value=rec.meals?.drink||'';
+  document.getElementById('edit-meal-med').value=rec.meals?.med||'';
+  etgl={proc:rec.proc==='y'?'y':null,fried:rec.fried==='y'?'y':null,med:rec.med==='y'?'y':null,drink:rec.drink==='y'?'y':null};
+  // Fill text description fields
+  document.getElementById('edit-meal-proc').value=(rec.proc&&rec.proc!=='y'&&rec.proc!=='n')?rec.proc:'';
+  document.getElementById('edit-meal-fried').value=(rec.fried&&rec.fried!=='y'&&rec.fried!=='n')?rec.fried:'';
+  document.getElementById('edit-meal-med').value=(rec.med&&rec.med!=='y'&&rec.med!=='n')?rec.med:'';
+  document.getElementById('edit-meal-drink').value=(rec.drink&&rec.drink!=='y'&&rec.drink!=='n')?rec.drink:'';
   ['proc','fried','med','drink'].forEach(t=>['y','n'].forEach(v=>{
     document.getElementById('e'+t+'-'+v).className='toggle-btn'+(etgl[t]===v?(v==='y'?' on':' off-sel'):'');
   }));
@@ -541,15 +558,19 @@ async function saveEdit(){
       breakfast:document.getElementById('edit-breakfast').value,
       lunch:document.getElementById('edit-lunch').value,
       dinner:document.getElementById('edit-dinner').value,
-      snack:document.getElementById('edit-snack').value
+      snack:document.getElementById('edit-snack').value,
+      proc:document.getElementById('edit-meal-proc').value,
+      fried:document.getElementById('edit-meal-fried').value,
+      drink:document.getElementById('edit-meal-drink').value,
+      med:document.getElementById('edit-meal-med').value,
     },
-    proc:etgl.proc||'',
-    fried:etgl.fried||'',
-    med:etgl.med||'',
-    drink:etgl.drink||'',
+    proc:document.getElementById('edit-meal-proc').value||etgl.proc||'',
+    fried:document.getElementById('edit-meal-fried').value||etgl.fried||'',
+    med:document.getElementById('edit-meal-med').value||etgl.med||'',
+    drink:document.getElementById('edit-meal-drink').value||etgl.drink||'',
     statuses:[...editSts],
     otherText:document.getElementById('edit-other-text').value,
-    medNote:medNoteVal,
+    medNote:'',
     notes:document.getElementById('edit-notes').value,
     mens:document.getElementById('edit-mens-on').checked?eMensDay:null
   };
@@ -632,14 +653,10 @@ function renderRL(recs){
     if(r.height)chips.push(`<span class="rec-chip a">${r.height}cm</span>`);
     if(r.weight)chips.push(`<span class="rec-chip a">${r.weight}kg</span>`);
     if(r.temp)chips.push(`<span class="rec-chip a">${r.temp}°C</span>`);
-    if(r.proc==='y')chips.push(`<span class="rec-chip w">加工</span>`);
-    if(r.fried==='y')chips.push(`<span class="rec-chip w">炸物</span>`);
-    if(r.drink==='y')chips.push(`<span class="rec-chip b">飲料</span>`);
-    // 藥物 + 說明
-    if(r.med==='y'){
-      const mn=String(r.medNote||'').trim();
-      chips.push(`<span class="rec-chip g">${mn?'藥物：'+mn:'藥物'}</span>`);
-    }
+    if(r.proc){const pt=r.proc;chips.push(`<span class="rec-chip w">${pt==='y'?'加工':(pt==='n'?'':'加工：'+pt)}</span>`);} 
+    if(r.fried){const ft=r.fried;if(ft&&ft!=='n')chips.push(`<span class="rec-chip w">${ft==='y'?'炸物':'炸物：'+ft}</span>`);}
+    if(r.drink){const dt=r.drink;if(dt&&dt!=='n')chips.push(`<span class="rec-chip b">${dt==='y'?'飲料':'飲料：'+dt}</span>`);}
+    if(r.med){const mt=r.med;if(mt&&mt!=='n')chips.push(`<span class="rec-chip g">${mt==='y'?'藥物':'藥物：'+mt}</span>`);}
     getSts(r).forEach(s=>{
       const f=STATUSES.find(x=>x.id===s);
       if(!f)return;
@@ -653,6 +670,7 @@ function renderRL(recs){
     if(r.mens)chips.push(`<span class="rec-chip p">月經第${r.mens}天</span>`);
     const meals=[r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].filter(Boolean);
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
+
     if(r.notes)chips.push(`<span class="rec-chip">📝 ${r.notes}</span>`);
     const enc=encodeURIComponent(JSON.stringify(r));
     const pName=persons.find(p=>p.id===r.personId)?.name||r.personName||'';
