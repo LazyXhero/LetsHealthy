@@ -177,7 +177,7 @@ canvas{display:block;}
     <div class="section">
       <div class="section-title">Diet Flags</div>
       <div class="card">
-        <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="proc-y" onclick="setTgl('proc','y')">有</div><div class="toggle-btn" id="proc-n" onclick="setTgl('proc','n')">沒有</div></div></div>
+        <div class="toggle-row"><div class="toggle-label">加工</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="proc-y" onclick="setTgl('proc','y')">有</div><div class="toggle-btn" id="proc-n" onclick="setTgl('proc','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
@@ -226,6 +226,7 @@ canvas{display:block;}
         <input type="text" class="filter-select" id="list-search" placeholder="🔍 搜尋關鍵字…" oninput="applyListFilter()" style="flex:1;" autocomplete="off">
         <button onclick="clearFilters()" style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:13px;padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;">清除</button>
       </div>
+      <div id="filter-result-bar" style="padding:0 16px 10px;"></div>
       <div id="hist-list-view"><div class="loading-state">請切換到此頁載入</div></div>
     </div>
     <div id="chart-section" style="display:none;">
@@ -263,7 +264,7 @@ canvas{display:block;}
       <div class="modal-section">
         <div class="modal-section-title">Diet Flags</div>
         <div class="card">
-          <div class="toggle-row"><div class="toggle-label">加工食品</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="eproc-y" onclick="setETgl('proc','y')">有</div><div class="toggle-btn" id="eproc-n" onclick="setETgl('proc','n')">沒有</div></div></div>
+          <div class="toggle-row"><div class="toggle-label">加工</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="eproc-y" onclick="setETgl('proc','y')">有</div><div class="toggle-btn" id="eproc-n" onclick="setETgl('proc','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
@@ -721,34 +722,33 @@ function applyChartFilter(){
 // ── RENDER LIST ──
 function renderRL(recs){
   const el=document.getElementById('hist-list-view');
-  
+  const bar=document.getElementById('filter-result-bar');
+
   // Build active filter label
   const pid=document.getElementById('list-person-filter').value;
   const mon=document.getElementById('list-month-filter').value;
   const cat=document.getElementById('list-category-filter').value;
   const kw=(document.getElementById('list-search').value||'').trim();
-  const catLabels={'meals':'飲食記錄','proc':'加工食品','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','mens':'月經','doctor':"Doctor's Order"};
+  const catLabels={'meals':'飲食記錄','proc':'加工','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','mens':'月經','doctor':"Doctor's Order"};
   const tags=[];
   if(pid){const p=persons.find(x=>x.id===pid);if(p)tags.push(`👤 ${p.name}`);}
   if(mon)tags.push(`📅 ${mon}`);
   if(cat)tags.push(`🔖 ${catLabels[cat]||cat}`);
   if(kw)tags.push(`🔍 「${kw}」`);
-  
-  const filterBar=tags.length?`<div style="padding:0 16px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
-    <span style="font-size:12px;color:var(--text3);">篩選：</span>
-    ${tags.map(t=>`<span style="background:rgba(58,175,169,0.15);color:var(--accent);border:0.5px solid rgba(58,175,169,0.3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
-    <span style="font-size:12px;color:var(--text3);margin-left:4px;">共 ${recs.length} 筆</span>
-    <button onclick="clearFilters()" style="background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:12px;padding:4px 10px;border-radius:20px;cursor:pointer;font-weight:600;">清除</button>
-  </div>`:'<div style="padding:0 16px 8px;"><span style="font-size:12px;color:var(--text3);">共 '+recs.length+' 筆</span></div>';
 
-  if(!recs.length){el.innerHTML=filterBar+'<div class="loading-state">尚無符合紀錄</div>';return;}
+  bar.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+    ${tags.map(t=>`<span style="background:rgba(58,175,169,0.15);color:var(--accent);border:0.5px solid rgba(58,175,169,0.3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
+    <span style="font-size:13px;color:var(--text2);font-weight:600;${tags.length?'margin-left:4px;':''}">共 ${recs.length} 筆</span>
+  </div>`;
+
+  if(!recs.length){el.innerHTML='<div class="loading-state">尚無符合紀錄</div>';return;}
   el.innerHTML=recs.map(r=>{
     const chips=[];
     if(r.height)chips.push(`<span class="rec-chip a">${r.height}cm</span>`);
     if(r.weight)chips.push(`<span class="rec-chip a">${r.weight}kg</span>`);
     if(r.temp)chips.push(`<span class="rec-chip a">${r.temp}°C</span>`);
-    if(r.proc){const pt=r.proc;chips.push(`<span class="rec-chip w">${pt==='y'?'加工':(pt==='n'?'':'加工：'+pt)}</span>`);} 
-    if(r.fried){const ft=r.fried;if(ft&&ft!=='n')chips.push(`<span class="rec-chip w">${ft==='y'?'炸物':'炸物：'+ft}</span>`);}
+    if(r.proc){const pt=r.proc;if(pt&&pt!=='n')chips.push(`<span class="rec-chip b">${pt==='y'?'加工':'加工：'+pt}</span>`);}
+    if(r.fried){const ft=r.fried;if(ft&&ft!=='n')chips.push(`<span class="rec-chip b">${ft==='y'?'炸物':'炸物：'+ft}</span>`);}
     if(r.drink){const dt=r.drink;if(dt&&dt!=='n')chips.push(`<span class="rec-chip b">${dt==='y'?'飲料':'飲料：'+dt}</span>`);}
     if(r.med){const mt=r.med;if(mt&&mt!=='n')chips.push(`<span class="rec-chip g">${mt==='y'?'藥物':'藥物：'+mt}</span>`);}
     getSts(r).forEach(s=>{
@@ -801,10 +801,11 @@ function renderCharts(recs,yr,yearLabel,personLabel){
   const sub=`${personLabel}・${yearLabel}`;
   const wRecs=recs.filter(r=>r.weight&&+r.weight>0);
   if(wRecs.length)drawWeightChart(c,wRecs,sub);
-  if(recs.some(r=>r.proc==='y'))dLineM(c,'加工食品',sub,recs,r=>r.proc==='y','#f6ad55',yr);
-  if(recs.some(r=>r.fried==='y'))dLineM(c,'炸物',sub,recs,r=>r.fried==='y','#fc8181',yr);
-  if(recs.some(r=>r.drink==='y'))dLineM(c,'飲料',sub,recs,r=>r.drink==='y','#60a5fa',yr);
-  if(recs.some(r=>r.med==='y'))dLineM(c,'藥物',sub,recs,r=>r.med==='y','#68d391',yr);
+  const hasFlag=v=>v&&v!=='n'&&v!=='';
+  if(recs.some(r=>hasFlag(r.proc)))dLineM(c,'加工',sub,recs,r=>hasFlag(r.proc),'#f6ad55',yr);
+  if(recs.some(r=>hasFlag(r.fried)))dLineM(c,'炸物',sub,recs,r=>hasFlag(r.fried),'#fc8181',yr);
+  if(recs.some(r=>hasFlag(r.drink)))dLineM(c,'飲料',sub,recs,r=>hasFlag(r.drink),'#60a5fa',yr);
+  if(recs.some(r=>hasFlag(r.med)))dLineM(c,'藥物',sub,recs,r=>hasFlag(r.med),'#68d391',yr);
   STATUSES.forEach(s=>{
     const pred=r=>getSts(r).includes(s.id);
     if(!recs.some(pred))return;
