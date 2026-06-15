@@ -507,7 +507,8 @@ async function saveRecord(){
     doctor:document.getElementById('meal-doctor').value||tgl.doctor||'',
     statuses:[...selSts],
     otherText:document.getElementById('other-text').value,
-    medNote:document.getElementById('meal-doctor').value||tgl.doctor||'',
+    medNote:'',
+    doctorAdvice:document.getElementById('meal-doctor').value||tgl.doctor||'',
     notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
@@ -609,7 +610,8 @@ async function saveEdit(){
     doctor:document.getElementById('edit-meal-doctor').value||etgl.doctor||'',
     statuses:[...editSts],
     otherText:document.getElementById('edit-other-text').value,
-    medNote:document.getElementById('edit-meal-doctor').value||etgl.doctor||'',
+    medNote:editRec.medNote||'',
+    doctorAdvice:document.getElementById('edit-meal-doctor').value||etgl.doctor||'',
     notes:document.getElementById('edit-notes').value,
     mens:document.getElementById('edit-mens-on').checked?eMensDay:null
   };
@@ -648,9 +650,9 @@ async function loadAllRecs(){
   try{
     const raw=await api('GET',{action:'getRecords'});
     allRecs=Array.isArray(raw)?raw:[];
-    // map medNote (legacy column) -> doctor field for 醫囑
+    // map doctorAdvice column -> doctor field for 醫囑
     allRecs=allRecs.map(r=>{
-      const docVal=String(r.medNote||'').trim();
+      const docVal=String(r.doctorAdvice||'').trim();
       return {...r, doctor:docVal, meals:{...r.meals, doctor:docVal}};
     });
     populateYearFilter();
