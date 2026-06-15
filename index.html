@@ -172,7 +172,6 @@ canvas{display:block;}
         <div class="meal-row"><div class="meal-name">炸物</div><input class="meal-input" type="text" id="meal-fried" placeholder="炸物說明…"></div>
         <div class="meal-row"><div class="meal-name">飲料</div><input class="meal-input" type="text" id="meal-drink" placeholder="飲料說明…"></div>
         <div class="meal-row"><div class="meal-name">藥物</div><input class="meal-input" type="text" id="meal-med" placeholder="藥物名稱／說明…"></div>
-        <div class="meal-row"><div class="meal-name">醫囑</div><input class="meal-input" type="text" id="meal-doctor" placeholder="醫囑內容…"></div>
       </div>
     </div>
     <div class="section">
@@ -182,7 +181,6 @@ canvas{display:block;}
         <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="fried-y" onclick="setTgl('fried','y')">有</div><div class="toggle-btn" id="fried-n" onclick="setTgl('fried','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="drink-y" onclick="setTgl('drink','y')">有</div><div class="toggle-btn" id="drink-n" onclick="setTgl('drink','n')">沒有</div></div></div>
         <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="med-y" onclick="setTgl('med','y')">有</div><div class="toggle-btn" id="med-n" onclick="setTgl('med','n')">沒有</div></div></div>
-        <div class="toggle-row"><div class="toggle-label">醫囑</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="doctor-y" onclick="setTgl('doctor','y')">有</div><div class="toggle-btn" id="doctor-n" onclick="setTgl('doctor','n')">沒有</div></div></div>
       </div>
     </div>
     <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -220,7 +218,6 @@ canvas{display:block;}
           <option value="status">Status</option>
           <option value="remark">Remark</option>
           <option value="mens">月經</option>
-          <option value="doctor">醫囑</option>
         </select>
       </div>
       <div class="filter-row">
@@ -261,7 +258,6 @@ canvas{display:block;}
         <div class="meal-row"><div class="meal-name">炸物</div><input class="meal-input" type="text" id="edit-meal-fried" placeholder="炸物說明…"></div>
         <div class="meal-row"><div class="meal-name">飲料</div><input class="meal-input" type="text" id="edit-meal-drink" placeholder="飲料說明…"></div>
         <div class="meal-row"><div class="meal-name">藥物</div><input class="meal-input" type="text" id="edit-meal-med" placeholder="藥物名稱／說明…"></div>
-        <div class="meal-row"><div class="meal-name">醫囑</div><input class="meal-input" type="text" id="edit-meal-doctor" placeholder="醫囑內容…"></div>
         </div></div></div>
       <div class="modal-section">
         <div class="modal-section-title">Diet Flags</div>
@@ -270,7 +266,6 @@ canvas{display:block;}
           <div class="toggle-row"><div class="toggle-label">炸物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="efried-y" onclick="setETgl('fried','y')">有</div><div class="toggle-btn" id="efried-n" onclick="setETgl('fried','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">飲料</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edrink-y" onclick="setETgl('drink','y')">有</div><div class="toggle-btn" id="edrink-n" onclick="setETgl('drink','n')">沒有</div></div></div>
           <div class="toggle-row"><div class="toggle-label">藥物</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="emed-y" onclick="setETgl('med','y')">有</div><div class="toggle-btn" id="emed-n" onclick="setETgl('med','n')">沒有</div></div></div>
-          <div class="toggle-row"><div class="toggle-label">醫囑</div><div class="toggle-group" style="width:136px"><div class="toggle-btn" id="edoctor-y" onclick="setETgl('doctor','y')">有</div><div class="toggle-btn" id="edoctor-n" onclick="setETgl('doctor','n')">沒有</div></div></div>
         </div>
       </div>
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
@@ -319,8 +314,8 @@ const STS_GROUPS=[
 ];
 
 let persons=[],allRecs=[],selectedPerson=null;
-let tgl={proc:null,fried:null,med:null,drink:null,doctor:null};
-let etgl={proc:null,fried:null,med:null,drink:null,doctor:null};
+let tgl={proc:null,fried:null,med:null,drink:null};
+let etgl={proc:null,fried:null,med:null,drink:null};
 let selSts=new Set(),editSts=new Set();
 let mensDay=1,eMensDay=1,editRec=null,histTab='list';
 
@@ -498,17 +493,14 @@ async function saveRecord(){
       fried:document.getElementById('meal-fried').value,
       drink:document.getElementById('meal-drink').value,
       med:document.getElementById('meal-med').value,
-      doctor:document.getElementById('meal-doctor').value,
     },
     proc:document.getElementById('meal-proc').value||tgl.proc||'',
     fried:document.getElementById('meal-fried').value||tgl.fried||'',
     med:document.getElementById('meal-med').value||tgl.med||'',
     drink:document.getElementById('meal-drink').value||tgl.drink||'',
-    doctor:document.getElementById('meal-doctor').value||tgl.doctor||'',
     statuses:[...selSts],
     otherText:document.getElementById('other-text').value,
     medNote:'',
-    doctorAdvice:document.getElementById('meal-doctor').value||tgl.doctor||'',
     notes:document.getElementById('notes').value,
     mens:document.getElementById('mens-on').checked?mensDay:null,
   };
@@ -543,15 +535,12 @@ function openEditModal(rec){
   const friedVal=rec.fried||'';
   const drinkVal=rec.drink||'';
   const medVal=rec.med||'';
-  const doctorVal=rec.meals?.doctor||rec.doctor||'';
-
   // toggle state: 'y' if value is 'y' OR a non-empty text description (not 'n')
   etgl={
     proc:  (procVal==='y'||(procVal&&procVal!=='n'))?'y':(procVal==='n'?'n':null),
     fried: (friedVal==='y'||(friedVal&&friedVal!=='n'))?'y':(friedVal==='n'?'n':null),
     drink: (drinkVal==='y'||(drinkVal&&drinkVal!=='n'))?'y':(drinkVal==='n'?'n':null),
     med:   (medVal==='y'||(medVal&&medVal!=='n'))?'y':(medVal==='n'?'n':null),
-    doctor:(doctorVal&&doctorVal.trim())?'y':null,
   };
 
   // text description fields: only show if value is text (not 'y'/'n'/empty)
@@ -559,9 +548,8 @@ function openEditModal(rec){
   document.getElementById('edit-meal-fried').value=(friedVal&&friedVal!=='y'&&friedVal!=='n')?friedVal:'';
   document.getElementById('edit-meal-drink').value=(drinkVal&&drinkVal!=='y'&&drinkVal!=='n')?drinkVal:'';
   document.getElementById('edit-meal-med').value=(medVal&&medVal!=='y'&&medVal!=='n')?medVal:'';
-  document.getElementById('edit-meal-doctor').value=doctorVal||'';
 
-  ['proc','fried','med','drink','doctor'].forEach(t=>['y','n'].forEach(v=>{
+  ['proc','fried','med','drink'].forEach(t=>['y','n'].forEach(v=>{
     document.getElementById('e'+t+'-'+v).className='toggle-btn'+(etgl[t]===v?(v==='y'?' on':' off-sel'):'');
   }));
 
@@ -601,17 +589,14 @@ async function saveEdit(){
       fried:document.getElementById('edit-meal-fried').value,
       drink:document.getElementById('edit-meal-drink').value,
       med:document.getElementById('edit-meal-med').value,
-      doctor:document.getElementById('edit-meal-doctor').value,
     },
     proc:document.getElementById('edit-meal-proc').value||etgl.proc||'',
     fried:document.getElementById('edit-meal-fried').value||etgl.fried||'',
     med:document.getElementById('edit-meal-med').value||etgl.med||'',
     drink:document.getElementById('edit-meal-drink').value||etgl.drink||'',
-    doctor:document.getElementById('edit-meal-doctor').value||etgl.doctor||'',
     statuses:[...editSts],
     otherText:document.getElementById('edit-other-text').value,
     medNote:editRec.medNote||'',
-    doctorAdvice:document.getElementById('edit-meal-doctor').value||etgl.doctor||'',
     notes:document.getElementById('edit-notes').value,
     mens:document.getElementById('edit-mens-on').checked?eMensDay:null
   };
@@ -650,11 +635,6 @@ async function loadAllRecs(){
   try{
     const raw=await api('GET',{action:'getRecords'});
     allRecs=Array.isArray(raw)?raw:[];
-    // map doctorAdvice column -> doctor field for 醫囑
-    allRecs=allRecs.map(r=>{
-      const docVal=String(r.doctorAdvice||'').trim();
-      return {...r, doctor:docVal, meals:{...r.meals, doctor:docVal}};
-    });
     populateYearFilter();
     applyListFilter();
     applyChartFilter();
@@ -702,7 +682,6 @@ function applyListFilter(){
       if(cat==='status')return sts.length>0;
       if(cat==='remark')return r.notes&&r.notes.trim();
       if(cat==='mens')return r.mens&&+r.mens>=1;
-      if(cat==='doctor')return r.doctor&&String(r.doctor).trim();
       return true;
     });
   }
@@ -715,7 +694,7 @@ function applyListFilter(){
         r.personName,
         r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack,
         r.meals?.proc,r.meals?.fried,r.meals?.drink,r.meals?.med,
-        r.proc,r.fried,r.drink,r.med,r.doctor,
+        r.proc,r.fried,r.drink,r.med,
         r.otherText,r.notes,
         ...sts.map(s=>STATUSES.find(x=>x.id===s)?.label||s),
         r.mens?'月經':'',
@@ -749,7 +728,7 @@ function renderRL(recs){
   const mon=document.getElementById('list-month-filter').value;
   const cat=document.getElementById('list-category-filter').value;
   const kw=(document.getElementById('list-search').value||'').trim();
-  const catLabels={'meals':'飲食記錄','proc':'加工','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','mens':'月經','doctor':'醫囑'};
+  const catLabels={'meals':'飲食記錄','proc':'加工','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','mens':'月經'};
   const tags=[];
   if(pid){const p=persons.find(x=>x.id===pid);if(p)tags.push(`👤 ${p.name}`);}
   if(mon)tags.push(`📅 ${mon}`);
@@ -771,7 +750,6 @@ function renderRL(recs){
     if(r.fried){const ft=r.fried;if(ft&&ft!=='n')chips.push(`<span class="rec-chip b">${ft==='y'?'炸物':'炸物：'+ft}</span>`);}
     if(r.drink){const dt=r.drink;if(dt&&dt!=='n')chips.push(`<span class="rec-chip b">${dt==='y'?'飲料':'飲料：'+dt}</span>`);}
     if(r.med){const mt=r.med;if(mt&&mt!=='n')chips.push(`<span class="rec-chip g">${mt==='y'?'藥物':'藥物：'+mt}</span>`);}
-    if(r.doctor){const dv=String(r.doctor).trim();if(dv)chips.push(`<span class="rec-chip a">醫囑：${dv}</span>`);}
     getSts(r).forEach(s=>{
       const f=STATUSES.find(x=>x.id===s);
       if(!f)return;
@@ -826,7 +804,6 @@ function renderCharts(recs,yr,yearLabel,personLabel){
   if(recs.some(r=>hasFlag(r.fried)))dLineM(c,'炸物',sub,recs,r=>hasFlag(r.fried),'#fc8181',yr);
   if(recs.some(r=>hasFlag(r.drink)))dLineM(c,'飲料',sub,recs,r=>hasFlag(r.drink),'#60a5fa',yr);
   if(recs.some(r=>hasFlag(r.med)))dLineM(c,'藥物',sub,recs,r=>hasFlag(r.med),'#68d391',yr);
-  if(recs.some(r=>hasFlag(r.doctor)))dLineM(c,'醫囑',sub,recs,r=>hasFlag(r.doctor),'#fbbf24',yr);
   STATUSES.forEach(s=>{
     const pred=r=>getSts(r).includes(s.id);
     if(!recs.some(pred))return;
