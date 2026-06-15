@@ -533,20 +533,31 @@ function openEditModal(rec){
   document.getElementById('edit-lunch').value=rec.meals?.lunch||'';
   document.getElementById('edit-dinner').value=rec.meals?.dinner||'';
   document.getElementById('edit-snack').value=rec.meals?.snack||'';
-  document.getElementById('edit-meal-proc').value=rec.meals?.proc||'';
-  document.getElementById('edit-meal-fried').value=rec.meals?.fried||'';
-  document.getElementById('edit-meal-drink').value=rec.meals?.drink||'';
-  document.getElementById('edit-meal-med').value=rec.meals?.med||'';
-  etgl={proc:rec.proc==='y'?'y':null,fried:rec.fried==='y'?'y':null,med:rec.med==='y'?'y':null,drink:rec.drink==='y'?'y':null};
-  // Fill text description fields
-  document.getElementById('edit-meal-proc').value=(rec.proc&&rec.proc!=='y'&&rec.proc!=='n')?rec.proc:'';
-  document.getElementById('edit-meal-fried').value=(rec.fried&&rec.fried!=='y'&&rec.fried!=='n')?rec.fried:'';
-  document.getElementById('edit-meal-med').value=(rec.med&&rec.med!=='y'&&rec.med!=='n')?rec.med:'';
-  document.getElementById('edit-meal-drink').value=(rec.drink&&rec.drink!=='y'&&rec.drink!=='n')?rec.drink:'';
+
+  // proc/fried/drink/med may contain 'y','n', text description, or be empty
+  const procVal=rec.proc||'';
+  const friedVal=rec.fried||'';
+  const drinkVal=rec.drink||'';
+  const medVal=rec.med||'';
+
+  // toggle state: 'y' if value is 'y' OR a non-empty text description (not 'n')
+  etgl={
+    proc:  (procVal==='y'||(procVal&&procVal!=='n'))?'y':(procVal==='n'?'n':null),
+    fried: (friedVal==='y'||(friedVal&&friedVal!=='n'))?'y':(friedVal==='n'?'n':null),
+    drink: (drinkVal==='y'||(drinkVal&&drinkVal!=='n'))?'y':(drinkVal==='n'?'n':null),
+    med:   (medVal==='y'||(medVal&&medVal!=='n'))?'y':(medVal==='n'?'n':null),
+  };
+
+  // text description fields: only show if value is text (not 'y'/'n'/empty)
+  document.getElementById('edit-meal-proc').value=(procVal&&procVal!=='y'&&procVal!=='n')?procVal:'';
+  document.getElementById('edit-meal-fried').value=(friedVal&&friedVal!=='y'&&friedVal!=='n')?friedVal:'';
+  document.getElementById('edit-meal-drink').value=(drinkVal&&drinkVal!=='y'&&drinkVal!=='n')?drinkVal:'';
+  document.getElementById('edit-meal-med').value=(medVal&&medVal!=='y'&&medVal!=='n')?medVal:'';
+
   ['proc','fried','med','drink'].forEach(t=>['y','n'].forEach(v=>{
     document.getElementById('e'+t+'-'+v).className='toggle-btn'+(etgl[t]===v?(v==='y'?' on':' off-sel'):'');
   }));
-  document.getElementById('edit-med-note').value=rec.medNote||'';
+
   editSts=new Set(getSts(rec));
   document.getElementById('edit-other-wrap').className='other-input-wrap'+(editSts.has('ot')?' show':'');
   document.getElementById('edit-other-text').value=rec.otherText||'';
@@ -568,8 +579,6 @@ async function saveEdit(){
   btn.disabled=true;btn.textContent='…';
   const dateVal=document.getElementById('edit-date').value||toDateInp(editRec.date);
   const newId='r_'+editRec.personId+'_'+dateVal;
-  const medNoteVal=document.getElementById('edit-med-note').value;
-
   const updated={
     ...editRec,
     id:newId,
