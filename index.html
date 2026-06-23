@@ -850,11 +850,66 @@ function drawWeightChart(c,recs,sub){
   recs.forEach((r,i)=>{if(i%step===0||i===recs.length-1){const d=new Date(r.date);ctx.fillText(`${d.getMonth()+1}/${d.getDate()}`,xs[i],h-4);}});
 }
 function dLineM(c,title,sub,recs,pred,color,yr){
-  const counts=byMonthArr(recs,pred,yr);
-  const total=counts.reduce((a,b)=>a+b,0);
-  const card=mkCard(c,title,`${sub}・共 ${total} 次/年`);
-  const w=CW(),h=150,pl=28,pr=8,pt=14,pb=22,cw=w-pl-pr,ch=h-pt-pb;
-  const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
+  // Get all years that have relevant data
+  const relevantRecs=recs.filter(pred);
+  const years=yr?[yr]:[...new Set(relevantRecs.map(r=>getYear(r.date)))].sort();
+
+  // Build per-year counts
+  const yearData=years.map(y=>({
+    year:y,
+    counts:Array.from({length:12},(_,m)=>recs.filter(r=>getYear(r.date)===y&&getMonth(r.date)-1===m&&pred(r)).length)
+  }));
+
+  const total=yearData.reduce((a,yd)=>a+yd.counts.reduce((b,v)=>b+v,0),0);
+  const subLabel=yr?`${sub}・共 ${total} 次/年`:`${sub}・共 ${total} 次`;
+  const card=mkCard(c,title,subLabel);
+
+  // chart height scales with number of years
+  const perYearH=yr?136:Math.max(120,Math.min(160,100+years.length*18));
+  const h=perYearH+14,pl=28,pr=8,pt=14,pb=22,cw=CW()-pl-pr,ch=h-pt-pb;
+  const w=CW();
+
+  // year label colors - rotate if multiple years
+  const yearColors=['#4fd1c5','#f687b3','#f6ad55','#68d391','#60a5fa','#a78bfa','#fc8181'];
+
+  if(!yr&&years.length>1){
+    // Multi-year: one mini chart per year stacked
+    years.forEach((y,yi)=>{
+      const yd=yearData[yi];
+      const yTotal=yd.counts.reduce((a,b)=>a+b,0);
+      const yCard=mkCard(c,`${title} · ${y}`,`${sub}・共 ${yTotal} 次`);
+      const yColor=yearColors[yi%yearColors.length];
+      const hh=150,ppl=28,ppr=8,ppt=14,ppb=22,ccw=CW()-ppl-ppr,cch=hh-ppt-ppb;
+      const cv=document.createElement('canvas');cv.width=CW();cv.height=hh;yCard.appendChild(cv);
+      const ctx=cv.getContext('2d');
+      const fy=v=>ppt+cch-Math.min(v,10)/10*cch;
+      ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+      for(let i=0;i<=5;i++){
+        const yv=i*2,yp=ppt+cch-(yv/10)*cch;
+        ctx.beginPath();ctx.moveTo(ppl,yp);ctx.lineTo(ppl+ccw,yp);ctx.stroke();
+        ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
+        ctx.fillText(yv===10?'10+':yv,ppl-3,yp+3);
+      }
+      const xs=Array.from({length:12},(_,i)=>ppl+(i*(ccw/11)));
+      ctx.beginPath();xs.forEach((x,i)=>{const yy=fy(yd.counts[i]);i?ctx.lineTo(x,yy):ctx.moveTo(x,yy);});
+      ctx.strokeStyle=yColor;ctx.lineWidth=2;ctx.stroke();
+      ctx.lineTo(xs[11],ppt+cch);ctx.lineTo(xs[0],ppt+cch);ctx.closePath();ctx.fillStyle=yColor+'28';ctx.fill();
+      ctx.setLineDash([2,3]);ctx.strokeStyle=yColor+'55';ctx.lineWidth=1;
+      xs.forEach((x,i)=>{if(yd.counts[i]>0){ctx.beginPath();ctx.moveTo(x,fy(yd.counts[i]));ctx.lineTo(x,ppt+cch);ctx.stroke();}});
+      ctx.setLineDash([]);
+      xs.forEach((x,i)=>{
+        drawDot(ctx,x,fy(yd.counts[i]),yColor);
+        if(yd.counts[i]>0){ctx.fillStyle=yColor;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillText(yd.counts[i],x,fy(yd.counts[i])-8);}
+      });
+      ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='center';
+      xs.forEach((x,i)=>ctx.fillText(i+1,x,hh-4));
+    });
+    return;
+  }
+
+  // Single year
+  const counts=yearData[0]?.counts||new Array(12).fill(0);
+  const cv=document.createElement('canvas');cv.width=w;cv.height=150;card.appendChild(cv);
   const ctx=cv.getContext('2d');
   const fy=v=>pt+ch-Math.min(v,10)/10*ch;
   ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
@@ -876,11 +931,27 @@ function dLineM(c,title,sub,recs,pred,color,yr){
     if(counts[i]>0){ctx.fillStyle=color;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';ctx.fillText(counts[i],x,fy(counts[i])-8);}
   });
   ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='center';
-  xs.forEach((x,i)=>ctx.fillText(i+1,x,h-4));
+  xs.forEach((x,i)=>ctx.fillText(i+1,x,150-4));
 }
 function drawMenstrual(c,recs,sub,yr){
-  const mensRecs=recs.filter(r=>r.mens==1||r.mens==='1');
-  const card=mkCard(c,'月經',`${sub}・共 ${mensRecs.length} 次/年`);
+  const allMensRecs=recs.filter(r=>r.mens==1||r.mens==='1');
+  if(!yr&&[...new Set(allMensRecs.map(r=>getYear(r.date)))].length>1){
+    // Multi-year: show each year separately
+    const years=[...new Set(allMensRecs.map(r=>getYear(r.date)))].sort();
+    const yColors=['#f687b3','#f9a8d4','#fda4af','#c4b5fd','#a78bfa'];
+    years.forEach((y,yi)=>{
+      const mensRecs=allMensRecs.filter(r=>getYear(r.date)===y);
+      drawMenstrualChart(c,mensRecs,`${sub}`,`月經 · ${y}`,yColors[yi%yColors.length]);
+    });
+    return;
+  }
+  const mensRecs=allMensRecs;
+  const card=mkCard(c,'月經',`${sub}・共 ${mensRecs.length} 次`);
+  drawMenstrualChart(c,mensRecs,sub,'月經','#f687b3');
+}
+
+function drawMenstrualChart(c,mensRecs,sub,title,color){
+  const card=mkCard(c,title,`${sub}・共 ${mensRecs.length} 次`);
   const w=CW(),h=90,pl=28,pr=8,pt=20,pb=22,cw=w-pl-pr,mid=pt+(h-pt-pb)/2+8;
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
   const ctx=cv.getContext('2d');
@@ -893,8 +964,8 @@ function drawMenstrual(c,recs,sub,yr){
     const d=new Date(r.date);
     const x=xs[d.getMonth()];
     const day=d.getDate();
-    drawDot(ctx,x,mid,'#f687b3');
-    ctx.fillStyle='#f687b3';ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='center';
+    drawDot(ctx,x,mid,color);
+    ctx.fillStyle=color;ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='center';
     ctx.fillText(day,x,mid-12);
   });
 }
