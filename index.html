@@ -210,6 +210,9 @@ canvas{display:block;}
       <div class="filter-row">
         <select class="filter-select" id="list-category-filter" onchange="applyListFilter()">
           <option value="">所有項目</option>
+          <option value="height">身高</option>
+          <option value="weight">體重</option>
+          <option value="temp">體溫</option>
           <option value="meals">飲食記錄</option>
           <option value="proc">加工食品</option>
           <option value="fried">炸物</option>
@@ -221,7 +224,7 @@ canvas{display:block;}
         </select>
       </div>
       <div class="filter-row">
-        <input type="text" class="filter-select" id="list-search" placeholder="🔍 搜尋關鍵字…" oninput="applyListFilter()" style="flex:1;" autocomplete="off">
+        <input type="text" class="filter-select" id="list-search" placeholder="搜尋關鍵字…" oninput="applyListFilter()" style="flex:1;" autocomplete="off">
         <button onclick="clearFilters()" style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:13px;padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;">清除</button>
       </div>
       <div id="filter-result-bar" style="padding:0 16px 10px;"></div>
@@ -674,6 +677,9 @@ function applyListFilter(){
   if(cat){
     recs=recs.filter(r=>{
       const sts=getSts(r);
+      if(cat==='height')return r.height&&String(r.height).trim();
+      if(cat==='weight')return r.weight&&String(r.weight).trim();
+      if(cat==='temp')return r.temp&&String(r.temp).trim();
       if(cat==='meals')return [r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].some(v=>v&&v.trim());
       if(cat==='proc')return r.proc&&r.proc!=='n'&&r.proc!=='';
       if(cat==='fried')return r.fried&&r.fried!=='n'&&r.fried!=='';
@@ -692,6 +698,7 @@ function applyListFilter(){
       const sts=getSts(r);
       const allText=[
         r.personName,
+        String(r.height||''),String(r.weight||''),
         r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack,
         r.meals?.proc,r.meals?.fried,r.meals?.drink,r.meals?.med,
         r.proc,r.fried,r.drink,r.med,
@@ -728,14 +735,14 @@ function renderRL(recs){
   const mon=document.getElementById('list-month-filter').value;
   const cat=document.getElementById('list-category-filter').value;
   const kw=(document.getElementById('list-search').value||'').trim();
-  const catLabels={'meals':'飲食記錄','proc':'加工','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','mens':'月經'};
+  const catLabels={'meals':'飲食記錄','proc':'加工','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','height':'身高','weight':'體重','temp':'體溫','mens':'月經'};
   const tags=[];
-  if(pid){const p=persons.find(x=>x.id===pid);if(p)tags.push(`👤 ${p.name}`);}
-  if(mon)tags.push(`📅 ${mon}`);
-  if(cat)tags.push(`🔖 ${catLabels[cat]||cat}`);
-  if(kw)tags.push(`🔍 「${kw}」`);
+  if(pid){const p=persons.find(x=>x.id===pid);if(p)tags.push(`${p.name}`);}
+  if(mon)tags.push(`${mon}`);
+  if(cat)tags.push(`${catLabels[cat]||cat}`);
+  if(kw)tags.push(`「${kw}」`);
 
-  bar.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+  bar.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><span style='font-size:12px;color:var(--text3);'>篩選：</span>
     ${tags.map(t=>`<span style="background:rgba(58,175,169,0.15);color:var(--accent);border:0.5px solid rgba(58,175,169,0.3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
     <span style="font-size:13px;color:var(--text2);font-weight:600;${tags.length?'margin-left:4px;':''}">共 ${recs.length} 筆</span>
   </div>`;
@@ -764,7 +771,7 @@ function renderRL(recs){
     const meals=[r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].filter(Boolean);
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
 
-    if(r.notes)chips.push(`<span class="rec-chip">📝 ${r.notes}</span>`);
+    if(r.notes)chips.push(`<span class="rec-chip">備：${r.notes}</span>`);
     const enc=encodeURIComponent(JSON.stringify(r));
     const pName=persons.find(p=>p.id===r.personId)?.name||r.personName||'';
     return `<div class="rec-card">
@@ -797,8 +804,12 @@ const STS_COLOR={
 function renderCharts(recs,yr,yearLabel,personLabel){
   const c=document.getElementById('hist-charts-view');c.innerHTML='';
   const sub=`${personLabel}・${yearLabel}`;
+  const hRecs=recs.filter(r=>r.height&&+r.height>0);
   const wRecs=recs.filter(r=>r.weight&&+r.weight>0);
-  if(wRecs.length)drawWeightChart(c,wRecs,sub);
+  const tRecs=recs.filter(r=>r.temp&&+r.temp>0);
+  if(hRecs.length)drawVitalChart(c,'身高',sub,hRecs,'height','cm','#a78bfa',yr);
+  if(wRecs.length)drawVitalChart(c,'體重',sub,wRecs,'weight','kg','#4fd1c5',yr);
+  if(tRecs.length)drawVitalChart(c,'體溫',sub,tRecs,'temp','°C','#fb923c',yr);
   const hasFlag=v=>v&&v!=='n'&&v!=='';
   if(recs.some(r=>hasFlag(r.proc)))dLineM(c,'加工',sub,recs,r=>hasFlag(r.proc),'#f6ad55',yr);
   if(recs.some(r=>hasFlag(r.fried)))dLineM(c,'炸物',sub,recs,r=>hasFlag(r.fried),'#fc8181',yr);
@@ -971,6 +982,47 @@ function drawMenstrualChart(c,mensRecs,sub,title,color){
 }
 
 renderStsTags();renderEStsTags();init();
+
+function drawVitalChart(c,title,sub,recs,field,unit,color,yr){
+  if(!yr){
+    const years=[...new Set(recs.map(r=>getYear(r.date)))].sort();
+    const yColors=['#4fd1c5','#f687b3','#f6ad55','#68d391','#60a5fa','#a78bfa','#fc8181'];
+    years.forEach((y,yi)=>{
+      const yRecs=recs.filter(r=>getYear(r.date)===y&&r[field]&&+r[field]>0);
+      if(!yRecs.length)return;
+      drawVitalLine(c,`${title} · ${y}`,sub,yRecs,field,unit,yColors[yi%yColors.length]);
+    });
+    return;
+  }
+  const yRecs=recs.filter(r=>r[field]&&+r[field]>0);
+  if(yRecs.length)drawVitalLine(c,title,sub,yRecs,field,unit,color);
+}
+
+function drawVitalLine(c,title,sub,recs,field,unit,color){
+  const card=mkCard(c,title,sub);
+  if(!recs.length){card.insertAdjacentHTML('beforeend','<div class="no-data">尚無資料</div>');return;}
+  const w=CW(),h=150,pl=40,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
+  const ctx=cv.getContext('2d');
+  const ys=recs.map(r=>+r[field]);
+  const minY=Math.floor(Math.min(...ys)-1),maxY=Math.ceil(Math.max(...ys)+1),rng=maxY-minY||1;
+  const xs=recs.map((_,i)=>pl+i*(cw/Math.max(recs.length-1,1)));
+  const fy=v=>pt+ch-((v-minY)/rng)*ch;
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+  for(let i=0;i<=4;i++){const y=pt+(ch/4)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=4;i++){const v=maxY-((maxY-minY)/4)*i;ctx.fillText(Number.isInteger(v)?v:v.toFixed(1),pl-3,pt+(ch/4)*i+3);}
+  ctx.beginPath();xs.forEach((x,i)=>i?ctx.lineTo(x,fy(ys[i])):ctx.moveTo(x,fy(ys[i])));
+  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+  ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle=color+'28';ctx.fill();
+  xs.forEach((x,i)=>drawDot(ctx,x,fy(ys[i]),color));
+  ctx.fillStyle=color;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';
+  xs.forEach((x,i)=>ctx.fillText(ys[i].toFixed(1),x,fy(ys[i])-9));
+  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
+  const step=Math.ceil(recs.length/6);
+  recs.forEach((r,i)=>{if(i%step===0||i===recs.length-1){const d=new Date(r.date);ctx.fillText((d.getMonth()+1)+'/'+d.getDate(),xs[i],h-4);}});
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(unit,2,pt+8);
+}
 </script>
 </body>
 </html>
