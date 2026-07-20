@@ -251,9 +251,17 @@ canvas{display:block;}
   <div class="modal">
     <div class="modal-header">
       <span class="modal-title">修改紀錄</span>
-      <div style="display:flex;gap:8px;"><button class="modal-close" onclick="closeModal()">取消</button><button class="modal-save-btn" id="modal-save-btn" onclick="saveEdit()">儲存</button></div>
+      <div style="display:flex;gap:8px;">
+        <button class="modal-close" onclick="closeModal()">取消</button>
+        <button class="modal-save-btn" style="background:var(--warn);color:#1a1a1e;" onclick="openCopyModal()">複製</button>
+        <button class="modal-save-btn" id="modal-save-btn" onclick="saveEdit()">儲存</button>
+      </div>
     </div>
     <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Person</div>
+        <div class="card" id="edit-person-selector"></div>
+      </div>
       <div class="modal-section"><div class="modal-section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="edit-date"></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Vitals</div><div class="metrics-grid"><div class="metric-card"><div class="metric-label">身高</div><input class="metric-input" type="number" id="edit-height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div><div class="metric-card"><div class="metric-label">體重</div><input class="metric-input" type="number" id="edit-weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div><div class="metric-card"><div class="metric-label">體溫</div><input class="metric-input" type="number" id="edit-temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Meals</div><div class="meal-card"><div class="meal-row"><div class="meal-name">早餐</div><input class="meal-input" type="text" id="edit-breakfast"></div><div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="edit-lunch"></div><div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="edit-dinner"></div><div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="edit-snack"></div>
@@ -274,6 +282,26 @@ canvas{display:block;}
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Menstrual Cycle</div><div class="card"><div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="edit-mens-on" onchange="toggleEMens()"><span class="slider"></span></label></div><div id="edit-mens-detail" style="display:none"><div class="menstrual-row"><div class="menstrual-label">第幾天</div><div class="menstrual-ctrl"><div class="day-btn" onclick="chEDay(-1)">−</div><div class="day-val" id="edit-mens-day">1</div><div class="day-unit">天</div><div class="day-btn" onclick="chEDay(1)">＋</div></div></div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- COPY MODAL -->
+<div class="confirm-overlay" id="copy-modal">
+  <div class="confirm-box" style="width:310px;">
+    <div class="confirm-title">複製紀錄到另一天</div>
+    <div class="confirm-msg">選擇目標人員和日期，將此紀錄複製過去</div>
+    <div style="margin-bottom:12px;text-align:left;">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">目標人員</div>
+      <select id="copy-person-select" style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;"></select>
+    </div>
+    <div style="margin-bottom:20px;text-align:left;">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">目標日期</div>
+      <input type="date" id="copy-date-input" style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;">
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeCopyModal()">取消</button>
+      <button class="confirm-ok" style="background:var(--warn);color:#1a1a1e;" onclick="doCopy()">複製</button>
     </div>
   </div>
 </div>
@@ -383,6 +411,45 @@ function showConfirm(title,msg,cb){
   document.getElementById('confirm-ok-btn').onclick=()=>{closeConfirm();cb();};
   document.getElementById('confirm-overlay').classList.add('show');
 }
+function openCopyModal(){
+  if(!editRec)return;
+  // Populate person select
+  const sel=document.getElementById('copy-person-select');
+  sel.innerHTML=persons.map(p=>`<option value="${p.id}"${p.id===editRec.personId?' selected':''}>${p.name}</option>`).join('');
+  // Default date: tomorrow
+  const d=new Date(editRec.date);d.setDate(d.getDate()+1);
+  document.getElementById('copy-date-input').value=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
+  document.getElementById('copy-modal').classList.add('show');
+}
+
+function closeCopyModal(){document.getElementById('copy-modal').classList.remove('show');}
+
+async function doCopy(){
+  if(!editRec)return;
+  const targetPersonId=document.getElementById('copy-person-select').value;
+  const targetDate=document.getElementById('copy-date-input').value;
+  if(!targetDate){showToast('請選擇目標日期',true);return;}
+  const targetPerson=persons.find(p=>p.id===targetPersonId);
+  const copied={
+    ...editRec,
+    id:'r_'+targetPersonId+'_'+targetDate,
+    personId:targetPersonId,
+    personName:targetPerson?.name||editRec.personName,
+    date:new Date(targetDate+'T12:00:00').toISOString(),
+  };
+  setSS('loading','複製中…');
+  try{
+    await api('POST',{action:'upsertRecord',record:copied});
+    const idx=allRecs.findIndex(r=>r.id===copied.id);
+    if(idx>=0)allRecs[idx]=copied; else allRecs.push(copied);
+    closeCopyModal();
+    closeModal();
+    setSS('ok','已連線 Google Sheets');
+    showToast('複製完成');
+    applyListFilter();
+  }catch(e){setSS('err','失敗');showToast('複製失敗',true);}
+}
+
 function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
 
 function renderPS(){
@@ -522,8 +589,21 @@ async function saveRecord(){
 }
 
 // ── EDIT MODAL ──
+function renderEditPersonSelector(selectedId){
+  document.getElementById('edit-person-selector').innerHTML=persons.map(p=>`
+    <div class="person-row ${p.id===selectedId?'selected':''}" onclick="selectEditPerson('${p.id}')">
+      <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
+      <div class="person-name">${p.name}</div>
+      ${p.id===selectedId?'<span class="person-check">✓</span>':''}
+    </div>`).join('');
+}
+let editPersonId=null;
+function selectEditPerson(id){editPersonId=id;renderEditPersonSelector(id);}
+
 function openEditModal(rec){
   editRec=rec;
+  editPersonId=rec.personId;
+  renderEditPersonSelector(editPersonId);
   document.getElementById('edit-date').value=toDateInp(rec.date);
   document.getElementById('edit-height').value=rec.height||'';
   document.getElementById('edit-weight').value=rec.weight||'';
@@ -575,10 +655,14 @@ async function saveEdit(){
   const btn=document.getElementById('modal-save-btn');
   btn.disabled=true;btn.textContent='…';
   const dateVal=document.getElementById('edit-date').value||toDateInp(editRec.date);
-  const newId='r_'+editRec.personId+'_'+dateVal;
+  const targetPersonId=editPersonId||editRec.personId;
+  const targetPerson=persons.find(p=>p.id===targetPersonId)||persons.find(p=>p.id===editRec.personId);
+  const newId='r_'+targetPersonId+'_'+dateVal;
   const updated={
     ...editRec,
     id:newId,
+    personId:targetPersonId,
+    personName:targetPerson?.name||editRec.personName,
     date:new Date(dateVal+'T12:00:00').toISOString(),
     height:document.getElementById('edit-height').value,
     weight:document.getElementById('edit-weight').value,
@@ -771,7 +855,7 @@ function renderRL(recs){
     const meals=[r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack].filter(Boolean);
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
 
-    if(r.notes)chips.push(`<span class="rec-chip">備：${r.notes}</span>`);
+    if(r.notes)chips.push(`<span class="rec-chip">備註：${r.notes}</span>`);
     const enc=encodeURIComponent(JSON.stringify(r));
     const pName=persons.find(p=>p.id===r.personId)?.name||r.personName||'';
     return `<div class="rec-card">
