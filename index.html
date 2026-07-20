@@ -346,6 +346,7 @@ const STS_GROUPS=[
 
 let persons=[],allRecs=[],selectedPerson=null;
 let tgl={proc:null,fried:null,med:null,drink:null};
+const recMap={};
 let etgl={proc:null,fried:null,med:null,drink:null};
 let selSts=new Set(),editSts=new Set();
 let mensDay=1,eMensDay=1,editRec=null,histTab='list';
@@ -856,14 +857,15 @@ function renderRL(recs){
     if(meals.length)chips.push(`<span class="rec-chip">${meals.join(' / ')}</span>`);
 
     if(r.notes)chips.push(`<span class="rec-chip">備註：${r.notes}</span>`);
-    const enc=encodeURIComponent(JSON.stringify(r));
+    recMap[r.id]=r;
+    const rid=r.id.replace(/'/g,"\'");
     const pName=persons.find(p=>p.id===r.personId)?.name||r.personName||'';
     return `<div class="rec-card">
       <div class="rec-header">
         <div><div class="rec-date-txt">${fmtD(r.date)}</div><div class="rec-person-txt">${pName}</div></div>
         <div class="rec-actions">
-          <button class="rec-edit-btn" onclick="openEditModal(JSON.parse(decodeURIComponent('${enc}')))">修改</button>
-          <button class="rec-del-btn" onclick="cfmDelRec(JSON.parse(decodeURIComponent('${enc}')))">刪除</button>
+          <button class="rec-edit-btn" onclick="openEditModal(recMap['${rid}'])">修改</button>
+          <button class="rec-del-btn" onclick="cfmDelRec(recMap['${rid}'])">刪除</button>
         </div>
       </div>
       <div class="rec-body">${chips.join('')}</div>
