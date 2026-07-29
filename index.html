@@ -256,6 +256,19 @@ canvas{display:block;}
         <select class="filter-select" id="chart-person-filter" onchange="applyChartFilter()"><option value="">所有人員</option></select>
         <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()"><option value="">所有年份</option></select>
       </div>
+      <div class="filter-row">
+        <select class="filter-select" id="chart-item-filter" onchange="applyChartFilter()">
+          <option value="">所有項目</option>
+          <option value="height">身高</option>
+          <option value="weight">體重</option>
+          <option value="proc">加工</option>
+          <option value="fried">炸物</option>
+          <option value="drink">飲料</option>
+          <option value="med">藥物</option>
+          <option value="status">Status</option>
+          <option value="mens">月經</option>
+        </select>
+      </div>
       <div id="hist-charts-view"></div>
     </div>
   </div>
@@ -865,13 +878,14 @@ function applyListFilter(){
 function applyChartFilter(){
   const pid=document.getElementById('chart-person-filter').value;
   const yr=document.getElementById('chart-year-filter').value;
+  const item=document.getElementById('chart-item-filter').value;
   let recs=[...allRecs];
   if(pid)recs=recs.filter(r=>r.personId===pid);
   if(yr)recs=recs.filter(r=>getYear(r.date)===+yr);
   recs.sort((a,b)=>new Date(a.date)-new Date(b.date));
   const yearLabel=yr||'所有年份';
   const personLabel=pid?(persons.find(p=>p.id===pid)?.name||''):'所有人員';
-  renderCharts(recs,+yr||null,yearLabel,personLabel);
+  renderCharts(recs,+yr||null,yearLabel,personLabel,item);
 }
 
 // ── RENDER LIST ──
@@ -951,29 +965,27 @@ const STS_COLOR={
   'ot':'#94a3b8'
 };
 
-function renderCharts(recs,yr,yearLabel,personLabel){
+function renderCharts(recs,yr,yearLabel,personLabel,item){
   const c=document.getElementById('hist-charts-view');c.innerHTML='';
   const sub=`${personLabel}・${yearLabel}`;
-  const hRecs=recs.filter(r=>r.height&&+r.height>0);
-  const wRecs=recs.filter(r=>r.weight&&+r.weight>0);
-  const tRecs=recs.filter(r=>r.temp&&+r.temp>0);
-  if(hRecs.length)drawVitalChart(c,'身高',sub,hRecs,'height','cm','#a78bfa',yr);
-  if(wRecs.length)drawVitalChart(c,'體重',sub,wRecs,'weight','kg','#4fd1c5',yr);
-  if(tRecs.length)drawVitalChart(c,'體溫',sub,tRecs,'temp','°C','#fb923c',yr);
   const hasFlag=v=>v&&v!=='n'&&v!=='';
-  if(recs.some(r=>hasFlag(r.proc)))dLineM(c,'加工',sub,recs,r=>hasFlag(r.proc),'#f6ad55',yr);
-  if(recs.some(r=>hasFlag(r.fried)))dLineM(c,'炸物',sub,recs,r=>hasFlag(r.fried),'#fc8181',yr);
-  if(recs.some(r=>hasFlag(r.drink)))dLineM(c,'飲料',sub,recs,r=>hasFlag(r.drink),'#60a5fa',yr);
-  if(recs.some(r=>hasFlag(r.med)))dLineM(c,'藥物',sub,recs,r=>hasFlag(r.med),'#68d391',yr);
-  STATUSES.forEach(s=>{
-    const pred=r=>getSts(r).includes(s.id);
-    if(!recs.some(pred))return;
-    dLineM(c,s.id==='ot'?'其他':s.label,sub,recs,pred,STS_COLOR[s.id]||'#a78bfa',yr);
-  });
-  const mensRecs=recs.filter(r=>r.mens==1||r.mens==='1');
-  if(mensRecs.length)drawMenstrual(c,recs,sub,yr);
-}
+  const show=k=>!item||item===k;
 
+  if(show('height')){const hR=recs.filter(r=>r.height&&+r.height>0);if(hR.length)drawVitalChart(c,'身高',sub,hR,'height','cm','#a78bfa',yr);}
+  if(show('weight')){const wR=recs.filter(r=>r.weight&&+r.weight>0);if(wR.length)drawVitalChart(c,'體重',sub,wR,'weight','kg','#4fd1c5',yr);}
+  if(show('proc')&&recs.some(r=>hasFlag(r.proc)))dLineM(c,'加工',sub,recs,r=>hasFlag(r.proc),'#f6ad55',yr);
+  if(show('fried')&&recs.some(r=>hasFlag(r.fried)))dLineM(c,'炸物',sub,recs,r=>hasFlag(r.fried),'#fc8181',yr);
+  if(show('drink')&&recs.some(r=>hasFlag(r.drink)))dLineM(c,'飲料',sub,recs,r=>hasFlag(r.drink),'#60a5fa',yr);
+  if(show('med')&&recs.some(r=>hasFlag(r.med)))dLineM(c,'藥物',sub,recs,r=>hasFlag(r.med),'#68d391',yr);
+  if(show('status')){
+    STATUSES.forEach(s=>{
+      const pred=r=>getSts(r).includes(s.id);
+      if(!recs.some(pred))return;
+      dLineM(c,s.id==='ot'?'其他':s.label,sub,recs,pred,STS_COLOR[s.id]||'#a78bfa',yr);
+    });
+  }
+  if(show('mens')){const mR=recs.filter(r=>r.mens==1||r.mens==='1');if(mR.length)drawMenstrual(c,recs,sub,yr);}
+}
 function byMonthArr(recs,pred,yr){
   const counts=new Array(12).fill(0);
   recs.forEach(r=>{if(!yr||getYear(r.date)===yr){if(pred(r))counts[getMonth(r.date)-1]++;}});
