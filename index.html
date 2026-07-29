@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -138,6 +139,27 @@ canvas{display:block;}
 </style>
 </head>
 <body>
+
+<!-- PASSWORD SCREEN -->
+<div id="pw-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;">
+  <div style="width:100%;max-width:320px;">
+    <h2 style="font-size:22px;font-weight:700;color:var(--text1);text-align:center;margin-bottom:8px;">Healthy Record</h2>
+    <p style="font-size:13px;color:var(--text3);text-align:center;margin-bottom:32px;">請輸入密碼</p>
+    <div style="background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:20px;">
+      <input type="password" id="pw-input" placeholder="密碼" autocomplete="current-password"
+        style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text1);font-size:16px;outline:none;font-family:inherit;margin-bottom:12px;"
+        onkeydown="if(event.key==='Enter')checkPw()">
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;cursor:pointer;">
+        <input type="checkbox" id="pw-remember" checked style="width:16px;height:16px;cursor:pointer;">
+        <span style="font-size:13px;color:var(--text2);">記住密碼（此裝置）</span>
+      </label>
+      <button onclick="checkPw()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:16px;font-weight:700;cursor:pointer;">進入</button>
+      <div id="pw-error" style="color:var(--danger);font-size:13px;text-align:center;margin-top:10px;display:none;">密碼錯誤，請再試一次</div>
+    </div>
+  </div>
+</div>
+
+<div id="app-wrap" style="display:none;">
 <div class="phone-wrap">
   <div class="top-bar">
     <h1>Healthy Record</h1>
@@ -1067,7 +1089,45 @@ function drawMenstrualChart(c,mensRecs,sub,title,color){
   });
 }
 
-renderStsTags();renderEStsTags();init();
+// ── PASSWORD ──
+const PW_KEY='hr_pw_ok';
+const CORRECT_PW='011726';  // <-- 在這裡修改密碼
+
+function checkPw(){
+  const val=document.getElementById('pw-input').value;
+  const err=document.getElementById('pw-error');
+  if(val===CORRECT_PW){
+    err.style.display='none';
+    if(document.getElementById('pw-remember').checked){
+      localStorage.setItem(PW_KEY,'1');
+    }
+    showApp();
+  } else {
+    err.style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function showApp(){
+  document.getElementById('pw-screen').style.display='none';
+  document.getElementById('app-wrap').style.display='block';
+}
+
+function initWithPw(){
+  // Check if password is remembered
+  if(localStorage.getItem(PW_KEY)==='1'){
+    showApp();
+  } else {
+    document.getElementById('pw-screen').style.display='flex';
+    document.getElementById('app-wrap').style.display='none';
+    setTimeout(()=>document.getElementById('pw-input').focus(),100);
+  }
+}
+
+renderStsTags();renderEStsTags();
+initWithPw();
+init();
 
 function drawVitalChart(c,title,sub,recs,field,unit,color,yr){
   if(!yr){
@@ -1110,5 +1170,6 @@ function drawVitalLine(c,title,sub,recs,field,unit,color){
   ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(unit,2,pt+8);
 }
 </script>
+</div><!-- end app-wrap -->
 </body>
 </html>
