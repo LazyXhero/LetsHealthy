@@ -10,8 +10,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#1a1a1e;--bg2:#2c2c30;--bg3:#3a3a3e;--card:#232326;
-  --border:rgba(255,255,255,0.09);--accent:#3aafa9;--accent2:#f687b3;
+  --bg:#16161a;--bg2:#242428;--bg3:#303036;--card:#1e1e22;
+  --border:rgba(255,255,255,0.09);
+  --accent:#3aafa9;--accent2:#f687b3;--accent3:#f6ad55;--accent4:#a78bfa;
+  --c1:#3aafa9;--c2:#f687b3;--c3:#f6ad55;--c4:#a78bfa;--c5:#68d391;--c6:#60a5fa;
   --text1:#f0f0f0;--text2:#a0a0a8;--text3:#606068;
   --danger:#fc8181;--success:#68d391;--warn:#f6ad55;
   --radius:14px;--radius-sm:9px;
@@ -27,11 +29,18 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .sync-dot.err{background:var(--danger);}
 .sync-dot.loading{background:var(--warn);animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.tab-bar{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:10px 16px;}
-.tab{flex:1;text-align:center;padding:8px 4px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.2s;font-weight:500;}
-.tab.active{background:var(--card);color:var(--accent);}
+.tab-bar{display:flex;gap:0;padding:12px 16px 0;background:var(--bg);border-bottom:2px solid var(--border);}
+.tab{flex:1;text-align:center;padding:6px 4px 10px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.15s;background:transparent;border-bottom:3px solid transparent;margin-bottom:-2px;letter-spacing:0.5px;}
+.tab .tl{transition:opacity 0.15s;opacity:0.35;font-weight:800;}
+.tab.active .tl{opacity:1;}
+.tab.active{border-bottom-color:var(--accent);}
+#tab-record.active{border-bottom-color:#3aafa9;}
+#tab-history.active{border-bottom-color:#f687b3;}
+#tab-check.active{border-bottom-color:#f6ad55;}
+#tab-persons.active{border-bottom-color:#a78bfa;}
 .section{padding:0 16px;margin-bottom:14px;}
-.section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+.section-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.section-title::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--accent);display:inline-block;}
 .card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden;}
 .person-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s;}
 .person-row:last-child{border-bottom:none;}
@@ -160,26 +169,39 @@ canvas{display:block;}
 
 <div id="app-wrap" style="display:none;">
 <div class="phone-wrap">
-  <div class="top-bar">
-    <h1>Healthy Record</h1>
-    <div class="sub"><span class="sync-dot loading" id="sync-dot"></span><span id="sync-status">連線中…</span></div>
+  <div class="top-bar" style="background:var(--bg);padding:14px 16px 10px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid var(--border);">
+    <div style="display:flex;align-items:baseline;gap:0;flex-wrap:wrap;line-height:1;">
+      <span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--c1);">H</span><span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--c2);">e</span><span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--c3);">a</span><span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--c4);">l</span><span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--c5);">t</span><span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--c6);">h</span><span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:var(--c1);">y</span>
+      <span style="font-size:13px;font-weight:600;color:var(--text3);margin-left:8px;letter-spacing:2px;text-transform:uppercase;">Record</span>
+    </div>
+    <div class="sub" style="margin-top:4px;"><span class="sync-dot loading" id="sync-dot"></span><span id="sync-status">連線中…</span></div>
   </div>
   <div class="tab-bar">
-    <div class="tab active" onclick="switchTab('record')">Record</div>
-    <div class="tab" onclick="switchTab('history')">History</div>
-    <div class="tab" onclick="switchTab('persons')">People</div>
+    <div class="tab" id="tab-record" onclick="switchTab('record')">
+      <span class="tl" style="color:#3aafa9;">R</span><span class="tl" style="color:#f687b3;">e</span><span class="tl" style="color:#f6ad55;">c</span><span class="tl" style="color:#a78bfa;">o</span><span class="tl" style="color:#68d391;">r</span><span class="tl" style="color:#60a5fa;">d</span>
+    </div>
+    <div class="tab" id="tab-history" onclick="switchTab('history')">
+      <span class="tl" style="color:#f687b3;">H</span><span class="tl" style="color:#f6ad55;">i</span><span class="tl" style="color:#a78bfa;">s</span><span class="tl" style="color:#3aafa9;">t</span><span class="tl" style="color:#60a5fa;">o</span><span class="tl" style="color:#68d391;">r</span><span class="tl" style="color:#fc8181;">y</span>
+    </div>
+    <div class="tab" id="tab-check" onclick="switchTab('check')">
+      <span class="tl" style="color:#f6ad55;">C</span><span class="tl" style="color:#68d391;">h</span><span class="tl" style="color:#fc8181;">e</span><span class="tl" style="color:#3aafa9;">c</span><span class="tl" style="color:#a78bfa;">k</span>
+    </div>
+    <div class="tab" id="tab-persons" onclick="switchTab('persons')">
+      <span class="tl" style="color:#a78bfa;">P</span><span class="tl" style="color:#3aafa9;">e</span><span class="tl" style="color:#f687b3;">o</span><span class="tl" style="color:#f6ad55;">p</span><span class="tl" style="color:#60a5fa;">l</span><span class="tl" style="color:#68d391;">e</span>
+    </div>
   </div>
 
   <!-- RECORD PAGE -->
   <div id="page-record" class="page active">
+    <div style="height:12px;"></div>
     <div class="section"><div class="section-title">Select Person</div><div class="card" id="person-selector"><div class="loading-state">載入中…</div></div></div>
-    <div class="section"><div class="section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="record-date"></div></div></div>
+    <div class="section"><div class="section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">Date</div><input class="date-input" type="date" id="record-date"></div></div></div>
     <div class="section">
       <div class="section-title">Vitals</div>
       <div class="metrics-grid">
-        <div class="metric-card"><div class="metric-label">身高</div><input class="metric-input" type="number" id="height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div>
-        <div class="metric-card"><div class="metric-label">體重</div><input class="metric-input" type="number" id="weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div>
-        <div class="metric-card"><div class="metric-label">體溫</div><input class="metric-input" type="number" id="temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div>
+        <div class="metric-card"><div class="metric-label">Height</div><input class="metric-input" type="number" id="height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div>
+        <div class="metric-card"><div class="metric-label">Weight</div><input class="metric-input" type="number" id="weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div>
+        <div class="metric-card"><div class="metric-label">Temp</div><input class="metric-input" type="number" id="temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div>
       </div>
     </div>
     <div class="section">
@@ -219,62 +241,181 @@ canvas{display:block;}
 
   <!-- HISTORY PAGE -->
   <div id="page-history" class="page">
+    <div style="height:12px;"></div>
     <div class="hist-sub-tabs">
-      <div class="hist-sub-tab active" id="sub-list" onclick="switchHTab('list')">紀錄列表</div>
-      <div class="hist-sub-tab" id="sub-charts" onclick="switchHTab('charts')">統計圖表</div>
+      <div class="hist-sub-tab active" id="sub-list" onclick="switchHTab('list')">Records</div>
+      <div class="hist-sub-tab" id="sub-charts" onclick="switchHTab('charts')">Charts</div>
     </div>
     <div id="list-section">
       <div class="filter-row">
-        <select class="filter-select" id="list-person-filter" onchange="applyListFilter()"><option value="">所有人員</option></select>
+        <select class="filter-select" id="list-person-filter" onchange="applyListFilter()"><option value="">All Persons</option></select>
         <input type="month" class="filter-select" id="list-month-filter" onchange="applyListFilter()">
       </div>
       <div class="filter-row">
         <select class="filter-select" id="list-category-filter" onchange="applyListFilter()">
-          <option value="">所有項目</option>
-          <option value="height">身高</option>
-          <option value="weight">體重</option>
-          <option value="temp">體溫</option>
-          <option value="meals">飲食記錄</option>
-          <option value="proc">加工食品</option>
-          <option value="fried">炸物</option>
-          <option value="drink">飲料</option>
-          <option value="med">藥物</option>
+          <option value="">All Items</option>
+          <option value="height">Height</option>
+          <option value="weight">Weight</option>
+          <option value="temp">Temperature</option>
+          <option value="meals">Meals</option>
+          <option value="proc">Processed</option>
+          <option value="fried">Fried</option>
+          <option value="drink">Drinks</option>
+          <option value="med">Medicine</option>
           <option value="status">Status</option>
           <option value="remark">Remark</option>
-          <option value="mens">月經</option>
+          <option value="mens">Menstrual</option>
         </select>
       </div>
       <div class="filter-row">
-        <input type="text" class="filter-select" id="list-search" placeholder="搜尋關鍵字…" oninput="applyListFilter()" style="flex:1;" autocomplete="off">
-        <button onclick="clearFilters()" style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:13px;padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;">清除</button>
+        <input type="text" class="filter-select" id="list-search" placeholder="Search keywords…" oninput="applyListFilter()" style="flex:1;" autocomplete="off">
+        <button onclick="clearFilters()" style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:13px;padding:9px 14px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;">Clear</button>
       </div>
       <div id="filter-result-bar" style="padding:0 16px 10px;"></div>
       <div id="hist-list-view"><div class="loading-state">請切換到此頁載入</div></div>
     </div>
     <div id="chart-section" style="display:none;">
       <div class="filter-row">
-        <select class="filter-select" id="chart-person-filter" onchange="applyChartFilter()"><option value="">所有人員</option></select>
-        <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()"><option value="">所有年份</option></select>
+        <select class="filter-select" id="chart-person-filter" onchange="applyChartFilter()"><option value="">All Persons</option></select>
+        <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()"><option value="">All Years</option></select>
       </div>
       <div class="filter-row">
         <select class="filter-select" id="chart-item-filter" onchange="applyChartFilter()">
-          <option value="">所有項目</option>
-          <option value="height">身高</option>
-          <option value="weight">體重</option>
-          <option value="proc">加工</option>
-          <option value="fried">炸物</option>
-          <option value="drink">飲料</option>
-          <option value="med">藥物</option>
+          <option value="">All Items</option>
+          <option value="height">Height</option>
+          <option value="weight">Weight</option>
+          <option value="proc">Processed</option>
+          <option value="fried">Fried</option>
+          <option value="drink">Drinks</option>
+          <option value="med">Medicine</option>
           <option value="status">Status</option>
-          <option value="mens">月經</option>
+          <option value="mens">Menstrual</option>
         </select>
       </div>
       <div id="hist-charts-view"></div>
     </div>
   </div>
 
+  <!-- CHECK PAGE -->
+    <!-- CHECK PAGE -->
+  <div id="page-check" class="page">
+    <div class="section" style="margin-top:12px;">
+      <div class="section-title">新增健康檢查</div>
+      <div class="card" style="padding:14px;">
+        <div class="filter-row" style="padding:0;margin-bottom:10px;gap:8px;">
+          <div style="flex:1;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600;">檢查日期</div>
+            <input type="date" id="check-date" class="date-input" style="width:100%;">
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600;">姓名</div>
+            <select id="check-person" class="filter-select" style="width:100%;"></select>
+          </div>
+        </div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600;">項目</div>
+          <input type="text" id="check-item" class="meal-input" style="width:100%;" placeholder="例：血壓、血糖、膽固醇…">
+        </div>
+        <div class="filter-row" style="padding:0;margin-bottom:10px;gap:8px;">
+          <div style="flex:1;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600;">數據</div>
+            <input type="text" id="check-value" class="meal-input" style="width:100%;" placeholder="例：120/80">
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600;">費用</div>
+            <input type="number" id="check-price" class="meal-input" style="width:100%;" placeholder="0" inputmode="numeric">
+          </div>
+        </div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;font-weight:600;">備註</div>
+          <input type="text" id="check-note" class="meal-input" style="width:100%;" placeholder="備註…">
+        </div>
+        <button onclick="saveCheck()" style="width:100%;background:var(--accent);color:#1a1a1e;border:none;border-radius:10px;padding:13px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:1px;">新增</button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">健康檢查紀錄</div>
+      <div class="filter-row" style="padding:0 0 8px;">
+        <select class="filter-select" id="check-filter-person" onchange="renderChecks()"><option value="">所有人員</option></select>
+        <input type="text" class="filter-select" id="check-search" placeholder="搜尋項目…" oninput="renderChecks()" autocomplete="off">
+      </div>
+      <div id="check-result-bar" style="padding:0 0 8px;font-size:13px;color:var(--text2);font-weight:600;"></div>
+      <div id="check-list"><div class="loading-state">尚無紀錄</div></div>
+    </div>
+  </div>
+
+  <!-- CHECK PAGE -->
+  <div id="page-check" class="page">
+    <div class="section"><div class="section-title">Select Person</div><div class="card" id="check-person-selector"><div class="loading-state">載入中…</div></div></div>
+    <div class="section"><div class="section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">Exam Date</div><input class="date-input" type="date" id="check-date"></div></div></div>
+
+    <div class="section">
+      <div class="section-title">Heart</div>
+      <div class="card">
+        <div class="meal-row"><div class="meal-name" style="width:80px;font-size:13px;">Heart</div><input class="meal-input" type="text" id="check-heart" placeholder="Result…"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Blood Pressure</div>
+      <div class="metrics-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="metric-card"><div class="metric-label">Systolic</div><input class="metric-input" type="number" id="check-bp-sys" placeholder="—" inputmode="decimal"><div class="metric-unit">mmHg</div></div>
+        <div class="metric-card"><div class="metric-label">Diastolic</div><input class="metric-input" type="number" id="check-bp-dia" placeholder="—" inputmode="decimal"><div class="metric-unit">mmHg</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Blood Sugar</div>
+      <div class="metrics-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="metric-card"><div class="metric-label">Glucose</div><input class="metric-input" type="number" id="check-glucose" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">mg/dL</div></div>
+        <div class="metric-card"><div class="metric-label">HbA1C</div><input class="metric-input" type="number" id="check-hba1c" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">%</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Gastrointestinal</div>
+      <div class="card">
+        <div class="meal-row"><div class="meal-name" style="width:80px;font-size:13px;">GI</div><input class="meal-input" type="text" id="check-gut" placeholder="Result…"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Chest</div>
+      <div class="card">
+        <div class="meal-row"><div class="meal-name" style="width:80px;font-size:13px;">Chest</div><input class="meal-input" type="text" id="check-chest" placeholder="Result…"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Gynecology</div>
+      <div class="card">
+        <div class="meal-row"><div class="meal-name" style="width:80px;font-size:13px;">Gyn</div><input class="meal-input" type="text" id="check-gynecology" placeholder="Result…"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Breast</div>
+      <div class="card">
+        <div class="meal-row"><div class="meal-name" style="width:80px;font-size:13px;">Breast</div><input class="meal-input" type="text" id="check-breast" placeholder="Result…"></div>
+      </div>
+    </div>
+
+    <div class="section"><div class="section-title">備註</div><div class="card"><div style="padding:10px 14px;"><textarea id="check-notes" rows="3" placeholder="Notes…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
+
+    <!-- CHECK HISTORY -->
+    <div class="section" style="margin-top:8px;">
+      <div class="section-title">Past Records</div>
+      <div id="check-history-list"><div class="loading-state" style="padding:20px;">尚無紀錄</div></div>
+    </div>
+
+    <div id="check-charts" style="margin-bottom:8px;"></div>
+    <div style="height:32px;"></div>
+    <div class="save-wrap"><button class="save-btn" onclick="saveCheck()">儲存</button></div>
+  </div>
+
   <!-- PEOPLE PAGE -->
   <div id="page-persons" class="page">
+    <div style="height:12px;"></div>
     <div class="section"><div class="section-title">Add Person</div><div class="add-person-row"><input type="text" id="new-person-name" placeholder="Name…" maxlength="20"><button class="btn-add" onclick="addPerson()">+ Add</button></div></div>
     <div class="section"><div class="section-title">People</div><div class="card" id="persons-list"></div></div>
   </div>
@@ -296,8 +437,8 @@ canvas{display:block;}
         <div class="modal-section-title">Person</div>
         <div class="card" id="edit-person-selector"></div>
       </div>
-      <div class="modal-section"><div class="modal-section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">紀錄日期</div><input class="date-input" type="date" id="edit-date"></div></div></div>
-      <div class="modal-section"><div class="modal-section-title">Vitals</div><div class="metrics-grid"><div class="metric-card"><div class="metric-label">身高</div><input class="metric-input" type="number" id="edit-height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div><div class="metric-card"><div class="metric-label">體重</div><input class="metric-input" type="number" id="edit-weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div><div class="metric-card"><div class="metric-label">體溫</div><input class="metric-input" type="number" id="edit-temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Date</div><div class="card"><div class="date-row"><div class="date-label">Date</div><input class="date-input" type="date" id="edit-date"></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Vitals</div><div class="metrics-grid"><div class="metric-card"><div class="metric-label">Height</div><input class="metric-input" type="number" id="edit-height" placeholder="—" inputmode="decimal"><div class="metric-unit">cm</div></div><div class="metric-card"><div class="metric-label">Weight</div><input class="metric-input" type="number" id="edit-weight" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">kg</div></div><div class="metric-card"><div class="metric-label">Temp</div><input class="metric-input" type="number" id="edit-temp" placeholder="—" inputmode="decimal" step="0.1"><div class="metric-unit">°C</div></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Meals</div><div class="meal-card"><div class="meal-row"><div class="meal-name">早餐</div><input class="meal-input" type="text" id="edit-breakfast"></div><div class="meal-row"><div class="meal-name">午餐</div><input class="meal-input" type="text" id="edit-lunch"></div><div class="meal-row"><div class="meal-name">晚餐</div><input class="meal-input" type="text" id="edit-dinner"></div><div class="meal-row"><div class="meal-name">點心</div><input class="meal-input" type="text" id="edit-snack"></div>
         <div class="meal-row"><div class="meal-name">加工</div><input class="meal-input" type="text" id="edit-meal-proc" placeholder="加工食品說明…"></div>
         <div class="meal-row"><div class="meal-name">炸物</div><input class="meal-input" type="text" id="edit-meal-fried" placeholder="炸物說明…"></div>
@@ -401,6 +542,7 @@ let mensDay=1,eMensDay=1,editRec=null,histTab='list';
 
 function todayStr(){const n=new Date();return n.getFullYear()+'-'+(n.getMonth()+1).toString().padStart(2,'0')+'-'+n.getDate().toString().padStart(2,'0');}
 document.getElementById('record-date').value=todayStr();
+document.getElementById('check-date').value=todayStr();
 
 function setSS(s,m){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-status').textContent=m;}
 
@@ -443,9 +585,14 @@ function showToast(msg,isErr){const el=document.getElementById('toast');el.textC
 function getSts(r){return Array.isArray(r.statuses)?r.statuses:(r.statuses?String(r.statuses).split(',').filter(Boolean):[]);}
 
 function switchTab(t){
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['record','history','persons'][i]===t));
-  ['record','history','persons'].forEach(p=>document.getElementById('page-'+p).classList.toggle('active',p===t));
+  ['record','history','check','persons'].forEach(p=>{
+    const tab=document.getElementById('tab-'+p);
+    if(tab)tab.classList.toggle('active',p===t);
+    const page=document.getElementById('page-'+p);
+    if(page)page.classList.toggle('active',p===t);
+  });
   if(t==='history')loadAllRecs();
+  if(t==='check')initCheck();
 }
 function switchHTab(t){
   histTab=t;
@@ -571,7 +718,7 @@ async function delPerson(id){
   }catch(e){showToast('刪除失敗',true);}
 }
 function populatePersonFilters(){
-  ['list-person-filter','chart-person-filter'].forEach(id=>{
+  ['list-person-filter','chart-person-filter','check-filter-person','check-person'].forEach(id=>{
     const sel=document.getElementById(id);
     const cur=sel.value;
     sel.innerHTML='<option value="">所有人員</option>'+persons.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
@@ -811,7 +958,7 @@ function populateYearFilter(){
   const years=[...new Set(allRecs.map(r=>getYear(r.date)))].sort((a,b)=>b-a);
   const sel=document.getElementById('chart-year-filter');
   const cur=sel.value;
-  sel.innerHTML='<option value="">所有年份</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  sel.innerHTML='<option value="">All Years</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
   if(years.length&&!cur)sel.value=years[0]; else sel.value=cur;
 }
 function clearFilters(){
@@ -898,7 +1045,7 @@ function renderRL(recs){
   const mon=document.getElementById('list-month-filter').value;
   const cat=document.getElementById('list-category-filter').value;
   const kw=(document.getElementById('list-search').value||'').trim();
-  const catLabels={'meals':'飲食記錄','proc':'加工','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','height':'身高','weight':'體重','temp':'體溫','mens':'月經'};
+  const catLabels={'meals':'飲食記錄','proc':'加工','fried':'炸物','drink':'飲料','med':'藥物','status':'Status','remark':'Remark','height':'Height','weight':'Weight','temp':'Temperature','mens':'Menstrual'};
   const tags=[];
   if(pid){const p=persons.find(x=>x.id===pid);if(p)tags.push(`${p.name}`);}
   if(mon)tags.push(`${mon}`);
@@ -1166,6 +1313,7 @@ function checkPw(){
 function showApp(){
   document.getElementById('pw-screen').style.display='none';
   document.getElementById('app-wrap').style.display='block';
+  document.getElementById('tab-record').classList.add('active');
 }
 
 function initWithPw(){
@@ -1177,6 +1325,259 @@ function initWithPw(){
     document.getElementById('app-wrap').style.display='none';
     setTimeout(()=>document.getElementById('pw-input').focus(),100);
   }
+}
+
+// ── CHECK (Health Examination) ──
+let checks=[];
+
+function populateCheckPersonSelect(){
+  ['check-person','check-filter-person'].forEach(id=>{
+    const sel=document.getElementById(id);
+    if(!sel)return;
+    const cur=sel.value;
+    sel.innerHTML=(id==='check-filter-person'?'<option value="">所有人員</option>':'')+
+      persons.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+    sel.value=cur;
+  });
+}
+
+function loadChecks(){
+  populateCheckPersonSelect();
+  const stored=localStorage.getItem('hr_checks');
+  checks=stored?JSON.parse(stored):[];
+  renderChecks();
+}
+
+function saveChecksLocal(){
+  localStorage.setItem('hr_checks',JSON.stringify(checks));
+}
+
+function saveCheck(){
+  const dateVal=document.getElementById('check-date').value;
+  const personId=document.getElementById('check-person').value;
+  const item=document.getElementById('check-item').value.trim();
+  const value=document.getElementById('check-value').value.trim();
+  const price=document.getElementById('check-price').value.trim();
+  const note=document.getElementById('check-note').value.trim();
+  if(!dateVal||!personId||!item){showToast('請填寫日期、姓名及項目',true);return;}
+  const person=persons.find(p=>p.id===personId);
+  const rec={
+    id:'c'+Date.now(),
+    date:dateVal,
+    personId,
+    personName:person?.name||'',
+    item,value,price,note
+  };
+  checks.unshift(rec);
+  saveChecksLocal();
+  // Clear inputs except date and person
+  ['check-item','check-value','check-price','check-note'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  showToast('已新增');
+  renderChecks();
+}
+
+function deleteCheck(id){
+  checks=checks.filter(c=>c.id!==id);
+  saveChecksLocal();
+  renderChecks();
+}
+
+function cfmDelCheck(id,item){
+  showConfirm('刪除紀錄','確定要刪除「'+item+'」這筆檢查紀錄？',()=>deleteCheck(id));
+}
+
+function renderChecks(){
+  populateCheckPersonSelect();
+  const pid=document.getElementById('check-filter-person')?.value||'';
+  const kw=(document.getElementById('check-search')?.value||'').trim().toLowerCase();
+  let list=[...checks];
+  if(pid)list=list.filter(c=>c.personId===pid);
+  if(kw)list=list.filter(c=>[c.item,c.value,c.note,c.personName,c.price,c.date].join(' ').toLowerCase().includes(kw));
+  list.sort((a,b)=>b.date.localeCompare(a.date));
+
+  const bar=document.getElementById('check-result-bar');
+  if(bar)bar.textContent='共 '+list.length+' 筆';
+
+  const el=document.getElementById('check-list');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<div class="loading-state">尚無符合紀錄</div>';return;}
+  el.innerHTML=list.map(c=>{
+    const p=persons.find(x=>x.id===c.personId);
+    const color=p?.color||'#3aafa9';
+    return `<div class="rec-card" style="margin:0 0 10px;">
+      <div class="rec-header">
+        <div>
+          <div class="rec-date-txt">${c.date}</div>
+          <div class="rec-person-txt" style="color:${color};">${c.personName}</div>
+        </div>
+        <div class="rec-actions">
+          <button class="rec-del-btn" onclick="cfmDelCheck('${c.id}','${c.item.replace(/'/g,"\'")}')">刪除</button>
+        </div>
+      </div>
+      <div class="rec-body" style="flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:15px;font-weight:700;color:var(--text1);">${c.item}</span>
+          ${c.value?`<span class="rec-chip a" style="font-size:13px;font-weight:700;">${c.value}</span>`:''}
+        </div>
+        ${c.price?`<div style="font-size:12px;color:var(--text3);">費用：NT$ ${(+c.price||0).toLocaleString()}</div>`:''}
+        ${c.note?`<div style="font-size:12px;color:var(--text2);">備註：${c.note}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── CHECK PAGE ──
+let checkPerson=null;
+let allChecks=[];
+
+document.getElementById('check-date').value=todayStr();
+
+function initCheck(){
+  checkPerson=checkPerson||persons[0]?.id;
+  renderCheckPS();
+  loadChecks();
+}
+
+function renderCheckPS(){
+  document.getElementById('check-person-selector').innerHTML=persons.map(p=>`
+    <div class="person-row ${p.id===checkPerson?'selected':''}" onclick="selCP('${p.id}')">
+      <div class="avatar" style="background:${p.color}22;color:${p.color}">${p.name[0]}</div>
+      <div class="person-name">${p.name}</div>
+      ${p.id===checkPerson?'<span class="person-check">✓</span>':''}
+    </div>`).join('');
+}
+function selCP(id){checkPerson=id;renderCheckPS();loadChecks();}
+
+async function loadChecks(){
+  if(!checkPerson)return;
+  try{
+    const raw=await api('GET',{action:'getChecks',personId:checkPerson});
+    if(raw&&raw.error){allChecks=[];} 
+    else allChecks=Array.isArray(raw)?raw:[];
+    allChecks.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    renderCheckHistory();
+    renderCheckCharts();
+  }catch(e){
+    allChecks=[];
+    renderCheckHistory();
+    document.getElementById('check-history-list').innerHTML='<div style="padding:16px;text-align:center;color:var(--text3);font-size:13px;">請先更新 Apps Script 以支援健檢功能</div>';
+  }
+}
+
+function renderCheckHistory(){
+  const el=document.getElementById('check-history-list');
+  if(!allChecks.length){el.innerHTML='<div class="loading-state" style="padding:20px;">尚無紀錄</div>';return;}
+  el.innerHTML=allChecks.map(c=>{
+    const chips=[];
+    if(c.bpSys||c.bpDia)chips.push(`<span class="rec-chip a">血壓 ${c.bpSys||'?'}/${c.bpDia||'?'}</span>`);
+    if(c.glucose)chips.push(`<span class="rec-chip a">血糖 ${c.glucose}</span>`);
+    if(c.hba1c)chips.push(`<span class="rec-chip a">HbA1C ${c.hba1c}%</span>`);
+    if(c.heart)chips.push(`<span class="rec-chip w">心臟：${c.heart}</span>`);
+    if(c.gut)chips.push(`<span class="rec-chip w">腸胃：${c.gut}</span>`);
+    if(c.chest)chips.push(`<span class="rec-chip w">胸腔：${c.chest}</span>`);
+    if(c.gynecology)chips.push(`<span class="rec-chip p">婦科：${c.gynecology}</span>`);
+    if(c.breast)chips.push(`<span class="rec-chip p">乳房：${c.breast}</span>`);
+    if(c.notes)chips.push(`<span class="rec-chip">備註：${c.notes}</span>`);
+    return `<div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-date-txt">${fmtD(c.date)}</div>
+        <button class="rec-del-btn" onclick="cfmDelCheck('${c.id}')">刪除</button>
+      </div>
+      <div class="rec-body">${chips.join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderCheckCharts(){
+  const chartEl=document.getElementById('check-charts');
+  chartEl.innerHTML='';
+  if(!allChecks.length)return;
+  const sub=persons.find(p=>p.id===checkPerson)?.name||'';
+  const recs=[...allChecks].reverse();
+  // BP chart
+  const bpRecs=recs.filter(r=>r.bpSys||r.bpDia);
+  if(bpRecs.length){
+    const card=mkCard(chartEl,'血壓',sub);
+    const w=CW(),h=160,pl=40,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
+    const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
+    const ctx=cv.getContext('2d');
+    const sysVals=bpRecs.map(r=>+r.bpSys||0);
+    const diaVals=bpRecs.map(r=>+r.bpDia||0);
+    const allVals=[...sysVals,...diaVals].filter(v=>v>0);
+    const minY=Math.floor(Math.min(...allVals)-5),maxY=Math.ceil(Math.max(...allVals)+5),rng=maxY-minY||1;
+    const xs=bpRecs.map((_,i)=>pl+i*(cw/Math.max(bpRecs.length-1,1)));
+    const fy=v=>pt+ch-((v-minY)/rng)*ch;
+    ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+    for(let i=0;i<=4;i++){const y=pt+(ch/4)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
+    ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
+    for(let i=0;i<=4;i++){const v=maxY-((maxY-minY)/4)*i;ctx.fillText(v,pl-3,pt+(ch/4)*i+3);}
+    // Sys line
+    ctx.beginPath();xs.forEach((x,i)=>{if(sysVals[i])i?ctx.lineTo(x,fy(sysVals[i])):ctx.moveTo(x,fy(sysVals[i]));});
+    ctx.strokeStyle='#fc8181';ctx.lineWidth=2;ctx.stroke();
+    xs.forEach((x,i)=>{if(sysVals[i]){drawDot(ctx,x,fy(sysVals[i]),'#fc8181');ctx.fillStyle='#fc8181';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText(sysVals[i],x,fy(sysVals[i])-8);}});
+    // Dia line
+    ctx.beginPath();xs.forEach((x,i)=>{if(diaVals[i])i?ctx.lineTo(x,fy(diaVals[i])):ctx.moveTo(x,fy(diaVals[i]));});
+    ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;ctx.stroke();
+    xs.forEach((x,i)=>{if(diaVals[i]){drawDot(ctx,x,fy(diaVals[i]),'#60a5fa');ctx.fillStyle='#60a5fa';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText(diaVals[i],x,fy(diaVals[i])-8);}});
+    // Legend
+    ctx.fillStyle='#fc8181';ctx.font='10px sans-serif';ctx.textAlign='left';ctx.fillText('收縮',pl,pt+12);
+    ctx.fillStyle='#60a5fa';ctx.fillText('舒張',pl+28,pt+12);
+    // X labels
+    ctx.fillStyle='#606068';ctx.font='8px sans-serif';ctx.textAlign='center';
+    const step=Math.ceil(bpRecs.length/6);
+    bpRecs.forEach((r,i)=>{if(i%step===0||i===bpRecs.length-1){const d=new Date(r.date);ctx.fillText((d.getMonth()+1)+'/'+(d.getDate()),xs[i],h-4);}});
+  }
+  // Glucose chart
+  const gRecs=recs.filter(r=>+r.glucose>0);
+  if(gRecs.length){
+    drawVitalLine(chartEl,'血糖',sub,gRecs,'glucose','mg/dL','#f6ad55');
+  }
+  // HbA1C chart
+  const hRecs=recs.filter(r=>+r.hba1c>0);
+  if(hRecs.length){
+    drawVitalLine(chartEl,'HbA1C',sub,hRecs,'hba1c','%','#a78bfa');
+  }
+}
+
+async function saveCheck(){
+  if(!checkPerson){showToast('請先選擇人員',true);return;}
+  const dateVal=document.getElementById('check-date').value||todayStr();
+  const rec={
+    id:'ck_'+checkPerson+'_'+dateVal+'_'+Date.now(),
+    personId:checkPerson,
+    date:new Date(dateVal+'T12:00:00').toISOString(),
+    heart:document.getElementById('check-heart').value,
+    gut:document.getElementById('check-gut').value,
+    chest:document.getElementById('check-chest').value,
+    bpSys:document.getElementById('check-bp-sys').value,
+    bpDia:document.getElementById('check-bp-dia').value,
+    glucose:document.getElementById('check-glucose').value,
+    hba1c:document.getElementById('check-hba1c').value,
+    gynecology:document.getElementById('check-gynecology').value,
+    breast:document.getElementById('check-breast').value,
+    notes:document.getElementById('check-notes').value,
+  };
+  setSS('loading','儲存中…');
+  try{
+    await api('POST',{action:'saveCheck',record:rec});
+    // clear fields
+    ['check-heart','check-gut','check-chest','check-bp-sys','check-bp-dia','check-glucose','check-hba1c','check-gynecology','check-breast','check-notes'].forEach(id=>document.getElementById(id).value='');
+    setSS('ok','已連線 Google Sheets');showToast('健檢紀錄已儲存');
+    loadChecks();
+  }catch(e){setSS('err','失敗');showToast('儲存失敗',true);}
+}
+
+function cfmDelCheck(id){showConfirm('刪除健檢紀錄','確定要刪除此紀錄？此操作無法復原。',()=>delCheck(id));}
+async function delCheck(id){
+  setSS('loading','刪除中…');
+  try{
+    await api('POST',{action:'deleteCheck',recordId:id});
+    allChecks=allChecks.filter(c=>c.id!==id);
+    renderCheckHistory();renderCheckCharts();
+    setSS('ok','已連線 Google Sheets');showToast('已刪除');
+  }catch(e){setSS('err','失敗');showToast('刪除失敗',true);}
 }
 
 renderStsTags();renderEStsTags();
