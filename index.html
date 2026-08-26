@@ -252,6 +252,7 @@ canvas{display:block;}
       <div class="filter-row">
         <select class="filter-select" id="list-category-filter" onchange="applyListFilter()">
           <option value="">All Items</option>
+          <optgroup label="── Daily Record ──">
           <option value="height">身高</option>
           <option value="weight">體重</option>
           <option value="temp">體溫</option>
@@ -263,6 +264,78 @@ canvas{display:block;}
           <option value="status">Status</option>
           <option value="remark">Remark</option>
           <option value="mens">月經</option>
+          </optgroup>
+          <optgroup label="── Health Check ──">
+          <option value="check_身高">身高</option>
+          <option value="check_體重">體重</option>
+          <option value="check_BMI">BMI</option>
+          <option value="check_腰圍">腰圍</option>
+          <option value="check_右眼">右眼</option>
+          <option value="check_左眼">左眼</option>
+          <option value="check_收縮壓">收縮壓</option>
+          <option value="check_舒張壓">舒張壓</option>
+          <option value="check_脈搏">脈搏</option>
+          <option value="check_白血球">白血球</option>
+          <option value="check_紅血球">紅血球</option>
+          <option value="check_血小板">血小板</option>
+          <option value="check_血紅素">血紅素</option>
+          <option value="check_血球容積比">血球容積比</option>
+          <option value="check_平均紅血球容積">平均紅血球容積</option>
+          <option value="check_平均紅血球血色素濃度">平均紅血球血色素濃度</option>
+          <option value="check_平均紅血球血色素">平均紅血球血色素</option>
+          <option value="check_中性球">中性球</option>
+          <option value="check_嗜伊紅性球">嗜伊紅性球</option>
+          <option value="check_鹼性球">鹼性球</option>
+          <option value="check_淋巴球">淋巴球</option>
+          <option value="check_單核球">單核球</option>
+          <option value="check_飯前血糖">飯前血糖</option>
+          <option value="check_醣化血色素">醣化血色素</option>
+          <option value="check_膽固醇">膽固醇</option>
+          <option value="check_三酸甘油脂">三酸甘油脂</option>
+          <option value="check_高密度脂蛋白">高密度脂蛋白</option>
+          <option value="check_低密度脂蛋白">低密度脂蛋白</option>
+          <option value="check_尿素氮">尿素氮</option>
+          <option value="check_肌酸酐">肌酸酐</option>
+          <option value="check_腎絲球過濾率">腎絲球過濾率</option>
+          <option value="check_尿酸">尿酸</option>
+          <option value="check_總膽紅素">總膽紅素</option>
+          <option value="check_直接膽紅素">直接膽紅素</option>
+          <option value="check_總血清蛋白">總血清蛋白</option>
+          <option value="check_白蛋白">白蛋白</option>
+          <option value="check_球蛋白">球蛋白</option>
+          <option value="check_肝功能AST">肝功能AST</option>
+          <option value="check_肝功能ALT">肝功能ALT</option>
+          <option value="check_鹼性磷酸酶">鹼性磷酸酶</option>
+          <option value="check_r-GT">r-GT</option>
+          <option value="check_B型肝炎表面抗原">B型肝炎表面抗原</option>
+          <option value="check_B型肝炎表面抗體">B型肝炎表面抗體</option>
+          <option value="check_C型肝炎抗體">C型肝炎抗體</option>
+          <option value="check_促甲狀腺素TSH">促甲狀腺素TSH</option>
+          <option value="check_甲型胎兒蛋白">甲型胎兒蛋白</option>
+          <option value="check_癌胚胎抗原">癌胚胎抗原</option>
+          <option value="check_腫瘤指標CA-199">腫瘤指標CA-199</option>
+          <option value="check_腫瘤指標CA-125">腫瘤指標CA-125</option>
+          <option value="check_腫瘤指標CA-153">腫瘤指標CA-153</option>
+          <option value="check_EB病毒VCA IgA抗體">EB病毒VCA IgA抗體</option>
+          <option value="check_尿液紅血球">尿液紅血球</option>
+          <option value="check_尿液白血球">尿液白血球</option>
+          <option value="check_尿蛋白">尿蛋白</option>
+          <option value="check_尿液細菌">尿液細菌</option>
+          <option value="check_酸鹼值">酸鹼值</option>
+          <option value="check_尿膽紅素">尿膽紅素</option>
+          <option value="check_心電圖">心電圖</option>
+          <option value="check_骨質密度">骨質密度</option>
+          <option value="check_腹部超音波">腹部超音波</option>
+          <option value="check_上消化道攝影">上消化道攝影</option>
+          <option value="check_下消化道攝影">下消化道攝影</option>
+          <option value="check_泌尿">泌尿</option>
+          <option value="check_骨盆">骨盆</option>
+          <option value="check_低劑量肺部斷層掃描LDC">低劑量肺部斷層掃描LDC</option>
+          <option value="check_子宮頸抹片">子宮頸抹片</option>
+          <option value="check_胸部X光">胸部X光</option>
+          <option value="check_乳房X光">乳房X光</option>
+          <option value="check_乳房攝影">乳房攝影</option>
+          </optgroup>
         </select>
       </div>
       <div class="filter-row">
@@ -288,6 +361,77 @@ canvas{display:block;}
           <option value="med">藥物</option>
           <option value="status">Status</option>
           <option value="mens">月經</option>
+          <optgroup label="── Health Check ──">
+          <option value="check_身高">身高</option>
+          <option value="check_體重">體重</option>
+          <option value="check_BMI">BMI</option>
+          <option value="check_腰圍">腰圍</option>
+          <option value="check_右眼">右眼</option>
+          <option value="check_左眼">左眼</option>
+          <option value="check_收縮壓">收縮壓</option>
+          <option value="check_舒張壓">舒張壓</option>
+          <option value="check_脈搏">脈搏</option>
+          <option value="check_白血球">白血球</option>
+          <option value="check_紅血球">紅血球</option>
+          <option value="check_血小板">血小板</option>
+          <option value="check_血紅素">血紅素</option>
+          <option value="check_血球容積比">血球容積比</option>
+          <option value="check_平均紅血球容積">平均紅血球容積</option>
+          <option value="check_平均紅血球血色素濃度">平均紅血球血色素濃度</option>
+          <option value="check_平均紅血球血色素">平均紅血球血色素</option>
+          <option value="check_中性球">中性球</option>
+          <option value="check_嗜伊紅性球">嗜伊紅性球</option>
+          <option value="check_鹼性球">鹼性球</option>
+          <option value="check_淋巴球">淋巴球</option>
+          <option value="check_單核球">單核球</option>
+          <option value="check_飯前血糖">飯前血糖</option>
+          <option value="check_醣化血色素">醣化血色素</option>
+          <option value="check_膽固醇">膽固醇</option>
+          <option value="check_三酸甘油脂">三酸甘油脂</option>
+          <option value="check_高密度脂蛋白">高密度脂蛋白</option>
+          <option value="check_低密度脂蛋白">低密度脂蛋白</option>
+          <option value="check_尿素氮">尿素氮</option>
+          <option value="check_肌酸酐">肌酸酐</option>
+          <option value="check_腎絲球過濾率">腎絲球過濾率</option>
+          <option value="check_尿酸">尿酸</option>
+          <option value="check_總膽紅素">總膽紅素</option>
+          <option value="check_直接膽紅素">直接膽紅素</option>
+          <option value="check_總血清蛋白">總血清蛋白</option>
+          <option value="check_白蛋白">白蛋白</option>
+          <option value="check_球蛋白">球蛋白</option>
+          <option value="check_肝功能AST">肝功能AST</option>
+          <option value="check_肝功能ALT">肝功能ALT</option>
+          <option value="check_鹼性磷酸酶">鹼性磷酸酶</option>
+          <option value="check_r-GT">r-GT</option>
+          <option value="check_B型肝炎表面抗原">B型肝炎表面抗原</option>
+          <option value="check_B型肝炎表面抗體">B型肝炎表面抗體</option>
+          <option value="check_C型肝炎抗體">C型肝炎抗體</option>
+          <option value="check_促甲狀腺素TSH">促甲狀腺素TSH</option>
+          <option value="check_甲型胎兒蛋白">甲型胎兒蛋白</option>
+          <option value="check_癌胚胎抗原">癌胚胎抗原</option>
+          <option value="check_腫瘤指標CA-199">腫瘤指標CA-199</option>
+          <option value="check_腫瘤指標CA-125">腫瘤指標CA-125</option>
+          <option value="check_腫瘤指標CA-153">腫瘤指標CA-153</option>
+          <option value="check_EB病毒VCA IgA抗體">EB病毒VCA IgA抗體</option>
+          <option value="check_尿液紅血球">尿液紅血球</option>
+          <option value="check_尿液白血球">尿液白血球</option>
+          <option value="check_尿蛋白">尿蛋白</option>
+          <option value="check_尿液細菌">尿液細菌</option>
+          <option value="check_酸鹼值">酸鹼值</option>
+          <option value="check_尿膽紅素">尿膽紅素</option>
+          <option value="check_心電圖">心電圖</option>
+          <option value="check_骨質密度">骨質密度</option>
+          <option value="check_腹部超音波">腹部超音波</option>
+          <option value="check_上消化道攝影">上消化道攝影</option>
+          <option value="check_下消化道攝影">下消化道攝影</option>
+          <option value="check_泌尿">泌尿</option>
+          <option value="check_骨盆">骨盆</option>
+          <option value="check_低劑量肺部斷層掃描LDC">低劑量肺部斷層掃描LDC</option>
+          <option value="check_子宮頸抹片">子宮頸抹片</option>
+          <option value="check_胸部X光">胸部X光</option>
+          <option value="check_乳房X光">乳房X光</option>
+          <option value="check_乳房攝影">乳房攝影</option>
+          </optgroup>
         </select>
       </div>
       <div id="hist-charts-view"></div>
@@ -1122,11 +1266,48 @@ async function delRecord(rec){
 }
 
 // ── LOAD & FILTER ──
+function renderCheckInHistory(cRecs, itemName){
+  const el=document.getElementById('hist-list-view');
+  const bar=document.getElementById('filter-result-bar');
+  const pid=document.getElementById('list-person-filter').value;
+  const mon=document.getElementById('list-month-filter').value;
+  const cat=document.getElementById('list-category-filter').value;
+  const kw=(document.getElementById('list-search')?.value||'').trim();
+  const tags=[];
+  if(pid){const p=persons.find(x=>x.id===pid);if(p)tags.push(p.name);}
+  if(mon)tags.push(mon);
+  tags.push(itemName);
+  if(bar)bar.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+    ${tags.map(t=>`<span style="background:rgba(246,173,85,0.15);color:var(--warn);border:0.5px solid rgba(246,173,85,0.3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
+    <span style="font-size:13px;color:var(--text2);font-weight:600;">共 ${cRecs.length} 筆</span>
+  </div>`;
+  if(!cRecs.length){el.innerHTML='<div class="loading-state">No records found</div>';return;}
+  el.innerHTML=cRecs.map(c=>{
+    const pName=persons.find(p=>p.id===c.personId)?.name||c.personName||'';
+    const chips=[];
+    chips.push(`<span class="rec-chip a">${c.item}</span>`);
+    if(c.value)chips.push(`<span class="rec-chip w">數值：${c.value}</span>`);
+    if(c.price)chips.push(`<span class="rec-chip">費用：$${c.price}</span>`);
+    if(c.notes)chips.push(`<span class="rec-chip">備註：${c.notes}</span>`);
+    return `<div class="rec-card">
+      <div class="rec-header">
+        <div><div class="rec-date-txt">${fmtD(c.date)}</div><div class="rec-person-txt">${pName}</div></div>
+      </div>
+      <div class="rec-body">${chips.join('')}</div>
+    </div>`;
+  }).join('');
+}
+
 async function loadAllRecs(){
   document.getElementById('hist-list-view').innerHTML='<div class="loading-state">載入中…</div>';
   try{
     const raw=await api('GET',{action:'getRecords'});
     allRecs=Array.isArray(raw)?raw:[];
+    // Also load check records
+    try{
+      const rawC=await api('GET',{action:'getChecks'});
+      allChecks=Array.isArray(rawC)?rawC.filter(r=>r&&!r.error):[];
+    }catch(e2){ allChecks=[]; }
     populateYearFilter();
     applyListFilter();
     applyChartFilter();
@@ -1177,6 +1358,11 @@ function applyListFilter(){
       if(cat==='status')return sts.length>0;
       if(cat==='remark')return r.notes&&r.notes.trim();
       if(cat==='mens')return r.mens&&+r.mens>=1;
+      // Check items - filter from allChecks data
+      if(cat.startsWith('check_')){
+        const checkItem=cat.slice(6);
+        return allChecks.some(c=>c.personId===r.personId&&c.item===checkItem);
+      }
       return true;
     });
   }
@@ -1212,7 +1398,7 @@ function applyChartFilter(){
   recs.sort((a,b)=>new Date(a.date)-new Date(b.date));
   const yearLabel=yr||'所有年份';
   const personLabel=pid?(persons.find(p=>p.id===pid)?.name||''):'所有人員';
-  renderCharts(recs,+yr||null,yearLabel,personLabel,item);
+  renderCharts(recs,+yr||null,yearLabel,personLabel,item,pid);
 }
 
 // ── RENDER LIST ──
@@ -1292,7 +1478,7 @@ const STS_COLOR={
   'ot':'#94a3b8'
 };
 
-function renderCharts(recs,yr,yearLabel,personLabel,item){
+function renderCharts(recs,yr,yearLabel,personLabel,item,pid){
   const c=document.getElementById('hist-charts-view');c.innerHTML='';
   const sub=`${personLabel}・${yearLabel}`;
   const hasFlag=v=>v&&v!=='n'&&v!=='';
@@ -1312,6 +1498,55 @@ function renderCharts(recs,yr,yearLabel,personLabel,item){
     });
   }
   if(show('mens')){const mR=recs.filter(r=>r.mens==1||r.mens==='1');if(mR.length)drawMenstrual(c,recs,sub,yr);}
+
+  // Health Check charts
+  if(item&&item.startsWith('check_')){
+    const checkItem=item.slice(6);
+    drawCheckChart(c,checkItem,sub,pid,yr);
+  } else if(!item){
+    // Show all check items that have numeric data for current person/year filter
+    const numericItems=new Set();
+    allChecks.forEach(ck=>{
+      if(pid&&ck.personId!==pid)return;
+      if(yr&&new Date(ck.date).getFullYear()!==yr)return;
+      if(ck.value&&!isNaN(parseFloat(ck.value)))numericItems.add(ck.item);
+    });
+    numericItems.forEach(ci=>drawCheckChart(c,ci,sub,pid,yr));
+  }
+}
+
+function drawCheckChart(c,itemName,sub,pid,yr){
+  // Get check records for this item
+  let cRecs=allChecks.filter(ck=>ck.item===itemName&&ck.value&&!isNaN(parseFloat(ck.value)));
+  if(pid)cRecs=cRecs.filter(ck=>ck.personId===pid);
+  if(yr)cRecs=cRecs.filter(ck=>new Date(ck.date).getFullYear()===yr);
+  cRecs.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(!cRecs.length)return;
+  // Use drawVitalLine with numeric values
+  const mapped=cRecs.map(r=>({...r,_val:parseFloat(r.value)}));
+  // Build a fake recs array compatible with drawVitalLine
+  const card=mkCard(c,itemName,sub);
+  const w=CW(),h=150,pl=44,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
+  const ctx=cv.getContext('2d');
+  const ys=mapped.map(r=>r._val);
+  const minY=Math.min(...ys),maxY=Math.max(...ys),rng=maxY-minY||1;
+  const xs=mapped.map((_,i)=>pl+i*(cw/Math.max(mapped.length-1,1)));
+  const fy=v=>pt+ch-((v-minY)/rng)*ch;
+  const color='#4fd1c5';
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+  for(let i=0;i<=4;i++){const y=pt+(ch/4)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
+  ctx.fillStyle='#606068';ctx.font='9px sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=4;i++){const v=maxY-((maxY-minY)/4)*i;ctx.fillText(v%1===0?v:v.toFixed(1),pl-3,pt+(ch/4)*i+3);}
+  ctx.beginPath();xs.forEach((x,i)=>i?ctx.lineTo(x,fy(ys[i])):ctx.moveTo(x,fy(ys[i])));
+  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+  ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle=color+'28';ctx.fill();
+  xs.forEach((x,i)=>drawDot(ctx,x,fy(ys[i]),color));
+  ctx.fillStyle=color;ctx.font='bold 9px sans-serif';ctx.textAlign='center';
+  xs.forEach((x,i)=>ctx.fillText(ys[i]%1===0?ys[i]:ys[i].toFixed(1),x,fy(ys[i])-9));
+  ctx.fillStyle='#606068';ctx.font='8px sans-serif';ctx.textAlign='center';
+  const step=Math.ceil(mapped.length/6);
+  mapped.forEach((r,i)=>{if(i%step===0||i===mapped.length-1){const d=new Date(r.date);ctx.fillText((d.getMonth()+1)+'/'+(d.getDate()),xs[i],h-4);}});
 }
 function byMonthArr(recs,pred,yr){
   const counts=new Array(12).fill(0);
