@@ -1211,36 +1211,58 @@ async function loadAllRecs(){
   }
 }
 function populateYearFilter(){
-  const years=[...new Set(allRecs.map(r=>getYear(r.date)))].sort((a,b)=>b-a);
-  const sel=document.getElementById('chart-year-filter');
-  const cur=sel.value;
-  sel.innerHTML='<option value="">All Years</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
-  if(years.length&&!cur)sel.value=years[0]; else sel.value=cur;
+  const allYears=[...new Set([...allRecs,...(allChecks||[])].map(r=>getYear(r.date)))].sort((a,b)=>b-a);
+  const recYears=[...new Set(allRecs.map(r=>getYear(r.date)))].sort((a,b)=>b-a);
+  // Chart year filter
+  const chartSel=document.getElementById('chart-year-filter');
+  if(chartSel){
+    const cur=chartSel.value;
+    chartSel.innerHTML='<option value="">All Years</option>'+allYears.map(y=>`<option value="${y}">${y}</option>`).join('');
+    if(allYears.length&&!cur)chartSel.value=allYears[0]; else chartSel.value=cur;
+  }
+  // List year filter
+  const listYearSel=document.getElementById('list-year-filter');
+  if(listYearSel){
+    const cur=listYearSel.value;
+    listYearSel.innerHTML='<option value="">All Years</option>'+recYears.map(y=>`<option value="${y}">${y}</option>`).join('');
+    listYearSel.value=cur;
+  }
 }
 function clearFilters(){
   document.getElementById('list-person-filter').value='';
+  document.getElementById('list-date-mode').value='all';
+  document.getElementById('list-day-filter').value='';
   document.getElementById('list-month-filter').value='';
+  document.getElementById('list-year-filter').value='';
   document.getElementById('list-category-filter').value='';
   document.getElementById('list-search').value='';
+  onDateModeChange();
   applyListFilter();
 }
 
 function applyListFilter(){
-  const pid=document.getElementById('list-person-filter').value;
-  const mon=document.getElementById('list-month-filter').value;
-  const cat=document.getElementById('list-category-filter').value;
-  const kw=(document.getElementById('list-search').value||'').trim().toLowerCase();
+  const pid=document.getElementById('list-person-filter')?.value||'';
+  const mode=document.getElementById('list-date-mode')?.value||'all';
+  const dayVal=document.getElementById('list-day-filter')?.value||'';
+  const mon=document.getElementById('list-month-filter')?.value||'';
+  const yrVal=document.getElementById('list-year-filter')?.value||'';
+  const cat=document.getElementById('list-category-filter')?.value||'';
+  const kw=(document.getElementById('list-search')?.value||'').trim().toLowerCase();
+
+  // Date filter helpers
+  function matchDate(dateStr){
+    if(mode==='all')return true;
+    const o=new Date(dateStr);
+    if(mode==='day'&&dayVal)return dateStr.slice(0,10)===dayVal;
+    if(mode==='month'&&mon){const[y,m2]=mon.split('-');return o.getFullYear()===+y&&(o.getMonth()+1)===+m2;}
+    if(mode==='year'&&yrVal)return o.getFullYear()===+yrVal;
+    return true;
+  }
+
   let recs=[...allRecs];
-
-  // Person filter
   if(pid)recs=recs.filter(r=>r.personId===pid);
+  recs=recs.filter(r=>matchDate(r.date));
 
-  // Month filter
-  if(mode==='day'&&dayVal){recs=recs.filter(r=>r.date.slice(0,10)===dayVal);}
-  else if(mode==='month'&&mon){const[y,m]=mon.split('-');recs=recs.filter(r=>{const o=new Date(r.date);return o.getFullYear()===+y&&(o.getMonth()+1)===+m;});}
-  else if(mode==='year'&&yrVal){recs=recs.filter(r=>new Date(r.date).getFullYear()===+yrVal);}
-
-  // Category filter
   if(cat){
     recs=recs.filter(r=>{
       const sts=getSts(r);
@@ -1255,36 +1277,31 @@ function applyListFilter(){
       if(cat==='status')return sts.length>0;
       if(cat==='remark')return r.notes&&r.notes.trim();
       if(cat==='mens')return r.mens&&+r.mens>=1;
-      // Check items - filter from allChecks data
-      if(cat.startsWith('check_')){
-        const checkItem=cat.slice(6);
-        return allChecks.some(c=>c.personId===r.personId&&c.item===checkItem);
-      }
       return true;
     });
   }
 
-  // Keyword search - search across all fields
   if(kw){
     recs=recs.filter(r=>{
       const sts=getSts(r);
-      const allText=[
+      const txt=[
         r.personName,
         String(r.height||''),String(r.weight||''),
         r.meals?.breakfast,r.meals?.lunch,r.meals?.dinner,r.meals?.snack,
-        r.meals?.proc,r.meals?.fried,r.meals?.drink,r.meals?.med,
         r.proc,r.fried,r.drink,r.med,
         r.otherText,r.notes,
-        ...sts.map(s=>STATUSES.find(x=>x.id===s)?.label||s),
         r.mens?'月經':'',
+        ...sts.map(s=>STATUSES.find(x=>x.id===s)?.label||s),
       ].filter(Boolean).join(' ').toLowerCase();
-      return allText.includes(kw);
+      return txt.includes(kw);
     });
   }
 
   recs.sort((a,b)=>new Date(b.date)-new Date(a.date));
   renderRL(recs);
 }
+
+
 function applyChartFilter(){
   const pidEl=document.getElementById('chart-person-filter');
   const yrEl=document.getElementById('chart-year-filter');
