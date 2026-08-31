@@ -16,11 +16,33 @@
   --c1:#3aafa9;--c2:#f687b3;--c3:#f6ad55;--c4:#a78bfa;--c5:#68d391;--c6:#60a5fa;
   --text1:#f0f0f0;--text2:#a0a0a8;--text3:#606068;
   --danger:#fc8181;--success:#68d391;--warn:#f6ad55;
-  --radius:14px;--radius-sm:9px;
+  --radius:8px;--radius-sm:5px;
 }
 html,body{height:100%;}
-body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang TC',sans-serif;min-height:100vh;padding-top:env(safe-area-inset-top);font-size:15px;}
-.phone-wrap{max-width:430px;margin:0 auto;}
+body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang TC',sans-serif;min-height:100vh;padding-top:env(safe-area-inset-top);font-size:15px;position:relative;}
+.bg-blocks{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.bg-blocks span{position:absolute;display:block;opacity:0.85;}
+.bg-blocks .b1{width:220px;height:60vh;background:#d4b13a;top:-8%;left:-6%;transform:rotate(14deg);opacity:0.85;}
+.bg-blocks .b2{width:260px;height:45vh;background:#d4b13a;bottom:-10%;right:-8%;transform:rotate(-10deg);opacity:0.75;}
+.bg-blocks .b3{width:140px;height:30vh;background:#d4b13a;top:35%;right:-4%;transform:rotate(8deg);opacity:0.65;}
+.bg-blocks .b4{width:160px;height:24vh;background:#d4b13a;top:60%;left:-5%;transform:rotate(-16deg);opacity:0.6;}
+.bg-blocks-front{z-index:5;mix-blend-mode:screen;}
+.bg-blocks-front span{opacity:0.10 !important;}
+.phone-wrap{max-width:430px;margin:0 auto;position:relative;z-index:2;background:rgba(22,22,26,0.94);min-height:100vh;}
+
+.decor-hey,.decor-action{position:fixed;z-index:0;pointer-events:none;line-height:0.9;}
+.decor-hey{top:4%;left:4%;display:flex;flex-direction:column;align-items:flex-start;}
+.decor-action{bottom:4%;right:4%;display:flex;flex-direction:column;align-items:flex-end;}
+.decor-hey span,.decor-action span{font-size:34px;font-weight:900;letter-spacing:-1px;color:#2f9e5e;opacity:0.18;}
+
+@media (min-width:900px){
+  body{background:var(--bg2);}
+  .decor-hey span,.decor-action span{font-size:64px;opacity:0.85;}
+}
+@media (min-width:1300px){
+  .decor-hey span,.decor-action span{font-size:80px;}
+}
+
 .top-bar{background:var(--bg);padding:14px 16px 8px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid var(--border);}
 .top-bar h1{font-size:21px;font-weight:700;color:var(--text1);}
 .top-bar .sub{font-size:12px;color:var(--text2);margin-top:2px;display:flex;align-items:center;gap:5px;}
@@ -29,19 +51,13 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .sync-dot.err{background:var(--danger);}
 .sync-dot.loading{background:var(--warn);animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.tab-bar{display:flex;gap:0;padding:12px 16px 0;background:var(--bg);border-bottom:2px solid var(--border);}
-.tab{flex:1;text-align:center;padding:6px 4px 10px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.15s;background:transparent;border-bottom:3px solid transparent;margin-bottom:-2px;letter-spacing:0.5px;}
-.tab .tl{transition:opacity 0.15s;opacity:0.35;font-weight:800;}
-.tab.active .tl{opacity:1;}
-.tab.active{border-bottom-color:var(--accent);}
-#tab-record.active{border-bottom-color:#3aafa9;}
-#tab-history.active{border-bottom-color:#f687b3;}
-#tab-check.active{border-bottom-color:#f6ad55;}
-#tab-charts.active{border-bottom-color:#68d391;}
-#tab-persons.active{border-bottom-color:#a78bfa;}
+.tab-bar{display:flex;gap:0;padding:12px 14px 18px;background:var(--bg);}
+.tab.wobbly{flex:1;text-align:center;padding:6px 2px;font-size:15px;font-weight:800;cursor:pointer;transition:all 0.15s;background:transparent;letter-spacing:0.5px;}
+.tab.wobbly .wl{display:inline-block;opacity:0.4;transition:all 0.15s;}
+.tab.wobbly.active .wl{opacity:1;}
 .section{padding:0 16px;margin-bottom:14px;}
-.section-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.section-title::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--accent);display:inline-block;}
+.section-title{font-size:11px;font-weight:700;color:#C1652F;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.section-title::before{content:'';width:3px;height:12px;border-radius:2px;background:#C1652F;display:inline-block;}
 .card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);overflow:hidden;}
 .person-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.15s;}
 .person-row:last-child{border-bottom:none;}
@@ -49,40 +65,40 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;}
 .person-name{font-size:15px;font-weight:600;color:var(--text1);flex:1;}
 .person-check{color:var(--accent);font-size:17px;font-weight:700;}
-.del-btn{background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:13px;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;flex-shrink:0;}
+.del-btn{background:rgba(252,129,129,0.15);border:none;color:var(--danger);font-size:13px;padding:6px 12px;border-radius:3px;cursor:pointer;font-weight:600;flex-shrink:0;}
 .add-person-row{display:flex;gap:8px;margin-top:8px;}
 .add-person-row input{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 12px;color:var(--text1);font-size:15px;outline:none;}
 .add-person-row input::placeholder{color:var(--text3);}
-.btn-add{background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 16px;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-add{background:#C1652F;color:#fff;border:none;border-radius:3px;padding:11px 16px;font-size:15px;font-weight:700;cursor:pointer;}
 .date-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;}
 .date-label{font-size:15px;color:var(--text1);font-weight:500;}
-.date-input{background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;}
+.date-input{background:var(--bg2);border:0.5px solid var(--border);border-radius:4px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;}
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .metric-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:11px;}
 .metric-label{font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:500;}
-.metric-input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:6px;padding:7px 8px;color:var(--text1);font-size:16px;font-weight:600;text-align:center;outline:none;}
+.metric-input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:3px;padding:7px 8px;color:var(--text1);font-size:16px;font-weight:600;text-align:center;outline:none;}
 .metric-unit{font-size:11px;color:var(--text3);text-align:center;margin-top:3px;}
 .meal-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);}
 .meal-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .meal-row:last-child{border-bottom:none;}
 .meal-name{font-size:14px;color:var(--text2);width:36px;font-weight:500;flex-shrink:0;}
-.meal-input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;}
+.meal-input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:4px;padding:8px 10px;color:var(--text1);font-size:14px;outline:none;}
 .toggle-group{display:flex;gap:6px;}
-.toggle-btn{flex:1;padding:9px;border-radius:7px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;}
+.toggle-btn{flex:1;padding:9px;border-radius:4px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;}
 .toggle-btn.on{background:rgba(104,211,145,0.18);color:var(--success);border-color:rgba(104,211,145,0.4);}
 .toggle-btn.off-sel{background:rgba(252,129,129,0.14);color:var(--danger);border-color:rgba(252,129,129,0.3);}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .toggle-row:last-child{border-bottom:none;}
 .toggle-label{font-size:15px;color:var(--text1);font-weight:500;}
 .tag-grid{display:flex;flex-wrap:wrap;gap:7px;padding:13px 14px;}
-.tag{padding:7px 13px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.tag{padding:7px 13px;border-radius:11px;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .tag.selected{background:rgba(246,173,85,0.18);color:var(--warn);border-color:rgba(246,173,85,0.4);}
 .other-input-wrap{width:100%;padding:0 14px 12px;display:none;}
 .other-input-wrap.show{display:block;}
-.other-input-wrap input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text1);font-size:14px;outline:none;}
+.other-input-wrap input{width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text1);font-size:14px;outline:none;}
 .ios-switch{position:relative;width:50px;height:30px;flex-shrink:0;}
 .ios-switch input{opacity:0;width:0;height:0;}
-.ios-switch .slider{position:absolute;inset:0;background:var(--bg3);border-radius:15px;transition:0.2s;cursor:pointer;}
+.ios-switch .slider{position:absolute;inset:0;background:var(--bg3);border-radius:8px;transition:0.2s;cursor:pointer;}
 .ios-switch input:checked+.slider{background:var(--accent2);}
 .ios-switch .slider::after{content:'';position:absolute;width:24px;height:24px;border-radius:50%;background:white;left:3px;top:3px;transition:0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
 .ios-switch input:checked+.slider::after{transform:translateX(20px);}
@@ -94,10 +110,10 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .day-val{font-size:22px;font-weight:700;color:var(--accent2);min-width:30px;text-align:center;}
 .day-unit{font-size:14px;color:var(--text2);}
 .save-wrap{display:flex;justify-content:center;padding:24px 16px 60px;}
-.save-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;padding:14px 52px;letter-spacing:2px;}
+.save-btn{background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:17px;font-weight:700;cursor:pointer;padding:14px 52px;letter-spacing:2px;}
 .save-btn:active{opacity:0.85;}
 .save-btn:disabled{opacity:0.55;cursor:not-allowed;}
-.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--accent);color:#fff;padding:11px 22px;border-radius:10px;font-size:15px;font-weight:700;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap;}
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--accent);color:#fff;padding:11px 22px;border-radius:6px;font-size:15px;font-weight:700;opacity:0;transition:all 0.3s;z-index:500;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.error{background:#e05555;}
 .page{display:none;}
@@ -105,17 +121,17 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .filter-row{display:flex;gap:8px;padding:0 16px;margin-bottom:12px;}
 .filter-select{flex:1;background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;}
 .hist-sub-tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:4px;margin:0 16px 12px;}
-.hist-sub-tab{flex:1;text-align:center;padding:7px 4px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;}
+.hist-sub-tab{flex:1;text-align:center;padding:7px 4px;border-radius:4px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;}
 .hist-sub-tab.active{background:var(--card);color:var(--accent);}
 .rec-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);margin:0 16px 10px;overflow:hidden;}
 .rec-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--border);}
 .rec-date-txt{font-size:15px;font-weight:700;color:var(--text1);}
 .rec-person-txt{font-size:12px;color:var(--text2);margin-top:2px;}
 .rec-actions{display:flex;gap:6px;}
-.rec-edit-btn{background:rgba(58,175,169,0.12);border:none;color:var(--accent);font-size:13px;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
-.rec-del-btn{background:rgba(252,129,129,0.12);border:none;color:var(--danger);font-size:13px;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;}
+.rec-edit-btn{background:rgba(58,175,169,0.12);border:none;color:var(--accent);font-size:13px;padding:6px 12px;border-radius:3px;cursor:pointer;font-weight:600;}
+.rec-del-btn{background:rgba(252,129,129,0.12);border:none;color:var(--danger);font-size:13px;padding:6px 12px;border-radius:3px;cursor:pointer;font-weight:600;}
 .rec-body{padding:11px 14px;display:flex;flex-wrap:wrap;gap:6px;}
-.rec-chip{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:600;background:var(--bg2);color:var(--text2);}
+.rec-chip{padding:5px 10px;border-radius:6px;font-size:12px;font-weight:600;background:var(--bg2);color:var(--text2);}
 .rec-chip.w{background:rgba(246,173,85,0.14);color:var(--warn);}
 .rec-chip.g{background:rgba(104,211,145,0.14);color:var(--success);}
 .rec-chip.p{background:rgba(246,135,179,0.14);color:var(--accent2);}
@@ -129,25 +145,32 @@ canvas{display:block;}
 .loading-state{text-align:center;padding:40px 16px;color:var(--text2);font-size:15px;}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:400;display:none;align-items:flex-end;}
 .modal-overlay.show{display:flex;}
-.modal{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding-bottom:calc(20px + env(safe-area-inset-bottom));}
+.modal{background:var(--bg2);border-radius:11px 20px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding-bottom:calc(20px + env(safe-area-inset-bottom));}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;}
 .modal-title{font-size:17px;font-weight:700;color:var(--text1);}
-.modal-close{background:var(--bg3);border:none;color:var(--text2);font-size:14px;padding:7px 15px;border-radius:20px;cursor:pointer;font-weight:600;}
-.modal-save-btn{background:var(--accent);border:none;color:#fff;font-size:14px;padding:7px 18px;border-radius:8px;cursor:pointer;font-weight:700;}
+.modal-close{background:var(--bg3);border:none;color:var(--text2);font-size:14px;padding:7px 15px;border-radius:11px;cursor:pointer;font-weight:600;}
+.modal-save-btn{background:#C1652F;border:none;color:#fff;font-size:14px;padding:7px 18px;border-radius:3px;cursor:pointer;font-weight:700;}
 .modal-body{padding:14px 16px;}
 .modal-section{margin-bottom:14px;}
 .modal-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:600;display:none;align-items:center;justify-content:center;}
 .confirm-overlay.show{display:flex;}
-.confirm-box{background:var(--bg2);border-radius:16px;padding:24px 20px;width:290px;text-align:center;}
+.confirm-box{background:var(--bg2);border-radius:9px;padding:24px 20px;width:290px;text-align:center;}
 .confirm-title{font-size:17px;font-weight:700;color:var(--text1);margin-bottom:8px;}
 .confirm-msg{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.5;}
 .confirm-btns{display:flex;gap:10px;}
-.confirm-cancel{flex:1;padding:12px;border-radius:10px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:15px;font-weight:600;cursor:pointer;}
-.confirm-ok{flex:1;padding:12px;border-radius:10px;border:none;background:var(--danger);color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
+.confirm-cancel{flex:1;padding:12px;border-radius:6px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:15px;font-weight:600;cursor:pointer;}
+.confirm-ok{flex:1;padding:12px;border-radius:6px;border:none;background:var(--danger);color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
 </style>
 </head>
 <body>
+
+<div class="bg-blocks">
+  <span class="b1"></span>
+  <span class="b2"></span>
+  <span class="b3"></span>
+  <span class="b4"></span>
+</div>
 
 <!-- PASSWORD SCREEN -->
 <div id="pw-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;">
@@ -156,41 +179,61 @@ canvas{display:block;}
     <p style="font-size:13px;color:var(--text3);text-align:center;margin-bottom:32px;">請輸入密碼</p>
     <div style="background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:20px;">
       <input type="password" id="pw-input" placeholder="密碼" autocomplete="current-password"
-        style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text1);font-size:16px;outline:none;font-family:inherit;margin-bottom:12px;"
+        style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:4px;padding:12px 14px;color:var(--text1);font-size:16px;outline:none;font-family:inherit;margin-bottom:12px;"
         onkeydown="if(event.key==='Enter')checkPw()">
       <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;cursor:pointer;">
         <input type="checkbox" id="pw-remember" checked style="width:16px;height:16px;cursor:pointer;">
         <span style="font-size:13px;color:var(--text2);">記住密碼（此裝置）</span>
       </label>
-      <button onclick="checkPw()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:16px;font-weight:700;cursor:pointer;">進入</button>
+      <button onclick="checkPw()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:4px;padding:13px;font-size:16px;font-weight:700;cursor:pointer;">進入</button>
       <div id="pw-error" style="color:var(--danger);font-size:13px;text-align:center;margin-top:10px;display:none;">密碼錯誤，請再試一次</div>
     </div>
   </div>
 </div>
 
 <div id="app-wrap" style="display:none;">
+
+<!-- DECOR: HEY top-left, ACTION bottom-right, shown on mobile + desktop -->
+<div class="decor-hey">
+  <span>HEY</span>
+  <span>HEY</span>
+  <span>HEY</span>
+</div>
+<div class="decor-action">
+  <span>ACTION</span>
+  <span>ACTION</span>
+  <span>ACTION</span>
+</div>
+
 <div class="phone-wrap">
-  <div class="top-bar" style="background:var(--bg);padding:14px 16px 10px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid var(--border);">
-    <div style="display:flex;align-items:baseline;gap:0;flex-wrap:wrap;line-height:1;"><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#3aafa9;">B</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#f687b3;">A</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#f6ad55;">L</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#a78bfa;">A</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#68d391;">N</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#60a5fa;">C</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#fc8181;">E</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#3aafa9;">D</span><span style="font-size:20px;font-weight:900;color:#f687b3;margin:0 5px;">·</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#f6ad55;">G</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#a78bfa;">L</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#68d391;">O</span><span style="font-size:24px;font-weight:900;letter-spacing:-0.5px;color:#60a5fa;">W</span></div>
-    <div style="font-size:11px;font-weight:400;letter-spacing:0.3px;margin-top:5px;line-height:1.6;"><span style="color:#3aafa9;">T</span><span style="color:#f687b3;">r</span><span style="color:#f6ad55;">a</span><span style="color:#a78bfa;">c</span><span style="color:#68d391;">k</span> <span style="color:#60a5fa;">y</span><span style="color:#fc8181;">o</span><span style="color:#3aafa9;">u</span><span style="color:#f687b3;">r</span> <span style="color:#f6ad55;">h</span><span style="color:#a78bfa;">e</span><span style="color:#68d391;">a</span><span style="color:#60a5fa;">l</span><span style="color:#fc8181;">t</span><span style="color:#3aafa9;">h</span> <span style="color:#f687b3;">·</span> <span style="color:#f6ad55;">G</span><span style="color:#a78bfa;">l</span><span style="color:#68d391;">o</span><span style="color:#60a5fa;">w</span> <span style="color:#fc8181;">f</span><span style="color:#3aafa9;">r</span><span style="color:#f687b3;">o</span><span style="color:#f6ad55;">m</span> <span style="color:#a78bfa;">w</span><span style="color:#68d391;">i</span><span style="color:#60a5fa;">t</span><span style="color:#fc8181;">h</span><span style="color:#3aafa9;">i</span><span style="color:#f687b3;">n</span></div>
-    <div class="sub" style="margin-top:4px;"><span class="sync-dot loading" id="sync-dot"></span><span id="sync-status">連線中…</span></div>
+  <div class="sticky-header" style="position:sticky;top:0;z-index:100;background:var(--bg);">
+  <div class="top-bar" style="background:var(--bg);padding:16px 16px 10px;">
+    <div style="font-size:26px;font-weight:900;letter-spacing:-0.5px;color:#C1652F;line-height:1;">BALANCED&nbsp;GLOW</div>
+    <div style="display:inline-block;background:#00416A;padding:3px 8px;margin-top:9px;">
+      <span style="font-family:'Courier New',monospace;font-size:12px;font-weight:800;color:#ffffff;letter-spacing:0.5px;">We&rsquo;ve Got CHIUHAUYA</span>
+    </div>
+    <div style="display:inline-block;background:#00416A;padding:3px 8px;margin-top:6px;">
+      <span style="font-family:'Courier New',monospace;font-size:12px;font-weight:800;color:#ffffff;letter-spacing:0.5px;">Track your health &middot; Glow from within</span>
+    </div>
+    <div class="sub" style="margin-top:8px;"><span class="sync-dot loading" id="sync-dot"></span><span id="sync-status">連線中…</span></div>
   </div>
   <div class="tab-bar">
-    <div class="tab" id="tab-record" onclick="switchTab('record')">
-      <span class="tl" style="color:#3aafa9;">D</span><span class="tl" style="color:#f687b3;">a</span><span class="tl" style="color:#f6ad55;">i</span><span class="tl" style="color:#a78bfa;">l</span><span class="tl" style="color:#68d391;">y</span>
+    <div class="tab wobbly active" id="tab-record" onclick="switchTab('record')" style="color:#2f9e5e;">
+      <span class="wl" data-rot="-8" style="transform:rotate(8deg);">D</span><span class="wl" data-rot="7" style="transform:rotate(-7deg);">A</span><span class="wl" data-rot="-6" style="transform:rotate(6deg);">I</span><span class="wl" data-rot="8" style="transform:rotate(-8deg);">L</span><span class="wl" data-rot="-7" style="transform:rotate(7deg);">Y</span>
     </div>
-    <div class="tab" id="tab-history" onclick="switchTab('history')">
-      <span class="tl" style="color:#f687b3;">L</span><span class="tl" style="color:#f6ad55;">o</span><span class="tl" style="color:#a78bfa;">g</span>
+    <div class="tab wobbly" id="tab-history" onclick="switchTab('history')" style="color:#2f9e5e;">
+      <span class="wl" data-rot="7" style="transform:rotate(7deg);">L</span><span class="wl" data-rot="-8" style="transform:rotate(-8deg);">O</span><span class="wl" data-rot="6" style="transform:rotate(6deg);">G</span>
     </div>
-    <div class="tab" id="tab-check" onclick="switchTab('check')">
-      <span class="tl" style="color:#f6ad55;">C</span><span class="tl" style="color:#68d391;">h</span><span class="tl" style="color:#fc8181;">e</span><span class="tl" style="color:#3aafa9;">c</span><span class="tl" style="color:#a78bfa;">k</span>
+    <div class="tab wobbly" id="tab-check" onclick="switchTab('check')" style="color:#2f9e5e;">
+      <span class="wl" data-rot="-7" style="transform:rotate(-7deg);">C</span><span class="wl" data-rot="8" style="transform:rotate(8deg);">H</span><span class="wl" data-rot="-6" style="transform:rotate(-6deg);">E</span><span class="wl" data-rot="7" style="transform:rotate(7deg);">C</span><span class="wl" data-rot="-8" style="transform:rotate(-8deg);">K</span>
     </div>
-    <div class="tab" id="tab-charts" onclick="switchTab('charts')">
-      <span class="tl" style="color:#68d391;">C</span><span class="tl" style="color:#60a5fa;">h</span><span class="tl" style="color:#fc8181;">a</span><span class="tl" style="color:#3aafa9;">r</span><span class="tl" style="color:#f687b3;">t</span><span class="tl" style="color:#f6ad55;">s</span>
+    <div class="tab wobbly" id="tab-charts" onclick="switchTab('charts')" style="color:#2f9e5e;">
+      <span class="wl" data-rot="8" style="transform:rotate(8deg);">C</span><span class="wl" data-rot="-7" style="transform:rotate(-7deg);">H</span><span class="wl" data-rot="6" style="transform:rotate(6deg);">A</span><span class="wl" data-rot="-8" style="transform:rotate(-8deg);">R</span><span class="wl" data-rot="7" style="transform:rotate(7deg);">T</span><span class="wl" data-rot="-6" style="transform:rotate(-6deg);">S</span>
     </div>
-    <div class="tab" id="tab-persons" onclick="switchTab('persons')">
-      <span class="tl" style="color:#a78bfa;">P</span><span class="tl" style="color:#3aafa9;">e</span><span class="tl" style="color:#f687b3;">o</span><span class="tl" style="color:#f6ad55;">p</span><span class="tl" style="color:#60a5fa;">l</span><span class="tl" style="color:#68d391;">e</span>
+    <div class="tab wobbly" id="tab-persons" onclick="switchTab('persons')" style="color:#2f9e5e;">
+      <span class="wl" data-rot="-7" style="transform:rotate(-7deg);">W</span><span class="wl" data-rot="8" style="transform:rotate(8deg);">H</span><span class="wl" data-rot="-6" style="transform:rotate(-6deg);">O</span>
     </div>
+  </div>
   </div>
 
   <!-- RECORD PAGE -->
@@ -229,7 +272,7 @@ canvas{display:block;}
       </div>
     </div>
     <div class="section"><div class="section-title">Status</div><div class="card"><div class="tag-grid" id="status-tags"></div><div class="other-input-wrap" id="other-wrap"><input type="text" id="other-text" placeholder="描述其他狀況…"></div></div></div>
-    <div class="section"><div class="section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
+    <div class="section"><div class="section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:4px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
     <div class="section">
       <div class="section-title">Menstrual Cycle</div>
       <div class="card">
@@ -394,7 +437,7 @@ canvas{display:block;}
           <div style="font-size:11px;color:var(--text3);margin-bottom:5px;font-weight:600;">Notes</div>
           <input type="text" id="check-note" class="meal-input" style="width:100%;" placeholder="Notes…">
         </div>
-        <button id="check-save-btn" onclick="saveCheck()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;">+ Add Record</button>
+        <button id="check-save-btn" onclick="saveCheck()" style="width:100%;background:#C1652F;color:#fff;border:none;border-radius:3px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;">+ ADD</button>
       </div>
     </div>
     <div class="section">
@@ -546,7 +589,7 @@ canvas{display:block;}
       <div style="display:flex;gap:8px;">
         <button class="modal-close" onclick="closeModal()">取消</button>
         <button class="modal-save-btn" style="background:var(--warn);color:#1a1a1e;" onclick="openCopyModal()">複製</button>
-        <button class="modal-save-btn" id="modal-save-btn" onclick="saveEdit()">儲存</button>
+        <button class="modal-save-btn" id="modal-save-btn" onclick="saveEdit()">SAVE</button>
       </div>
     </div>
     <div class="modal-body">
@@ -572,7 +615,7 @@ canvas{display:block;}
         </div>
       </div>
       <div class="modal-section"><div class="modal-section-title">Status</div><div class="card"><div class="tag-grid" id="edit-status-tags"></div><div class="other-input-wrap" id="edit-other-wrap"><input type="text" id="edit-other-text" placeholder="描述其他狀況…"></div></div></div>
-      <div class="modal-section"><div class="modal-section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:7px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
+      <div class="modal-section"><div class="modal-section-title">Remark</div><div class="card"><div style="padding:10px 14px;"><textarea id="edit-notes" rows="3" placeholder="Remark…" style="width:100%;background:var(--bg2);border:0.5px solid var(--border);border-radius:4px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;resize:none;font-family:inherit;line-height:1.5;"></textarea></div></div></div>
       <div class="modal-section"><div class="modal-section-title">Menstrual Cycle</div><div class="card"><div class="menstrual-toggle"><div class="toggle-label" style="flex:1">Menstrual cycle</div><label class="ios-switch"><input type="checkbox" id="edit-mens-on" onchange="toggleEMens()"><span class="slider"></span></label></div></div></div>
     </div>
   </div>
@@ -583,11 +626,11 @@ canvas{display:block;}
   <div class="confirm-box" style="width:300px;">
     <div class="confirm-title">修改人員名稱</div>
     <input type="text" id="edit-person-name-input" maxlength="20"
-      style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:11px 12px;color:var(--text1);font-size:15px;outline:none;font-family:inherit;margin:16px 0;"
+      style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:4px;padding:11px 12px;color:var(--text1);font-size:15px;outline:none;font-family:inherit;margin:16px 0;"
       onkeydown="if(event.key==='Enter')savePersonName()">
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="closeEditPerson()">取消</button>
-      <button class="confirm-ok" style="background:var(--accent);" onclick="savePersonName()">儲存</button>
+      <button class="confirm-ok" style="background:#C1652F;" onclick="savePersonName()">SAVE</button>
     </div>
   </div>
 </div>
@@ -599,11 +642,11 @@ canvas{display:block;}
     <div class="confirm-msg">選擇目標人員和日期，將此紀錄複製過去</div>
     <div style="margin-bottom:12px;text-align:left;">
       <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">目標人員</div>
-      <select id="copy-person-select" style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;"></select>
+      <select id="copy-person-select" style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:4px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;"></select>
     </div>
     <div style="margin-bottom:20px;text-align:left;">
       <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">目標日期</div>
-      <input type="date" id="copy-date-input" style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;">
+      <input type="date" id="copy-date-input" style="width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:4px;padding:9px 10px;color:var(--text1);font-size:14px;outline:none;font-family:inherit;">
     </div>
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="closeCopyModal()">取消</button>
@@ -812,7 +855,14 @@ function getSts(r){return Array.isArray(r.statuses)?r.statuses:(r.statuses?Strin
 function switchTab(t){
   ['record','history','check','charts','persons'].forEach(p=>{
     const tab=document.getElementById('tab-'+p);
-    if(tab)tab.classList.toggle('active',p===t);
+    if(tab){
+      const isActive=p===t;
+      tab.classList.toggle('active',isActive);
+      tab.querySelectorAll('.wl').forEach(span=>{
+        const base=parseInt(span.dataset.rot,10);
+        span.style.transform=`rotate(${isActive?-base:base}deg)`;
+      });
+    }
     const page=document.getElementById('page-'+p);
     if(page)page.classList.toggle('active',p===t);
   });
@@ -1173,7 +1223,7 @@ function renderCheckInHistory(cRecs, itemName){
   if(mon)tags.push(mon);
   tags.push(itemName);
   if(bar)bar.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
-    ${tags.map(t=>`<span style="background:rgba(246,173,85,0.15);color:var(--warn);border:0.5px solid rgba(246,173,85,0.3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
+    ${tags.map(t=>`<span style="background:rgba(246,173,85,0.15);color:var(--warn);border:0.5px solid rgba(246,173,85,0.3);border-radius:11px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
     <span style="font-size:13px;color:var(--text2);font-weight:600;">共 ${cRecs.length} 筆</span>
   </div>`;
   if(!cRecs.length){el.innerHTML='<div class="loading-state">No records found</div>';return;}
@@ -1337,7 +1387,7 @@ function renderRL(recs){
   if(kw)tags.push(`「${kw}」`);
 
   bar.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;"><span style='font-size:12px;color:var(--text3);'>篩選：</span>
-    ${tags.map(t=>`<span style="background:rgba(58,175,169,0.15);color:var(--accent);border:0.5px solid rgba(58,175,169,0.3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
+    ${tags.map(t=>`<span style="background:rgba(58,175,169,0.15);color:var(--accent);border:0.5px solid rgba(58,175,169,0.3);border-radius:11px;padding:4px 10px;font-size:12px;font-weight:600;">${t}</span>`).join('')}
     <span style="font-size:13px;color:var(--text2);font-weight:600;${tags.length?'margin-left:4px;':''}">共 ${recs.length} 筆</span>
   </div>`;
 
