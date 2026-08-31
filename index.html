@@ -20,14 +20,8 @@
 }
 html,body{height:100%;}
 body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang TC',sans-serif;min-height:100vh;padding-top:env(safe-area-inset-top);font-size:15px;position:relative;}
-.bg-blocks{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-.bg-blocks span{position:absolute;display:block;opacity:0.85;}
-.bg-blocks .b1{width:220px;height:60vh;background:#d4b13a;top:-8%;left:-6%;transform:rotate(14deg);opacity:0.8;}
-.bg-blocks .b2{width:260px;height:45vh;background:#2b4a5e;bottom:-10%;right:-8%;transform:rotate(-10deg);opacity:0.75;}
-.bg-blocks .b3{width:140px;height:30vh;background:#d4b13a;top:35%;right:-4%;transform:rotate(8deg);opacity:0.65;}
-.bg-blocks .b4{width:160px;height:24vh;background:#2b4a5e;top:60%;left:-5%;transform:rotate(-16deg);opacity:0.6;}
-.bg-blocks-front{z-index:7;mix-blend-mode:screen;}
-.bg-blocks-front span{opacity:0.12 !important;}
+.bg-blocks{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background-image:url('GLOWBACKGROUND.png');background-size:cover;background-position:center;}
+.bg-blocks-front{position:fixed;inset:0;z-index:7;pointer-events:none;background-image:url('GLOWBACKGROUND.png');background-size:cover;background-position:center;opacity:0.12;mix-blend-mode:screen;}
 .phone-wrap{max-width:430px;margin:0 auto;position:relative;z-index:2;background:rgba(22,22,26,0.94);min-height:100vh;}
 
 .decor-hey,.decor-action{position:fixed;z-index:0;pointer-events:none;line-height:0.9;}
@@ -165,18 +159,8 @@ canvas{display:block;}
 </head>
 <body>
 
-<div class="bg-blocks">
-  <span class="b1"></span>
-  <span class="b2"></span>
-  <span class="b3"></span>
-  <span class="b4"></span>
-</div>
-<div class="bg-blocks bg-blocks-front">
-  <span class="b1"></span>
-  <span class="b2"></span>
-  <span class="b3"></span>
-  <span class="b4"></span>
-</div>
+<div class="bg-blocks"></div>
+<div class="bg-blocks-front"></div>
 
 <!-- PASSWORD SCREEN -->
 <div id="pw-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;">
