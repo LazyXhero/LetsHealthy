@@ -521,6 +521,7 @@ canvas{display:block;}
     <div class="filter-row">
       <select class="filter-select" id="chart-item-filter" onchange="applyChartFilter()">
         <option value="">All Charts</option>
+        <option value="__SUM_ALL_YEAR__">SUM OF ALL YEAR</option>
         <optgroup label="── Daily ──">
           <option value="height">身高</option>
           <option value="weight">體重</option>
@@ -1349,8 +1350,11 @@ function applyChartFilter(){
   const itemEl=document.getElementById('chart-item-filter');
   if(!pidEl)return;
   const pid=pidEl.value;
-  const yr=yrEl.value;
   const item=itemEl.value;
+  const isSumAllYear=item==='__SUM_ALL_YEAR__';
+  const yr=isSumAllYear?'':yrEl.value;
+  if(isSumAllYear&&yrEl.value){yrEl.value='';}
+  yrEl.disabled=isSumAllYear;
   let recs=[...allRecs];
   if(pid)recs=recs.filter(r=>r.personId===pid);
   if(yr)recs=recs.filter(r=>getYear(r.date)===+yr);
@@ -1442,6 +1446,11 @@ function renderCharts(recs,yr,yearLabel,personLabel,item,pid){
   const sub=`${personLabel}・${yearLabel}`;
   const hasFlag=v=>v&&v!=='n'&&v!=='';
   const show=k=>!item||item===k;
+
+  if(item==='__SUM_ALL_YEAR__'){
+    renderYearSumCharts(c,recs,personLabel,pid);
+    return;
+  }
 
   if(show('height')){const hR=recs.filter(r=>r.height&&+r.height>0);if(hR.length)drawVitalChart(c,'身高',sub,hR,'height','cm','#a78bfa',yr);}
   if(show('weight')){const wR=recs.filter(r=>r.weight&&+r.weight>0);if(wR.length)drawVitalChart(c,'體重',sub,wR,'weight','kg','#4fd1c5',yr);}
@@ -1993,6 +2002,113 @@ function onDateModeChange(){
 renderStsTags();renderEStsTags();
 initWithPw();
 init();
+
+function drawYearBarChart(c,title,sub,yearVals,unit,color){
+  // yearVals: [{year, val}]
+  const card=mkCard(c,title,sub);
+  if(!yearVals.length){card.insertAdjacentHTML('beforeend','<div class="no-data">尚無資料</div>');return;}
+  const w=CW(),h=150,pl=40,pr=12,pt=14,pb=26,cw=w-pl-pr,ch=h-pt-pb;
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
+  const ctx=cv.getContext('2d');
+  const vals=yearVals.map(d=>d.val);
+  const maxV=Math.max(...vals,0.001);
+  const minV=Math.min(0,...vals);
+  const rng=(maxV-minV)||1;
+  const n=yearVals.length;
+  const bw=Math.min(46,cw/n*0.55);
+  const gap=cw/n;
+  const fy=v=>pt+ch-((v-minV)/rng)*ch;
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+  for(let i=0;i<=4;i++){const y=pt+(ch/4)*i;ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();}
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=4;i++){const v=maxV-((maxV-minV)/4)*i;ctx.fillText(Number.isInteger(v)?v:v.toFixed(1),pl-3,pt+(ch/4)*i+3);}
+  yearVals.forEach((d,i)=>{
+    const cx=pl+gap*i+gap/2;
+    const barTop=fy(d.val);
+    ctx.fillStyle=color+'cc';
+    ctx.fillRect(cx-bw/2,barTop,bw,pt+ch-barTop);
+    ctx.fillStyle=color;ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='center';
+    ctx.fillText(Number.isInteger(d.val)?d.val:d.val.toFixed(1),cx,barTop-6);
+    ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';
+    ctx.fillText(d.year,cx,h-6);
+  });
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(unit,2,pt+8);
+}
+
+function renderYearSumCharts(c,recs,personLabel,pid){
+  const sub=y=>`${personLabel}・SUM OF ALL YEAR`;
+  const hasFlag=v=>v&&v!=='n'&&v!=='';
+  const years=[...new Set(recs.map(r=>getYear(r.date)))].sort();
+  if(!years.length&&(!allChecks||!allChecks.length)){
+    c.innerHTML='<div class="no-data">尚無資料</div>';
+    return;
+  }
+
+  // Vitals: average per year
+  ['height','weight'].forEach((field,fi)=>{
+    const title=field==='height'?'身高':'體重';
+    const unit=field==='height'?'cm':'kg';
+    const color=field==='height'?'#a78bfa':'#4fd1c5';
+    const yearVals=years.map(y=>{
+      const yRecs=recs.filter(r=>getYear(r.date)===y&&r[field]&&+r[field]>0);
+      if(!yRecs.length)return null;
+      const avg=yRecs.reduce((a,r)=>a+(+r[field]),0)/yRecs.length;
+      return {year:y,val:avg};
+    }).filter(Boolean);
+    if(yearVals.length)drawYearBarChart(c,title+' (年平均)',sub(),yearVals,unit,color);
+  });
+
+  // Flags: total count per year
+  const flagDefs=[
+    {field:'proc',title:'加工',color:'#f6ad55'},
+    {field:'fried',title:'炸物',color:'#fc8181'},
+    {field:'drink',title:'飲料',color:'#60a5fa'},
+    {field:'med',title:'藥物',color:'#68d391'},
+  ];
+  flagDefs.forEach(fd=>{
+    const yearVals=years.map(y=>{
+      const cnt=recs.filter(r=>getYear(r.date)===y&&hasFlag(r[fd.field])).length;
+      return {year:y,val:cnt};
+    }).filter(d=>d.val>0);
+    if(yearVals.length)drawYearBarChart(c,fd.title+' (年總計)',sub(),yearVals,'次',fd.color);
+  });
+
+  // Status: total count per year
+  STATUSES.forEach(s=>{
+    const pred=r=>getSts(r).includes(s.id);
+    const yearVals=years.map(y=>{
+      const cnt=recs.filter(r=>getYear(r.date)===y&&pred(r)).length;
+      return {year:y,val:cnt};
+    }).filter(d=>d.val>0);
+    if(yearVals.length)drawYearBarChart(c,(s.id==='ot'?'其他':s.label)+' (年總計)',sub(),yearVals,'次','#a78bfa');
+  });
+
+  // Menstrual: total count per year
+  const mensYearVals=years.map(y=>{
+    const cnt=recs.filter(r=>getYear(r.date)===y&&(r.mens==1||r.mens==='1')).length;
+    return {year:y,val:cnt};
+  }).filter(d=>d.val>0);
+  if(mensYearVals.length)drawYearBarChart(c,'月經 (年總計)',sub(),mensYearVals,'次','#f687b3');
+
+  // Health Check items: average per year
+  if(allChecks&&allChecks.length){
+    let cRecs=allChecks.filter(ck=>ck.value&&!isNaN(parseFloat(ck.value)));
+    if(pid)cRecs=cRecs.filter(ck=>ck.personId===pid);
+    const checkItems=[...new Set(cRecs.map(ck=>ck.item))];
+    const checkYears=[...new Set(cRecs.map(ck=>new Date(ck.date).getFullYear()))].sort();
+    checkItems.forEach(itemName=>{
+      const yearVals=checkYears.map(y=>{
+        const yRecs=cRecs.filter(ck=>ck.item===itemName&&new Date(ck.date).getFullYear()===y);
+        if(!yRecs.length)return null;
+        const avg=yRecs.reduce((a,ck)=>a+parseFloat(ck.value),0)/yRecs.length;
+        return {year:y,val:avg};
+      }).filter(Boolean);
+      if(yearVals.length)drawYearBarChart(c,itemName+' (年平均)',sub(),yearVals,'','#4fd1c5');
+    });
+  }
+
+  if(!c.innerHTML)c.innerHTML='<div class="no-data">尚無資料</div>';
+}
 
 function drawVitalChart(c,title,sub,recs,field,unit,color,yr){
   if(!yr){
