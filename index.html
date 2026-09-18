@@ -516,12 +516,11 @@ canvas{display:block;}
     <div style="height:12px;"></div>
     <div class="filter-row">
       <select class="filter-select" id="chart-person-filter" onchange="applyChartFilter()"><option value="">All Persons</option></select>
-      <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()"><option value="">All Years</option></select>
+      <select class="filter-select" id="chart-year-filter" onchange="applyChartFilter()"><option value="">All Years</option><option value="__SUM_ALL_YEAR__">SUM OF ALL YEAR</option></select>
     </div>
     <div class="filter-row">
       <select class="filter-select" id="chart-item-filter" onchange="applyChartFilter()">
         <option value="">All Charts</option>
-        <option value="__SUM_ALL_YEAR__">SUM OF ALL YEAR</option>
         <optgroup label="── Daily ──">
           <option value="height">身高</option>
           <option value="weight">體重</option>
@@ -1259,7 +1258,7 @@ function populateYearFilter(){
   const chartSel=document.getElementById('chart-year-filter');
   if(chartSel){
     const cur=chartSel.value;
-    chartSel.innerHTML='<option value="">All Years</option>'+allYears.map(y=>`<option value="${y}">${y}</option>`).join('');
+    chartSel.innerHTML='<option value="">All Years</option><option value="__SUM_ALL_YEAR__">SUM OF ALL YEAR</option>'+allYears.map(y=>`<option value="${y}">${y}</option>`).join('');
     if(allYears.length&&!cur)chartSel.value=allYears[0]; else chartSel.value=cur;
   }
   // List year filter
@@ -1351,16 +1350,20 @@ function applyChartFilter(){
   if(!pidEl)return;
   const pid=pidEl.value;
   const item=itemEl.value;
-  const isSumAllYear=item==='__SUM_ALL_YEAR__';
-  const yr=isSumAllYear?'':yrEl.value;
-  if(isSumAllYear&&yrEl.value){yrEl.value='';}
-  yrEl.disabled=isSumAllYear;
+  const yrRaw=yrEl.value;
+  const isSumAllYear=yrRaw==='__SUM_ALL_YEAR__';
+  const yr=isSumAllYear?'':yrRaw;
   let recs=[...allRecs];
   if(pid)recs=recs.filter(r=>r.personId===pid);
   if(yr)recs=recs.filter(r=>getYear(r.date)===+yr);
   recs.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const yearLabel=yr||'All Years';
+  const yearLabel=isSumAllYear?'SUM OF ALL YEAR':(yr||'All Years');
   const personLabel=pid?(persons.find(p=>p.id===pid)?.name||''):'All Persons';
+  if(isSumAllYear){
+    const c=document.getElementById('hist-charts-view');c.innerHTML='';
+    renderYearSumCharts(c,recs,personLabel,pid,item);
+    return;
+  }
   renderCharts(recs,+yr||null,yearLabel,personLabel,item,pid);
 }
 
@@ -1446,11 +1449,6 @@ function renderCharts(recs,yr,yearLabel,personLabel,item,pid){
   const sub=`${personLabel}・${yearLabel}`;
   const hasFlag=v=>v&&v!=='n'&&v!=='';
   const show=k=>!item||item===k;
-
-  if(item==='__SUM_ALL_YEAR__'){
-    renderYearSumCharts(c,recs,personLabel,pid);
-    return;
-  }
 
   if(show('height')){const hR=recs.filter(r=>r.height&&+r.height>0);if(hR.length)drawVitalChart(c,'身高',sub,hR,'height','cm','#a78bfa',yr);}
   if(show('weight')){const wR=recs.filter(r=>r.weight&&+r.weight>0);if(wR.length)drawVitalChart(c,'體重',sub,wR,'weight','kg','#4fd1c5',yr);}
@@ -2035,9 +2033,10 @@ function drawYearBarChart(c,title,sub,yearVals,unit,color){
   ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(unit,2,pt+8);
 }
 
-function renderYearSumCharts(c,recs,personLabel,pid){
+function renderYearSumCharts(c,recs,personLabel,pid,item){
   const sub=y=>`${personLabel}・SUM OF ALL YEAR`;
   const hasFlag=v=>v&&v!=='n'&&v!=='';
+  const show=k=>!item||item===k;
   const years=[...new Set(recs.map(r=>getYear(r.date)))].sort();
   if(!years.length&&(!allChecks||!allChecks.length)){
     c.innerHTML='<div class="no-data">尚無資料</div>';
@@ -2045,7 +2044,7 @@ function renderYearSumCharts(c,recs,personLabel,pid){
   }
 
   // Vitals: average per year
-  ['height','weight'].forEach((field,fi)=>{
+  ['height','weight'].filter(f=>show(f)).forEach((field,fi)=>{
     const title=field==='height'?'身高':'體重';
     const unit=field==='height'?'cm':'kg';
     const color=field==='height'?'#a78bfa':'#4fd1c5';
@@ -2065,7 +2064,7 @@ function renderYearSumCharts(c,recs,personLabel,pid){
     {field:'drink',title:'飲料',color:'#60a5fa'},
     {field:'med',title:'藥物',color:'#68d391'},
   ];
-  flagDefs.forEach(fd=>{
+  flagDefs.filter(fd=>show(fd.field)).forEach(fd=>{
     const yearVals=years.map(y=>{
       const cnt=recs.filter(r=>getYear(r.date)===y&&hasFlag(r[fd.field])).length;
       return {year:y,val:cnt};
@@ -2074,7 +2073,7 @@ function renderYearSumCharts(c,recs,personLabel,pid){
   });
 
   // Status: total count per year
-  STATUSES.forEach(s=>{
+  (show('status')?STATUSES:[]).forEach(s=>{
     const pred=r=>getSts(r).includes(s.id);
     const yearVals=years.map(y=>{
       const cnt=recs.filter(r=>getYear(r.date)===y&&pred(r)).length;
@@ -2084,14 +2083,14 @@ function renderYearSumCharts(c,recs,personLabel,pid){
   });
 
   // Menstrual: total count per year
-  const mensYearVals=years.map(y=>{
+  const mensYearVals=(show('mens')?years:[]).map(y=>{
     const cnt=recs.filter(r=>getYear(r.date)===y&&(r.mens==1||r.mens==='1')).length;
     return {year:y,val:cnt};
   }).filter(d=>d.val>0);
   if(mensYearVals.length)drawYearBarChart(c,'月經 (年總計)',sub(),mensYearVals,'次','#f687b3');
 
   // Health Check items: average per year
-  if(allChecks&&allChecks.length){
+  if(!item&&allChecks&&allChecks.length){
     let cRecs=allChecks.filter(ck=>ck.value&&!isNaN(parseFloat(ck.value)));
     if(pid)cRecs=cRecs.filter(ck=>ck.personId===pid);
     const checkItems=[...new Set(cRecs.map(ck=>ck.item))];
