@@ -134,7 +134,7 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .chart-zoom-title{font-size:15px;font-weight:700;color:var(--text1);}
 .chart-zoom-close{background:var(--bg3);border:none;color:var(--text1);width:32px;height:32px;border-radius:16px;font-size:15px;cursor:pointer;flex-shrink:0;}
 .chart-zoom-imgwrap{flex:1;overflow:auto;touch-action:pinch-zoom;display:flex;align-items:center;justify-content:center;padding:16px;-webkit-overflow-scrolling:touch;}
-.chart-zoom-img{max-width:none;width:100%;height:auto;transform-origin:center center;touch-action:pinch-zoom;}
+.chart-zoom-img{max-width:none;min-width:100%;width:auto;height:auto;transform-origin:top left;touch-action:pinch-zoom;}
 .chart-title{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:3px;}
 .chart-sub{font-size:12px;color:var(--text3);margin-bottom:10px;}
 canvas{display:block;}
@@ -1530,9 +1530,8 @@ function byMonthArr(recs,pred,yr){
 function CW(){return Math.min((window.innerWidth||375)-64,340);}
 function mkCard(c,title,sub){
   const d=document.createElement('div');d.className='chart-card';
-  d.style.cursor='zoom-in';
-  d.innerHTML=`<div class="chart-title">${title}</div><div class="chart-sub">${sub}</div>`;
-  d.addEventListener('click',()=>openChartZoom(d,title,sub));
+  d.innerHTML=`<div class="chart-title" style="cursor:zoom-in;">${title}</div><div class="chart-sub">${sub}</div>`;
+  d.querySelector('.chart-title').addEventListener('click',()=>openChartZoom(d,title,sub));
   c.appendChild(d);return d;
 }
 
@@ -2188,8 +2187,14 @@ function drawVitalChart(c,title,sub,recs,field,unit,color,yr){
 function drawVitalLine(c,title,sub,recs,field,unit,color){
   const card=mkCard(c,title,sub);
   if(!recs.length){card.insertAdjacentHTML('beforeend','<div class="no-data">尚無資料</div>');return;}
-  const w=CW(),h=150,pl=40,pr=12,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
-  const cv=document.createElement('canvas');cv.width=w;cv.height=h;card.appendChild(cv);
+  const baseW=CW();
+  const minPointGap=46;
+  const neededW=pl_const()+recs.length*minPointGap;
+  const w=Math.max(baseW,neededW),h=150,pl=40,pr=16,pt=14,pb=28,cw=w-pl-pr,ch=h-pt-pb;
+  const scrollWrap=document.createElement('div');
+  scrollWrap.style.cssText='overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -14px;padding:0 14px;';
+  card.appendChild(scrollWrap);
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.style.display='block';scrollWrap.appendChild(cv);
   const ctx=cv.getContext('2d');
   const ys=recs.map(r=>+r[field]);
   const minY=Math.floor(Math.min(...ys)-1),maxY=Math.ceil(Math.max(...ys)+1),rng=maxY-minY||1;
@@ -2203,13 +2208,19 @@ function drawVitalLine(c,title,sub,recs,field,unit,color){
   ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
   ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fillStyle=color+'28';ctx.fill();
   xs.forEach((x,i)=>drawDot(ctx,x,fy(ys[i]),color));
-  ctx.fillStyle=color;ctx.font='bold 9px -apple-system,sans-serif';ctx.textAlign='center';
-  xs.forEach((x,i)=>ctx.fillText(ys[i].toFixed(1),x,fy(ys[i])-9));
-  ctx.fillStyle='#606068';ctx.font='8px -apple-system,sans-serif';ctx.textAlign='center';
-  const step=Math.ceil(recs.length/6);
-  recs.forEach((r,i)=>{if(i%step===0||i===recs.length-1){const d=new Date(r.date);ctx.fillText((d.getMonth()+1)+'/'+d.getDate(),xs[i],h-4);}});
+  ctx.fillStyle=color;ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='center';
+  xs.forEach((x,i)=>ctx.fillText(ys[i].toFixed(1),x,fy(ys[i])-10));
+  ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='center';
+  recs.forEach((r,i)=>{const d=new Date(r.date);ctx.fillText((d.getMonth()+1)+'/'+d.getDate(),xs[i],h-4);});
   ctx.fillStyle='#606068';ctx.font='9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(unit,2,pt+8);
+  if(w>baseW){
+    const hint=document.createElement('div');
+    hint.textContent='← 可左右滑動看完整資料 →';
+    hint.style.cssText='font-size:10px;color:var(--text3);text-align:center;margin-top:4px;';
+    card.appendChild(hint);
+  }
 }
+function pl_const(){return 60;}
 </script>
 <!-- CHART ZOOM OVERLAY -->
 <div id="chart-zoom-overlay" class="chart-zoom-overlay">
