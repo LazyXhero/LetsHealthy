@@ -134,7 +134,7 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .chart-zoom-title{font-size:15px;font-weight:700;color:var(--text1);}
 .chart-zoom-close{background:var(--bg3);border:none;color:var(--text1);width:32px;height:32px;border-radius:16px;font-size:15px;cursor:pointer;flex-shrink:0;}
 .chart-zoom-imgwrap{flex:1;overflow:auto;touch-action:pinch-zoom;display:flex;align-items:center;justify-content:center;padding:16px;-webkit-overflow-scrolling:touch;}
-.chart-zoom-img{max-width:none;min-width:100%;width:auto;height:auto;transform-origin:top left;touch-action:pinch-zoom;}
+.chart-zoom-img{max-width:none;height:auto;transform-origin:top left;touch-action:pinch-zoom;display:block;}
 .chart-title{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:3px;}
 .chart-sub{font-size:12px;color:var(--text3);margin-bottom:10px;}
 canvas{display:block;}
@@ -1535,6 +1535,7 @@ function mkCard(c,title,sub){
   c.appendChild(d);return d;
 }
 
+let chartZoomMinScale=1;
 function openChartZoom(cardEl,title,sub){
   const canvas=cardEl.querySelector('canvas');
   if(!canvas)return;
@@ -1545,24 +1546,39 @@ function openChartZoom(cardEl,title,sub){
   const titleEl=document.getElementById('chart-zoom-title');
   img.src=dataUrl;
   titleEl.textContent=title;
-  imgWrap.scrollLeft=0;imgWrap.scrollTop=0;
-  img.style.transform='scale(1)';
+  img.dataset.naturalWidth=canvas.width;
+  img.dataset.naturalHeight=canvas.height;
+  titleEl.textContent=title;
+  // compute the scale that fits the WHOLE chart width on screen (overview scale)
+  const viewportW=imgWrap.clientWidth-32;
+  chartZoomMinScale=Math.min(1,viewportW/canvas.width);
+  window.__chartZoomScale=1;
+  img.onload=()=>{
+    imgWrap.scrollLeft=0;imgWrap.scrollTop=0;
+    img.style.width=canvas.width+'px';
+    img.style.transform='scale(1)';
+  };
   overlay.classList.add('show');
 }
 function closeChartZoom(){
   document.getElementById('chart-zoom-overlay').classList.remove('show');
 }
 
-// Pinch-to-zoom handler for chart zoom overlay
+// Pinch-to-zoom handler for chart zoom overlay: pinch out = zoom in on detail, pinch in = shrink to see whole curve
 (function(){
-  let scale=1,startDist=0,startScale=1;
+  let startDist=0,startScale=1;
   const img=()=>document.getElementById('chart-zoom-img');
   function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
+  function applyScale(s){
+    window.__chartZoomScale=s;
+    img().style.transformOrigin='top left';
+    img().style.transform=`scale(${s})`;
+  }
   document.addEventListener('touchstart',e=>{
     if(!document.getElementById('chart-zoom-overlay').classList.contains('show'))return;
     if(e.touches.length===2){
       startDist=dist(e.touches);
-      startScale=scale;
+      startScale=window.__chartZoomScale||1;
     }
   },{passive:true});
   document.addEventListener('touchmove',e=>{
@@ -1570,18 +1586,24 @@ function closeChartZoom(){
     if(e.touches.length===2){
       e.preventDefault();
       const d=dist(e.touches);
-      scale=Math.min(4,Math.max(1,startScale*(d/startDist)));
-      img().style.transform=`scale(${scale})`;
+      const maxScale=4;
+      const minScale=chartZoomMinScale;
+      const s=Math.min(maxScale,Math.max(minScale,startScale*(d/startDist)));
+      applyScale(s);
     }
   },{passive:false});
   document.addEventListener('touchend',e=>{
     if(e.touches.length<2)startDist=0;
   },{passive:true});
-  // Double-tap to reset zoom
+  // Double-tap: toggle between full detail (scale 1) and whole-curve overview (chartZoomMinScale)
   let lastTap=0;
   document.getElementById('chart-zoom-imgwrap')?.addEventListener('touchend',e=>{
     const now=Date.now();
-    if(now-lastTap<300){scale=1;img().style.transform='scale(1)';}
+    if(now-lastTap<300){
+      const cur=window.__chartZoomScale||1;
+      const target=cur>chartZoomMinScale+0.05?chartZoomMinScale:1;
+      applyScale(target);
+    }
     lastTap=now;
   });
 })();
