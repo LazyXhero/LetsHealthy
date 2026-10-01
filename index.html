@@ -1544,20 +1544,20 @@ function openChartZoom(cardEl,title,sub){
   const imgWrap=document.getElementById('chart-zoom-imgwrap');
   const img=document.getElementById('chart-zoom-img');
   const titleEl=document.getElementById('chart-zoom-title');
-  img.src=dataUrl;
   titleEl.textContent=title;
   img.dataset.naturalWidth=canvas.width;
   img.dataset.naturalHeight=canvas.height;
-  titleEl.textContent=title;
-  // compute the scale that fits the WHOLE chart width on screen (overview scale)
+  // compute the scale that fits the WHOLE chart width on screen (overview scale) - this is the DEFAULT view
   const viewportW=imgWrap.clientWidth-32;
   chartZoomMinScale=Math.min(1,viewportW/canvas.width);
-  window.__chartZoomScale=1;
+  window.__chartZoomScale=chartZoomMinScale;
   img.onload=()=>{
     imgWrap.scrollLeft=0;imgWrap.scrollTop=0;
     img.style.width=canvas.width+'px';
-    img.style.transform='scale(1)';
+    img.style.transformOrigin='top left';
+    img.style.transform=`scale(${chartZoomMinScale})`;
   };
+  img.src=dataUrl;
   overlay.classList.add('show');
 }
 function closeChartZoom(){
