@@ -1552,10 +1552,14 @@ function openChartZoom(cardEl,title,sub){
   chartZoomMinScale=Math.min(1,viewportW/canvas.width);
   window.__chartZoomScale=chartZoomMinScale;
   img.onload=()=>{
-    imgWrap.scrollLeft=0;imgWrap.scrollTop=0;
     img.style.width=canvas.width+'px';
+    const s=chartZoomMinScale;
     img.style.transformOrigin='top left';
-    img.style.transform=`scale(${chartZoomMinScale})`;
+    img.style.transform=`scale(${s})`;
+    const visW=canvas.width*s, visH=canvas.height*s;
+    img.style.marginRight=(visW-canvas.width)+'px';
+    img.style.marginBottom=(visH-canvas.height)+'px';
+    imgWrap.scrollLeft=0;imgWrap.scrollTop=0;
   };
   img.src=dataUrl;
   overlay.classList.add('show');
@@ -1571,8 +1575,24 @@ function closeChartZoom(){
   function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
   function applyScale(s){
     window.__chartZoomScale=s;
-    img().style.transformOrigin='top left';
-    img().style.transform=`scale(${s})`;
+    const el=img();
+    const wrap=document.getElementById('chart-zoom-imgwrap');
+    const natW=parseFloat(el.dataset.naturalWidth)||el.offsetWidth;
+    const natH=parseFloat(el.dataset.naturalHeight)||el.offsetHeight;
+    el.style.transformOrigin='top left';
+    el.style.transform=`scale(${s})`;
+    // The scaled visual size:
+    const visW=natW*s, visH=natH*s;
+    // Resize the wrap's scrollable content area to match the visible size exactly,
+    // so there is no leftover empty space to scroll into.
+    el.style.marginRight=(visW-natW)+'px';
+    el.style.marginBottom=(visH-natH)+'px';
+    requestAnimationFrame(()=>{
+      if(visW<=wrap.clientWidth)wrap.scrollLeft=0;
+      else wrap.scrollLeft=(wrap.scrollWidth-wrap.clientWidth)/2;
+      if(visH<=wrap.clientHeight)wrap.scrollTop=0;
+      else wrap.scrollTop=(wrap.scrollHeight-wrap.clientHeight)/2;
+    });
   }
   document.addEventListener('touchstart',e=>{
     if(!document.getElementById('chart-zoom-overlay').classList.contains('show'))return;
