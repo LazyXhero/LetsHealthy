@@ -133,8 +133,8 @@ body{background:var(--bg);color:var(--text1);font-family:-apple-system,'PingFang
 .chart-zoom-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px));border-bottom:0.5px solid var(--border);flex-shrink:0;}
 .chart-zoom-title{font-size:15px;font-weight:700;color:var(--text1);}
 .chart-zoom-close{background:var(--bg3);border:none;color:var(--text1);width:32px;height:32px;border-radius:16px;font-size:15px;cursor:pointer;flex-shrink:0;}
-.chart-zoom-imgwrap{flex:1;overflow:auto;touch-action:pinch-zoom;display:flex;align-items:center;justify-content:center;padding:16px;-webkit-overflow-scrolling:touch;}
-.chart-zoom-img{max-width:none;height:auto;transform-origin:top left;touch-action:pinch-zoom;display:block;}
+.chart-zoom-imgwrap{flex:1;overflow:auto;touch-action:none;display:block;padding:16px;-webkit-overflow-scrolling:touch;}
+.chart-zoom-img{max-width:none;touch-action:none;display:block;margin:auto;}
 .chart-title{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:3px;}
 .chart-sub{font-size:12px;color:var(--text3);margin-bottom:10px;}
 canvas{display:block;}
@@ -1536,6 +1536,7 @@ function mkCard(c,title,sub){
 }
 
 let chartZoomMinScale=1;
+let chartZoomNatW=0,chartZoomNatH=0;
 function openChartZoom(cardEl,title,sub){
   const canvas=cardEl.querySelector('canvas');
   if(!canvas)return;
@@ -1545,20 +1546,12 @@ function openChartZoom(cardEl,title,sub){
   const img=document.getElementById('chart-zoom-img');
   const titleEl=document.getElementById('chart-zoom-title');
   titleEl.textContent=title;
-  img.dataset.naturalWidth=canvas.width;
-  img.dataset.naturalHeight=canvas.height;
-  // compute the scale that fits the WHOLE chart width on screen (overview scale) - this is the DEFAULT view
+  chartZoomNatW=canvas.width;
+  chartZoomNatH=canvas.height;
   const viewportW=imgWrap.clientWidth-32;
-  chartZoomMinScale=Math.min(1,viewportW/canvas.width);
-  window.__chartZoomScale=chartZoomMinScale;
+  chartZoomMinScale=Math.min(1,viewportW/chartZoomNatW);
   img.onload=()=>{
-    img.style.width=canvas.width+'px';
-    const s=chartZoomMinScale;
-    img.style.transformOrigin='top left';
-    img.style.transform=`scale(${s})`;
-    const visW=canvas.width*s, visH=canvas.height*s;
-    img.style.marginRight=(visW-canvas.width)+'px';
-    img.style.marginBottom=(visH-canvas.height)+'px';
+    setChartZoomScale(chartZoomMinScale);
     imgWrap.scrollLeft=0;imgWrap.scrollTop=0;
   };
   img.src=dataUrl;
@@ -1567,38 +1560,27 @@ function openChartZoom(cardEl,title,sub){
 function closeChartZoom(){
   document.getElementById('chart-zoom-overlay').classList.remove('show');
 }
+function setChartZoomScale(s){
+  window.__chartZoomScale=s;
+  const img=document.getElementById('chart-zoom-img');
+  img.style.width=Math.round(chartZoomNatW*s)+'px';
+  img.style.height=Math.round(chartZoomNatH*s)+'px';
+}
 
-// Pinch-to-zoom handler for chart zoom overlay: pinch out = zoom in on detail, pinch in = shrink to see whole curve
+// Pinch-to-zoom handler: pinch out = zoom in on detail, pinch in = shrink to see whole curve
 (function(){
-  let startDist=0,startScale=1;
-  const img=()=>document.getElementById('chart-zoom-img');
+  let startDist=0,startScale=1,pinchCenter=null;
   function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
-  function applyScale(s){
-    window.__chartZoomScale=s;
-    const el=img();
-    const wrap=document.getElementById('chart-zoom-imgwrap');
-    const natW=parseFloat(el.dataset.naturalWidth)||el.offsetWidth;
-    const natH=parseFloat(el.dataset.naturalHeight)||el.offsetHeight;
-    el.style.transformOrigin='top left';
-    el.style.transform=`scale(${s})`;
-    // The scaled visual size:
-    const visW=natW*s, visH=natH*s;
-    // Resize the wrap's scrollable content area to match the visible size exactly,
-    // so there is no leftover empty space to scroll into.
-    el.style.marginRight=(visW-natW)+'px';
-    el.style.marginBottom=(visH-natH)+'px';
-    requestAnimationFrame(()=>{
-      if(visW<=wrap.clientWidth)wrap.scrollLeft=0;
-      else wrap.scrollLeft=(wrap.scrollWidth-wrap.clientWidth)/2;
-      if(visH<=wrap.clientHeight)wrap.scrollTop=0;
-      else wrap.scrollTop=(wrap.scrollHeight-wrap.clientHeight)/2;
-    });
-  }
   document.addEventListener('touchstart',e=>{
     if(!document.getElementById('chart-zoom-overlay').classList.contains('show'))return;
     if(e.touches.length===2){
       startDist=dist(e.touches);
       startScale=window.__chartZoomScale||1;
+      const wrap=document.getElementById('chart-zoom-imgwrap');
+      const rect=wrap.getBoundingClientRect();
+      const midX=(e.touches[0].clientX+e.touches[1].clientX)/2-rect.left+wrap.scrollLeft;
+      const midY=(e.touches[0].clientY+e.touches[1].clientY)/2-rect.top+wrap.scrollTop;
+      pinchCenter={x:midX,y:midY,ratioX:midX/(chartZoomNatW*startScale),ratioY:midY/(chartZoomNatH*startScale)};
     }
   },{passive:true});
   document.addEventListener('touchmove',e=>{
@@ -1609,11 +1591,18 @@ function closeChartZoom(){
       const maxScale=4;
       const minScale=chartZoomMinScale;
       const s=Math.min(maxScale,Math.max(minScale,startScale*(d/startDist)));
-      applyScale(s);
+      setChartZoomScale(s);
+      const wrap=document.getElementById('chart-zoom-imgwrap');
+      if(pinchCenter){
+        const newX=pinchCenter.ratioX*(chartZoomNatW*s);
+        const newY=pinchCenter.ratioY*(chartZoomNatH*s);
+        wrap.scrollLeft=newX-pinchCenter.x+wrap.scrollLeft;
+        wrap.scrollTop=newY-pinchCenter.y+wrap.scrollTop;
+      }
     }
   },{passive:false});
   document.addEventListener('touchend',e=>{
-    if(e.touches.length<2)startDist=0;
+    if(e.touches.length<2){startDist=0;pinchCenter=null;}
   },{passive:true});
   // Double-tap: toggle between full detail (scale 1) and whole-curve overview (chartZoomMinScale)
   let lastTap=0;
@@ -1622,7 +1611,9 @@ function closeChartZoom(){
     if(now-lastTap<300){
       const cur=window.__chartZoomScale||1;
       const target=cur>chartZoomMinScale+0.05?chartZoomMinScale:1;
-      applyScale(target);
+      setChartZoomScale(target);
+      const wrap=document.getElementById('chart-zoom-imgwrap');
+      wrap.scrollLeft=0;wrap.scrollTop=0;
     }
     lastTap=now;
   });
